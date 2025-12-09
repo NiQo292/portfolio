@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "@/lib/motion";
 import { useParallaxLayers } from "@/lib/useParallaxLayers";
+import { useSectionBlur } from "@/lib/useSectionBlur";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -33,40 +34,40 @@ const experienceData = [
 
 export default function Experience() {
   const sectionRef = useRef<HTMLDivElement>(null);
+
   useParallaxLayers();
+
+  useSectionBlur({ ref: sectionRef });
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Section title cinematic reveal
-      gsap.from(".a-section-title", {
+      gsap.from(".exp-title", {
         y: 60,
         opacity: 0,
-        filter: "blur(8px)",
-        ease: "power3.out",
+        filter: "blur(10px)",
         duration: 1.4,
+        ease: "power3.out",
         scrollTrigger: {
-          trigger: ".a-section-title",
+          trigger: ".exp-title",
           start: "top 90%",
           scrub: 1,
         },
       });
 
-      // Experience block animations (same as before)
-      const blocks = gsap.utils.toArray<HTMLElement>(".a-exp");
+      const blocks = gsap.utils.toArray<HTMLElement>(".exp-block");
 
-      blocks.forEach((block, i) => {
-        const company = block.querySelector(".a-company");
-        const role = block.querySelector(".a-role");
-        const bar = block.querySelector(".a-bar");
-        const period = block.querySelector(".a-period");
-        const items = block.querySelectorAll(".a-item");
-        const glow = block.querySelector(".a-glow");
+      blocks.forEach((block, index) => {
+        const company = block.querySelector(".exp-company");
+        const role = block.querySelector(".exp-role");
+        const bar = block.querySelector(".exp-bar");
+        const period = block.querySelector(".exp-period");
+        const items = block.querySelectorAll(".exp-item");
+        const glow = block.querySelector(".exp-glow");
 
-        // Glow animation
         if (glow) {
           gsap.fromTo(
             glow,
-            { opacity: 0, scale: 0.96 },
+            { opacity: 0, scale: 0.93 },
             {
               opacity: 1,
               scale: 1,
@@ -75,75 +76,93 @@ export default function Experience() {
               scrollTrigger: {
                 trigger: block,
                 start: "top 85%",
-                toggleActions: "play none none none",
               },
             }
           );
         }
 
-        // Text cascading timeline
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: block,
             start: "top 85%",
-            toggleActions: "play none none none",
           },
         });
 
-        tl.from(company, {
-          y: 50,
-          opacity: 0,
-          filter: "blur(6px)",
-          duration: motion.medium,
-          ease: "back.out(1.7)",
-        });
-
-        tl.from(
-          role,
-          {
-            y: 40,
+        if (company) {
+          tl.from(company, {
+            y: 45,
             opacity: 0,
             filter: "blur(6px)",
             duration: motion.medium,
-            ease: "back.out(1.7)",
-          },
-          "-=0.5"
-        );
+            ease: "back.out(1.6)",
+          });
+        }
 
-        tl.from(
-          bar,
-          {
-            width: 0,
-            duration: motion.medium,
-            ease: motion.easeOut,
-          },
-          "-=0.4"
-        );
+        if (role) {
+          tl.from(
+            role,
+            {
+              y: 35,
+              opacity: 0,
+              filter: "blur(6px)",
+              duration: motion.medium,
+              ease: "back.out(1.6)",
+            },
+            "-=0.45"
+          );
+        }
 
-        tl.from(
-          period,
-          {
-            y: 25,
-            opacity: 0,
-            filter: "blur(4px)",
-            duration: motion.medium,
-            ease: motion.easeOut,
-          },
-          "-=0.3"
-        );
+        if (bar) {
+          tl.from(
+            bar,
+            {
+              width: 0,
+              duration: motion.medium,
+              ease: motion.easeOut,
+            },
+            "-=0.35"
+          );
+        }
 
-        tl.from(
-          items,
-          {
-            y: 16,
-            opacity: 0,
-            filter: "blur(3px)",
-            duration: motion.medium,
-            ease: motion.easeOut,
-            stagger: motion.staggerMd,
+        if (period) {
+          tl.from(
+            period,
+            {
+              y: 20,
+              opacity: 0,
+              filter: "blur(4px)",
+              duration: motion.medium,
+              ease: motion.easeOut,
+            },
+            "-=0.3"
+          );
+        }
+
+        if (items.length) {
+          tl.from(
+            items,
+            {
+              y: 14,
+              opacity: 0,
+              filter: "blur(3px)",
+              duration: motion.medium,
+              ease: motion.easeOut,
+              stagger: motion.staggerMd,
+            },
+            "-=0.2"
+          );
+        }
+
+        gsap.to(block, {
+          yPercent: -6 - index * 1.2,
+          ease: "none",
+          scrollTrigger: {
+            trigger: block,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
           },
-          "-=0.2"
-        );
+        });
       });
     }, sectionRef);
 
@@ -152,43 +171,45 @@ export default function Experience() {
 
   return (
     <>
-      <div ref={sectionRef} className="stack-xl relative">
-        <h2 className="a-section-title type-title parallax-fg">
+      <section ref={sectionRef} className="layout-section stack-xl relative">
+        <h2 className="exp-title type-title parallax-fg">
           My Working Experience
         </h2>
 
         {experienceData.map((exp, index) => (
-          <article key={index} className="a-exp relative stack-md parallax-mg">
-            {/* Background Glow */}
-            <div className="a-glow ts-exp-glow absolute inset-0 parallax-bg"></div>
+          <article
+            key={index}
+            className="exp-block stack-md relative parallax-mg"
+          >
+            <div className="exp-glow absolute inset-0 parallax-bg"></div>
 
-            <h3 className="a-company type-subheading relative z-10 parallax-fg">
+            <h3 className="exp-company type-subheading relative z-10 parallax-fg">
               {exp.company}
             </h3>
 
             <div className="stack-xs relative z-10">
-              <h4 className="a-role type-heading relative inline-block parallax-fg">
+              <h4 className="exp-role type-heading relative inline-block parallax-fg">
                 {exp.role}
-                <span className="a-bar absolute left-0 -bottom-1 h-[3px] bg-[var(--cyan)] rounded-sm block w-full"></span>
+                <span className="exp-bar absolute left-0 -bottom-1 h-[3px] bg-[var(--cyan)] block rounded-sm w-full"></span>
               </h4>
             </div>
 
-            <p className="a-period type-meta relative z-10 parallax-fg">
+            <p className="exp-period type-meta relative z-10 parallax-fg">
               {exp.period}
             </p>
 
             <ul className="type-list stack-sm list-disc pl-4 relative z-10">
               {exp.responsibilities.map((item, idx) => (
-                <li key={idx} className="a-item parallax-fg">
+                <li key={idx} className="exp-item parallax-fg">
                   {item}
                 </li>
               ))}
             </ul>
           </article>
         ))}
-      </div>
+      </section>
 
-      <div className="a-divider w-full h-[4px] bg-[var(--cyan)] mt-20 opacity-80"></div>
+      <div className="w-full h-[4px] bg-[var(--cyan)] mt-20 opacity-80"></div>
     </>
   );
 }
