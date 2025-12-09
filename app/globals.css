@@ -192,6 +192,19 @@ html.lenis body {
     gap: clamp(3rem, 6vw, 6rem);
   }
 
+  /* Parallax utilities */
+  .parallax-fg {
+    will-change: transform;
+  }
+
+  .parallax-mg {
+    will-change: transform;
+  }
+
+  .parallax-bg {
+    will-change: transform;
+  }
+
   /* Tech-Stack Component */
   .ts-list {
     display: flex;
@@ -206,5 +219,51 @@ html.lenis body {
 
   .ts-icon {
     margin-right: 0.75rem;
+  }
+
+  /* 3D Tilt Card System */
+  .ts-card {
+    position: relative;
+    transform-style: preserve-3d;
+    perspective: 800px;
+  }
+
+  .ts-inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .ts-glow {
+    position: absolute;
+    top: 50%;
+    left: 0%; /* start directly behind the icon */
+    width: 100px;
+    height: 100px;
+    transform: translateY(-50%) translateZ(-20px);
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(0, 255, 255, 0.085),
+      transparent 70%
+    );
+    opacity: 0;
+    pointer-events: none;
+    filter: blur(20px);
+  }
+
+  /* Experience Component */
+  /* Experience glow background */
+  .ts-exp-glow {
+    background: radial-gradient(
+      circle at 30% 20%,
+      rgba(0, 255, 255, 0.12),
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    filter: blur(24px);
+    pointer-events: none;
   }
 }
