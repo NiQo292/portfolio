@@ -4,6 +4,8 @@ import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion } from "@/lib/motion";
+
 // Brand Logos import
 import ReactLogo from "@/public/images/techstack/react.svg";
 import NextJSLogo from "@/public/images/techstack/next.svg";
@@ -90,7 +92,7 @@ const TechStack = () => {
           tl.fromTo(
             heading,
             { y: 40, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }
+            { y: 0, opacity: 1, duration: motion.medium, ease: motion.easeOut }
           );
         }
 
@@ -101,9 +103,9 @@ const TechStack = () => {
             {
               y: 0,
               opacity: 1,
-              duration: 0.5,
-              ease: "power3.out",
-              stagger: 0.15,
+              duration: motion.medium,
+              ease: motion.easeOut,
+              stagger: motion.staggerLg,
             },
             "-=0.2"
           );
@@ -115,15 +117,17 @@ const TechStack = () => {
   }, []);
 
   return (
-    <div ref={sectionRef} className="section">
-      <h2>My Tech-Stack</h2>
+    <div ref={sectionRef} className="stack-xl">
+      <h2 className="type-title">My Tech-Stack</h2>
 
       {techStack.map((section) => (
         <div
           key={section.category}
           className="tech-group w-full flex flex-col justify-between gap-4 md:flex-row md:gap-8"
         >
-          <h3 className="tech-heading w-full md:w-2/5">{section.category}</h3>
+          <h3 className="type-subheading w-full md:w-2/5">
+            {section.category}
+          </h3>
 
           <ul className="flex flex-row w-full gap-5 flex-wrap justify-stretch md:w-3/5">
             {section.items.map((tech) => (
