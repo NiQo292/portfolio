@@ -3,14 +3,20 @@
 :root {
   --foreground: #ffffff;
   --background: #171717;
+  --cyan: #00ffff;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
+
+@layer utilities {
+  .font-clash {
+    font-family: var(--font-clash), sans-serif;
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -37,4 +43,152 @@ html.lenis body {
 
 .lenis.lenis-smooth iframe {
   pointer-events: none;
+}
+
+@layer components {
+  /* --- Display / Section Headings --- */
+  /* H1 */
+  .type-display {
+    font-family: var(--font-clash), sans-serif;
+    font-size: clamp(3rem, 1.8rem + 4vw, 6rem);
+    line-height: 1.05;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+
+  /* H2 */
+  .type-title {
+    font-family: var(--font-clash), sans-serif;
+    font-size: clamp(2.25rem, 1.4rem + 3vw, 4.5rem);
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -0.015em;
+  }
+
+  /* H3 */
+  .type-heading {
+    font-family: var(--font-clash), sans-serif;
+    font-size: clamp(1.75rem, 1.2rem + 2.2vw, 3rem);
+    line-height: 1.15;
+    font-weight: 700;
+  }
+
+  /* H4 */
+  .type-subheading {
+    font-family: var(--font-clash), sans-serif;
+    font-size: clamp(1.5rem, 1.1rem + 1.5vw, 2.25rem);
+    line-height: 1.2;
+    font-weight: 700;
+  }
+
+  /* --- Body Text --- */
+  /* p */
+  .type-body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      sans-serif;
+    font-size: clamp(1rem, 0.9rem + 0.4vw, 1.25rem);
+    line-height: 1.65;
+    font-weight: 400;
+  }
+
+  /* Dates / metadata */
+  .type-meta {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      sans-serif;
+    font-size: clamp(0.9rem, 0.85rem + 0.3vw, 1.1rem);
+    line-height: 1.5;
+    opacity: 0.7;
+  }
+
+  /* --- Lists --- */
+  /* ul, li */
+  .type-list {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      sans-serif;
+    font-size: clamp(1rem, 0.95rem + 0.4vw, 1.2rem);
+    line-height: 1.7;
+  }
+
+  /* --- Forms --- */
+  .type-label {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .type-input {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      sans-serif;
+    font-size: 1rem;
+  }
+
+  .type-placeholder::placeholder {
+    opacity: 0.5;
+  }
+
+  /* Spacing Scale (Design Tokens) */
+  .space-xs {
+    padding: clamp(0.5rem, 0.4rem + 0.3vw, 0.75rem);
+  }
+
+  .space-sm {
+    padding: clamp(1rem, 0.8rem + 0.5vw, 1.5rem);
+  }
+
+  .space-md {
+    padding: clamp(2rem, 1.5rem + 1vw, 3rem);
+  }
+
+  .space-lg {
+    padding: clamp(4rem, 3rem + 2vw, 6rem);
+  }
+
+  .space-xl {
+    padding: clamp(6rem, 4rem + 3vw, 10rem);
+  }
+
+  /* --------- Margin Tokens --------- */
+
+  .stack-xs > * + * {
+    margin-top: 0.5rem;
+  }
+
+  .stack-sm > * + * {
+    margin-top: 1rem;
+  }
+
+  .stack-md > * + * {
+    margin-top: 2rem;
+  }
+
+  .stack-lg > * + * {
+    margin-top: 4rem;
+  }
+
+  .stack-xl > * + * {
+    margin-top: 6rem;
+  }
+
+  /* --------- Section Spacing Helpers --------- */
+  /* Layout container token */
+  .layout-section {
+    max-width: 80rem; /* ~1280px */
+    margin-inline: auto;
+    padding-inline: clamp(1.5rem, 5vw, 5rem);
+  }
+
+  /* Vertical rhythm between sections */
+  .section-spacing {
+    margin-top: clamp(6rem, 10vw, 12rem);
+  }
+
+  /* Stack layout for inner content */
+  .stack-xl {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(3rem, 6vw, 6rem);
+  }
 }
