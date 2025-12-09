@@ -191,4 +191,20 @@ html.lenis body {
     flex-direction: column;
     gap: clamp(3rem, 6vw, 6rem);
   }
+
+  /* Tech-Stack Component */
+  .ts-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+  }
+
+  .type-list-item {
+    display: flex;
+    align-items: center;
+  }
+
+  .ts-icon {
+    margin-right: 0.75rem;
+  }
 }

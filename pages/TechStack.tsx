@@ -74,11 +74,11 @@ const TechStack = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const groups = gsap.utils.toArray<HTMLElement>(".tech-group");
+      const groups = gsap.utils.toArray<HTMLElement>(".a-group");
 
       groups.forEach((group) => {
-        const heading = group.querySelector(".tech-heading");
-        const items = group.querySelectorAll(".tech-item");
+        const heading = group.querySelector(".a-heading");
+        const items = group.querySelectorAll(".a-item");
 
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -123,24 +123,24 @@ const TechStack = () => {
       {techStack.map((section) => (
         <div
           key={section.category}
-          className="tech-group w-full flex flex-col justify-between gap-4 md:flex-row md:gap-8"
+          className="a-group w-full md:flex-row md:gap-8 flex flex-col justify-between"
         >
-          <h3 className="type-subheading w-full md:w-2/5">
+          <h3 className="a-heading type-subheading w-full md:w-2/5">
             {section.category}
           </h3>
 
-          <ul className="flex flex-row w-full gap-5 flex-wrap justify-stretch md:w-3/5">
+          <ul className="ts-list type-list flex flex-row w-full gap-5 flex-wrap justify-stretch md:w-3/5">
             {section.items.map((tech) => (
               <li
                 key={tech.name}
-                className="tech-item flex flex-row items-center justify-start min-w-fit text-xl md:text-2xl mr-8"
+                className="a-item type-list-item flex flex-row items-center min-w-fit mr-8"
               >
                 <Image
                   src={tech.logo}
                   alt={tech.name}
                   width={24}
                   height={24}
-                  className="w-12 h-12 mr-3"
+                  className="ts-icon w-12 h-12 mr-3"
                 />
                 {tech.name}
               </li>
