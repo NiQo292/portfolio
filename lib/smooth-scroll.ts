@@ -11,7 +11,7 @@ export function getLenis() {
 
   if (!lenis) {
     lenis = new Lenis({
-      lerp: 0.04,
+      lerp: 0.1,
       wheelMultiplier: 1,
       touchMultiplier: 1,
     });
