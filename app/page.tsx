@@ -1,11 +1,32 @@
-import TextUpDown from "@/components/animations/TextUpDown";
+import Footer from "@/components/Footer";
+import Hero from "@/components/Hero";
+import Section from "@/components/Section";
+import About from "@/pages/About";
+import Contact from "@/pages/Contact";
+import Experience from "@/pages/Experience";
+import Projects from "@/pages/Projects";
+import TechStack from "@/pages/TechStack";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24">
-      <TextUpDown>
-        <h1 className="text-3xl text-red-500">Hello, world!</h1>
-      </TextUpDown>
+    <main>
+      <Hero />
+      <Section>
+        <About />
+      </Section>
+      <Section>
+        <TechStack />
+      </Section>
+      <Section>
+        <Experience />
+      </Section>
+      <Section>
+        <Projects />
+      </Section>
+      <Section>
+        <Contact />
+      </Section>
+      <Footer />
     </main>
   );
 }
