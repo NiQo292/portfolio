@@ -205,6 +205,18 @@ html.lenis body {
     will-change: transform;
   }
 
+  /* Section Blur animation */
+  .exp-glow {
+    background: radial-gradient(
+      circle at 30% 20%,
+      rgba(0, 255, 255, 0.12),
+      transparent 60%
+    );
+    opacity: 0;
+    filter: blur(24px);
+    pointer-events: none;
+  }
+
   /* Tech-Stack Component */
   .ts-list {
     display: flex;
@@ -251,19 +263,5 @@ html.lenis body {
     opacity: 0;
     pointer-events: none;
     filter: blur(20px);
-  }
-
-  /* Experience Component */
-  /* Experience glow background */
-  .ts-exp-glow {
-    background: radial-gradient(
-      circle at 30% 20%,
-      rgba(0, 255, 255, 0.12),
-      transparent 60%
-    );
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    filter: blur(24px);
-    pointer-events: none;
   }
 }
