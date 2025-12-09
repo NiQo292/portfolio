@@ -62,7 +62,7 @@ html.lenis body {
     font-size: clamp(2.25rem, 1.4rem + 3vw, 4.5rem);
     line-height: 1.1;
     font-weight: 800;
-    letter-spacing: -0.015em;
+    letter-spacing: 0.015em;
   }
 
   /* H3 */
