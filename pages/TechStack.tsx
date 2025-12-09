@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import Image from "next/image";
-import gsap from "gsap";
+import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "@/lib/motion";
 
@@ -69,47 +69,167 @@ const techStack = [
   },
 ];
 
-const TechStack = () => {
+export default function TechStack() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const groups = gsap.utils.toArray<HTMLElement>(".a-group");
+      //
+      // ─────────────────────────────────────────────
+      // 1. TITLE CINEMATIC SCRUB REVEAL
+      // ─────────────────────────────────────────────
+      //
+      gsap.from(".ts-title", {
+        y: 70,
+        opacity: 0,
+        filter: "blur(10px)",
+        ease: "power3.out",
+        duration: 1.4,
+        scrollTrigger: {
+          trigger: ".ts-title",
+          start: "top 95%",
+          scrub: 1,
+        },
+      });
+
+      //
+      // ─────────────────────────────────────────────
+      // 2. CATEGORY + ICONS CASCADING REVEALS
+      // ─────────────────────────────────────────────
+      //
+      const groups = gsap.utils.toArray<HTMLElement>(".ts-group");
 
       groups.forEach((group) => {
-        const heading = group.querySelector(".a-heading");
-        const items = group.querySelectorAll(".a-item");
+        const heading = group.querySelector(".ts-heading");
+        const icons = group.querySelectorAll(".ts-item");
 
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: group,
-            start: "top 85%", // element hits 85% viewport height (≈ 15% from bottom)
+            start: "top 85%",
             toggleActions: "play none none none",
           },
         });
 
-        if (heading) {
-          tl.fromTo(
-            heading,
-            { y: 40, opacity: 0 },
-            { y: 0, opacity: 1, duration: motion.medium, ease: motion.easeOut }
-          );
-        }
+        tl.from(heading, {
+          y: 40,
+          opacity: 0,
+          filter: "blur(6px)",
+          duration: motion.medium,
+          ease: motion.easeOut,
+        });
 
-        if (items.length) {
-          tl.fromTo(
-            items,
-            { y: 20, opacity: 0 },
-            {
-              y: 0,
+        tl.from(
+          icons,
+          {
+            y: 20,
+            opacity: 0,
+            filter: "blur(4px)",
+            duration: motion.medium,
+            ease: motion.easeOut,
+            stagger: motion.staggerMd,
+          },
+          "-=0.4"
+        );
+      });
+
+      //
+      // ─────────────────────────────────────────────
+      // 3. HOVER 3D TILT + GLOW
+      // ─────────────────────────────────────────────
+      //
+      const cards = gsap.utils.toArray<HTMLElement>(".ts-card");
+
+      cards.forEach((card) => {
+        const glow = card.querySelector(".ts-glow") as HTMLElement;
+        const inner = card.querySelector(".ts-inner") as HTMLElement;
+
+        let hover = false;
+
+        const onMove = (e: MouseEvent) => {
+          if (!hover) return;
+
+          const rect = inner.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+
+          // Tilt amount
+          const rotateY = ((x - centerX) / centerX) * 10; // left/right tilt
+          const rotateX = -((y - centerY) / centerY) * 10; // up/down tilt
+
+          gsap.to(card, {
+            rotateX,
+            rotateY,
+            scale: 1.02,
+            transformPerspective: 800,
+            ease: "power2.out",
+            duration: 0.3,
+          });
+
+          // Glow follows cursor
+          if (glow) {
+            const glowX = ((x - centerX) / centerX) * 40;
+            const glowY = ((y - centerY) / centerY) * 40;
+
+            gsap.to(glow, {
+              x: glowX,
+              y: glowY,
               opacity: 1,
-              duration: motion.medium,
-              ease: motion.easeOut,
-              stagger: motion.staggerLg,
-            },
-            "-=0.2"
-          );
-        }
+              duration: 0.3,
+              ease: "power2.out",
+            });
+          }
+        };
+
+        card.addEventListener("mouseenter", () => {
+          hover = true;
+          card.addEventListener("mousemove", onMove);
+          gsap.to(card, { scale: 1.04, duration: 0.2 });
+        });
+
+        card.addEventListener("mouseleave", () => {
+          hover = false;
+          card.removeEventListener("mousemove", onMove);
+
+          // Reset tilt + scale
+          gsap.to(card, {
+            rotateX: 0,
+            rotateY: 0,
+            scale: 1,
+            duration: 0.6,
+            ease: "elastic.out(1, 0.4)",
+          });
+
+          // Fade glow out
+          if (glow) {
+            gsap.to(glow, {
+              x: 0,
+              y: 0,
+              opacity: 0,
+              duration: 0.4,
+              ease: "power2.out",
+            });
+          }
+        });
+      });
+
+      //
+      // ─────────────────────────────────────────────
+      // 4. SECTION FADE-OUT TRANSITION
+      // ─────────────────────────────────────────────
+      //
+      gsap.to(sectionRef.current, {
+        opacity: 0.45,
+        filter: "blur(4px)",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "bottom 85%",
+          end: "bottom 20%",
+          scrub: true,
+        },
       });
     }, sectionRef);
 
@@ -117,39 +237,48 @@ const TechStack = () => {
   }, []);
 
   return (
-    <div ref={sectionRef} className="stack-xl">
-      <h2 className="type-title">My Tech-Stack</h2>
+    <section ref={sectionRef} className="layout-section stack-xl">
+      {/* Title */}
+      <h2 className="ts-title type-title ">My Tech-Stack</h2>
 
-      {techStack.map((section) => (
-        <div
-          key={section.category}
-          className="a-group w-full md:flex-row md:gap-8 flex flex-col justify-between"
-        >
-          <h3 className="a-heading type-subheading w-full md:w-2/5">
-            {section.category}
-          </h3>
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-y-24 gap-x-12">
+        {techStack.map((section) => (
+          <div
+            key={section.category}
+            className="ts-group md:col-span-12 grid grid-cols-1 md:grid-cols-12 gap-y-10 gap-x-10 "
+          >
+            {/* Category */}
+            <h3 className="ts-heading type-subheading md:col-span-4 ">
+              {section.category}
+            </h3>
 
-          <ul className="ts-list type-list flex flex-row w-full gap-5 flex-wrap justify-stretch md:w-3/5">
-            {section.items.map((tech) => (
-              <li
-                key={tech.name}
-                className="a-item type-list-item flex flex-row items-center min-w-fit mr-8"
-              >
-                <Image
-                  src={tech.logo}
-                  alt={tech.name}
-                  width={24}
-                  height={24}
-                  className="ts-icon w-12 h-12 mr-3"
-                />
-                {tech.name}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </div>
+            {/* Icons */}
+            <ul className="md:col-span-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-8">
+              {section.items.map((tech) => (
+                <li
+                  key={tech.name}
+                  className="ts-item ts-card flex items-center gap-3 type-list-item  relative"
+                >
+                  {/* Glow layer */}
+                  <div className="ts-inner">
+                    <div className="ts-glow"></div>
+
+                    <Image
+                      src={tech.logo}
+                      alt={tech.name}
+                      width={32}
+                      height={32}
+                      className="ts-icon w-10 h-10 object-contain"
+                    />
+
+                    {tech.name}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
   );
-};
-
-export default TechStack;
+}
