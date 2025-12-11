@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useSectionBlur } from "@/lib/useSectionBlur";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,6 +13,7 @@ export default function AboutSection() {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const subRef = useRef<HTMLParagraphElement>(null);
   const columnsRef = useRef<HTMLDivElement>(null);
+  useSectionBlur({ ref: sectionRef });
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -79,17 +81,17 @@ export default function AboutSection() {
   return (
     <section
       ref={sectionRef}
-      className="about-section relative w-full py-[8rem]"
+      className="about-section stacked-xl relative w-full py-[8rem]"
     >
       {/* Constrained Content */}
       <div className="layout-section relative z-[2] grid grid-cols-1 gap-x-12 gap-y-16 md:grid-cols-12">
         {/* Left Accent Column */}
-        <div className="flex justify-center md:col-span-3 md:justify-start">
+        <div className="flex justify-center md:col-span-1 md:justify-start">
           <div ref={lineRef} className="about-accent-line"></div>
         </div>
 
         {/* Main Content */}
-        <div className="flex flex-col gap-12 md:col-span-9">
+        <div className="flex flex-col gap-12 md:col-span-11">
           {/* Heading */}
           <div>
             <h2 ref={headingRef} className="type-title about-heading">
