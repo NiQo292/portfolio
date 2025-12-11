@@ -25,6 +25,7 @@ import DrizzleLogo from "@/public/images/techstack/drizzle.svg";
 import GitLogo from "@/public/images/techstack/git.svg";
 import DockerLogo from "@/public/images/techstack/docker.svg";
 import FigmaLogo from "@/public/images/techstack/figma.svg";
+import { useSectionBlur } from "@/lib/useSectionBlur";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -71,14 +72,10 @@ const techStack = [
 
 export default function TechStack() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  useSectionBlur({ ref: sectionRef });
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      //
-      // ─────────────────────────────────────────────
-      // 1. TITLE CINEMATIC SCRUB REVEAL
-      // ─────────────────────────────────────────────
-      //
       gsap.from(".ts-title", {
         y: 70,
         opacity: 0,
@@ -92,11 +89,6 @@ export default function TechStack() {
         },
       });
 
-      //
-      // ─────────────────────────────────────────────
-      // 2. CATEGORY + ICONS CASCADING REVEALS
-      // ─────────────────────────────────────────────
-      //
       const groups = gsap.utils.toArray<HTMLElement>(".ts-group");
 
       groups.forEach((group) => {
@@ -133,11 +125,6 @@ export default function TechStack() {
         );
       });
 
-      //
-      // ─────────────────────────────────────────────
-      // 3. HOVER 3D TILT + GLOW
-      // ─────────────────────────────────────────────
-      //
       const cards = gsap.utils.toArray<HTMLElement>(".ts-card");
 
       cards.forEach((card) => {
@@ -156,9 +143,8 @@ export default function TechStack() {
           const centerX = rect.width / 2;
           const centerY = rect.height / 2;
 
-          // Tilt amount
-          const rotateY = ((x - centerX) / centerX) * 10; // left/right tilt
-          const rotateX = -((y - centerY) / centerY) * 10; // up/down tilt
+          const rotateY = ((x - centerX) / centerX) * 10;
+          const rotateX = -((y - centerY) / centerY) * 10;
 
           gsap.to(card, {
             rotateX,
@@ -169,7 +155,6 @@ export default function TechStack() {
             duration: 0.3,
           });
 
-          // Glow follows cursor
           if (glow) {
             const glowX = ((x - centerX) / centerX) * 40;
             const glowY = ((y - centerY) / centerY) * 40;
@@ -194,7 +179,6 @@ export default function TechStack() {
           hover = false;
           card.removeEventListener("mousemove", onMove);
 
-          // Reset tilt + scale
           gsap.to(card, {
             rotateX: 0,
             rotateY: 0,
@@ -203,7 +187,6 @@ export default function TechStack() {
             ease: "elastic.out(1, 0.4)",
           });
 
-          // Fade glow out
           if (glow) {
             gsap.to(glow, {
               x: 0,
@@ -215,22 +198,6 @@ export default function TechStack() {
           }
         });
       });
-
-      //
-      // ─────────────────────────────────────────────
-      // 4. SECTION FADE-OUT TRANSITION
-      // ─────────────────────────────────────────────
-      //
-      gsap.to(sectionRef.current, {
-        opacity: 0.45,
-        filter: "blur(4px)",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "bottom 85%",
-          end: "bottom 20%",
-          scrub: true,
-        },
-      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -238,7 +205,6 @@ export default function TechStack() {
 
   return (
     <section ref={sectionRef} className="layout-section stack-xl">
-      {/* Title */}
       <h2 className="ts-title type-title ">My Tech-Stack</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-y-24 gap-x-12">
@@ -247,12 +213,10 @@ export default function TechStack() {
             key={section.category}
             className="ts-group md:col-span-12 grid grid-cols-1 md:grid-cols-12 gap-y-10 gap-x-10 "
           >
-            {/* Category */}
             <h3 className="ts-heading type-subheading md:col-span-4 ">
               {section.category}
             </h3>
 
-            {/* Icons */}
             <ul className="md:col-span-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-8">
               {section.items.map((tech) => (
                 <li

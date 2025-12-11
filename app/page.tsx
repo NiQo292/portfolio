@@ -1,5 +1,5 @@
 import Footer from "@/components/Footer";
-import Hero from "@/components/Hero";
+import Hero from "@/pages/Hero";
 import Section from "@/components/Section";
 import About from "@/pages/About";
 import Contact from "@/pages/Contact";
@@ -11,9 +11,9 @@ export default function Home() {
   return (
     <main>
       <Hero />
-      <Section>
-        <About />
-      </Section>
+      {/* <Section> */}
+      <About />
+      {/* </Section> */}
       <Section>
         <TechStack />
       </Section>

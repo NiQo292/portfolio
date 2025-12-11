@@ -208,8 +208,6 @@ export default function Experience() {
           </article>
         ))}
       </section>
-
-      <div className="w-full h-[4px] bg-[var(--cyan)] mt-20 opacity-80"></div>
     </>
   );
 }

@@ -19,8 +19,8 @@ export function useSectionBlur({
   ref,
   blur = 4,
   fadeTo = 0.45,
-  start = "bottom 85%",
-  end = "bottom 20%",
+  start = "bottom+=350 bottom",
+  end = "bottom-=150 top",
   scrub = true,
 }: SectionBlurOptions) {
   useEffect(() => {

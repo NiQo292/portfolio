@@ -6,7 +6,13 @@ import SplitText from "gsap/SplitText";
 
 gsap.registerPlugin(SplitText);
 
-export default function TextUpDown({ children }: { children: ReactNode }) {
+export default function TextUpDown({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   const wordRef = useRef<HTMLSpanElement | null>(null);
   const topChars = useRef<HTMLSpanElement[]>([]);
   const bottomChars = useRef<HTMLSpanElement[]>([]);
@@ -99,7 +105,7 @@ export default function TextUpDown({ children }: { children: ReactNode }) {
       ref={wordRef}
       onMouseEnter={lift}
       onMouseLeave={drop}
-      className="cursor-pointer w-fit leading-none"
+      className={`cursor-pointer w-fit leading-none ${className}`}
     >
       {children}
     </span>

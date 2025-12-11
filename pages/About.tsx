@@ -1,30 +1,158 @@
-import React from "react";
+"use client";
 
-const About = () => {
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
+export default function AboutSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const lineRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const subRef = useRef<HTMLParagraphElement>(null);
+  const columnsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      /* Accent Line Grow */
+      gsap.from(lineRef.current, {
+        height: 0,
+        opacity: 0,
+        duration: 0.9,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 85%",
+        },
+      });
+
+      /* Heading Reveal */
+      gsap.from(headingRef.current, {
+        y: 40,
+        opacity: 0,
+        filter: "blur(8px)",
+        duration: 1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: headingRef.current,
+          start: "top 90%",
+        },
+      });
+
+      /* Subheading */
+      gsap.from(subRef.current, {
+        y: 30,
+        opacity: 0,
+        filter: "blur(6px)",
+        duration: 0.8,
+        ease: "power2.out",
+        delay: 0.1,
+        scrollTrigger: {
+          trigger: subRef.current,
+          start: "top 92%",
+        },
+      });
+
+      /* Columns Stagger */
+      const items = columnsRef.current?.querySelectorAll(".about-stagger-item");
+
+      gsap.from(items, {
+        y: 28,
+        opacity: 0,
+        filter: "blur(6px)",
+        duration: 0.8,
+        ease: "power2.out",
+        stagger: 0.15,
+        scrollTrigger: {
+          trigger: columnsRef.current,
+          start: "top 88%",
+        },
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <div className="section">
-      <p>
-        I believe that a well-designed website should not only transport
-        information but also engage users and create a memorable experience.
-        Therefore, I focus on crafting visually appealing and intuitive
-        interfaces that align with the brand&apos;s identity.
-      </p>
-      <div>
-        <h2>Hi, I&apos;m Nico</h2>
-        <div>
-          <p>
-            I am a Full-Stack Developer with a focus on Frontend development
-            dedicated to turning ideas into creative solutions. I specialize in
-            creating user-friendly and visually appealing web experiences.
-          </p>
-          <p>
-            My goal is to create a seamless user experience that not only meets
-            the needs of the users but also exceeds their expectations.
-          </p>
+    <section
+      ref={sectionRef}
+      className="about-section relative py-[8rem] w-full"
+    >
+      <div className="about-bg"></div>
+      {/* Full-Bleed Background */}
+      <div className="about-bg"></div>
+
+      {/* Constrained Content */}
+      <div className="layout-section relative z-[2] grid grid-cols-1 md:grid-cols-12 gap-y-16 gap-x-12">
+        {/* Left Accent Column */}
+        <div className="md:col-span-3 flex md:justify-start justify-center">
+          <div ref={lineRef} className="about-accent-line"></div>
+        </div>
+
+        {/* Main Content */}
+        <div className="md:col-span-9 flex flex-col gap-12">
+          {/* Heading */}
+          <div>
+            <h2 ref={headingRef} className="type-title about-heading">
+              About Me
+            </h2>
+
+            <p ref={subRef} className="type-body about-subheading">
+              A developer driven by motion-first design, modern engineering
+              practices, and a love for creating interfaces that feel alive.
+            </p>
+          </div>
+
+          {/* Two Columns */}
+          <div
+            ref={columnsRef}
+            className="grid grid-cols-1 md:grid-cols-2 gap-12"
+          >
+            {/* Left Column — Bio */}
+            <div className="flex flex-col gap-6 about-stagger-item">
+              <p className="type-body text-[1.1rem] leading-relaxed opacity-90">
+                I specialize in building animated, interactive web experiences
+                that combine usability, performance, and visual refinement.
+              </p>
+
+              <p className="type-body text-[1.1rem] leading-relaxed opacity-90">
+                My work blends strong full-stack foundations with motion-driven
+                UI engineering. I enjoy solving both design and technical
+                challenges to create digital experiences that feel effortless.
+              </p>
+            </div>
+
+            {/* Right Column — Highlights */}
+            <div className="about-stagger-item">
+              <ul className="flex flex-col gap-4 about-highlights">
+                <li>
+                  <span className="about-bullet"></span>
+                  3+ years in Full-Stack Engineering
+                </li>
+                <li>
+                  <span className="about-bullet"></span>
+                  Specialized in React, Next.js, TypeScript, GSAP, Tailwind
+                </li>
+                <li>
+                  <span className="about-bullet"></span>
+                  Strong background in UI/UX + motion design
+                </li>
+                <li>
+                  <span className="about-bullet"></span>
+                  Experience across e-commerce, SaaS, and healthcare products
+                </li>
+                <li>
+                  <span className="about-bullet"></span>
+                  Based in Germany · Open to remote opportunities
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
-};
-
-export default About;
+}

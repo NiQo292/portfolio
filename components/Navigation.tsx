@@ -1,130 +1,296 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import Button from "./Button";
-import TextUpDown from "./animations/TextUpDown";
 import Image from "next/image";
-import Logo from "@/public/images/logo.png";
 import Link from "next/link";
+import Logo from "@/public/images/logo.png";
+import TextUpDown from "./animations/TextUpDown";
 
-const Navigation = () => {
+export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [showMenuOverlay, setShowMenuOverlay] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
+  const [menuOpen, setMenuOpen] = useState(false); // user intent
+  const [visible, setVisible] = useState(false); // controls overlay mount
+
   const navRef = useRef<HTMLDivElement>(null);
+  const sheenRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
+  const reflectionRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
 
-  const handleMenuToggle = () => {
-    if (!menuOpen) setShowMenuOverlay(true);
-    setMenuOpen((open) => !open);
-  };
-
+  // ─────────────────────────────────────────────
+  // SCROLL STATE
+  // ─────────────────────────────────────────────
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // ─────────────────────────────────────────────
+  // NAVBAR MORPH + GLOW + REFLECTION INTENSITY
+  // ─────────────────────────────────────────────
   useEffect(() => {
     if (!navRef.current) return;
 
-    if (scrolled) {
-      gsap.to(navRef.current, {
-        borderRadius: "9999px",
-        marginTop: "16px",
-        marginLeft: "32px",
-        marginRight: "32px",
-        duration: 0.6,
-        ease: "power3.inOut",
-      });
-    } else {
-      gsap.to(navRef.current, {
-        borderRadius: "0px",
-        marginTop: "0px",
-        marginLeft: "0px",
-        marginRight: "0px",
-        duration: 0.6,
-        ease: "power3.inOut",
-      });
-    }
+    gsap.to(navRef.current, {
+      borderRadius: scrolled ? "9999px" : "0px",
+      marginTop: scrolled ? 20 : 0,
+      marginLeft: scrolled ? 32 : 0,
+      marginRight: scrolled ? 32 : 0,
+      backgroundColor: scrolled ? "rgba(255,255,255,0.05)" : "transparent",
+      backdropFilter: scrolled ? "blur(20px)" : "blur(0px)",
+      borderColor: scrolled ? "rgba(255,255,255,0.1)" : "transparent",
+      duration: 0.6,
+      ease: "power3.inOut",
+    });
+
+    gsap.to(glowRef.current, {
+      opacity: scrolled ? 1 : 0,
+      duration: 1,
+      ease: "power2.out",
+    });
+
+    // reflection stronger in pill mode, softer when full width
+    gsap.to(reflectionRef.current, {
+      opacity: scrolled ? 0.14 : 0.06,
+      duration: 0.8,
+      ease: "power2.out",
+    });
   }, [scrolled]);
 
+  // ─────────────────────────────────────────────
+  // MICRO SHEEN ON HOVER
+  // ─────────────────────────────────────────────
   useEffect(() => {
-    if (menuOpen && menuRef.current) {
+    const sheen = sheenRef.current;
+    const nav = navRef.current;
+    if (!sheen || !nav) return;
+
+    const onHover = () => {
       gsap.fromTo(
-        menuRef.current,
-        { y: "-100%", opacity: 0 },
+        sheen,
+        { x: "-150%", opacity: 0 },
         {
-          y: "0%",
+          x: "150%",
           opacity: 1,
-          duration: 0.6,
+          duration: 1.2,
           ease: "power2.out",
         }
       );
-    }
-    if (!menuOpen && menuRef.current) {
-      gsap.to(menuRef.current, {
-        y: "-100%",
+    };
+
+    nav.addEventListener("mouseenter", onHover);
+    return () => nav.removeEventListener("mouseenter", onHover);
+  }, []);
+
+  // ─────────────────────────────────────────────
+  // DIAGONAL REFLECTION WIPE (LOOP)
+  // ─────────────────────────────────────────────
+  useEffect(() => {
+    const layer = reflectionRef.current;
+    if (!layer) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        layer,
+        { xPercent: -30, yPercent: 20 },
+        {
+          xPercent: 30,
+          yPercent: -20,
+          duration: 14,
+          ease: "sine.inOut",
+          repeat: -1,
+          yoyo: true,
+        }
+      );
+    }, layer);
+
+    return () => ctx.revert();
+  }, []);
+
+  // ─────────────────────────────────────────────
+  // MENU TOGGLE LOGIC
+  // ─────────────────────────────────────────────
+  const openMenu = () => {
+    setVisible(true); // mount overlay immediately
+    setMenuOpen(true);
+  };
+
+  const closeMenu = () => {
+    setMenuOpen(false);
+    // unmount happens after GSAP reverse animation
+  };
+
+  const toggleMenu = () => {
+    menuOpen ? closeMenu() : openMenu();
+  };
+
+  // ─────────────────────────────────────────────
+  // MENU OPEN / CLOSE ANIMATION (STAGGER + REVERSE)
+  // ─────────────────────────────────────────────
+  useEffect(() => {
+    const overlay = overlayRef.current;
+    if (!overlay) return;
+
+    const items = overlay.querySelectorAll(".menu-link");
+
+    if (menuOpen) {
+      // initial states
+      gsap.set(overlay, { opacity: 0, y: "-4%" });
+      gsap.set(items, {
         opacity: 0,
+        y: 20,
+        filter: "blur(8px)",
+      });
+
+      // overlay fade-in
+      gsap.to(overlay, {
+        opacity: 1,
+        y: "0%",
+        duration: 0.45,
+        ease: "power3.out",
+      });
+
+      // stagger in
+      gsap.to(items, {
+        opacity: 1,
+        y: 0,
+        filter: "blur(0px)",
         duration: 0.6,
+        ease: "power3.out",
+        stagger: 0.12,
+        delay: 0.15,
+      });
+    } else {
+      // reverse stagger out
+      gsap.to(items, {
+        opacity: 0,
+        y: -20,
+        filter: "blur(8px)",
+        duration: 0.3,
         ease: "power2.in",
-        onComplete: () => setShowMenuOverlay(false),
+        stagger: {
+          each: 0.1,
+          from: "end",
+        },
+        onComplete: () => {
+          // then overlay fade-out
+          gsap.to(overlay, {
+            opacity: 0,
+            y: "-4%",
+            duration: 0.4,
+            ease: "power3.in",
+            onComplete: () => {
+              setVisible(false); // finally unmount
+            },
+          });
+        },
       });
     }
   }, [menuOpen]);
+
+  useEffect(() => {
+    if (!visible) return;
+
+    const layer1 = overlayRef.current?.querySelector(".menu-bg-layer");
+    const layer2 = overlayRef.current?.querySelector(".menu-bg-layer-2");
+    if (!layer1 || !layer2) return;
+
+    // Parallax: layer 1 (cyan glow)
+    gsap.fromTo(
+      layer1,
+      { xPercent: -10, yPercent: -8, opacity: 0.4 },
+      {
+        xPercent: 10,
+        yPercent: 8,
+        opacity: 0.55,
+        duration: 18,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      }
+    );
+
+    // Parallax: layer 2 (dark haze)
+    gsap.fromTo(
+      layer2,
+      { xPercent: 5, yPercent: -5, opacity: 0.25 },
+      {
+        xPercent: -5,
+        yPercent: 5,
+        opacity: 0.32,
+        duration: 22,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      }
+    );
+  }, [visible]);
 
   return (
     <>
       <div
         ref={navRef}
-        className="fixed top-0 left-0 right-0 z-50 bg-white/80 shadow-lg backdrop-blur"
+        className="fixed top-0 left-0 right-0 z-[100] border border-transparent bg-transparent backdrop-blur-0 transition-all overflow-hidden"
       >
-        <nav className="h-20 flex w-full items-center justify-center gap-20 px-8">
-          <div className="w-full max-w-[1920px] flex flex-row items-center">
+        {/* layered FX */}
+        <div ref={sheenRef} className="nav-sheen" />
+        <div ref={glowRef} className="nav-glow-pulse" />
+        <div ref={reflectionRef} className="nav-reflection" />
+        <div className="nav-noise" />
+
+        <nav className="h-20 flex items-center justify-center px-8">
+          <div className="w-full max-w-[1920px] flex items-center">
             <Image
               src={Logo}
               alt="Logo"
-              width={50}
-              height={50}
+              width={48}
+              height={48}
               className="mr-auto"
             />
-            <div
-              className="relative w-8 h-8 flex flex-col justify-center items-center cursor-pointer ml-4 z-50 group"
-              onClick={handleMenuToggle}
+
+            {/* Hamburger */}
+            <button
+              className="relative w-9 h-9 flex items-center justify-center cursor-pointer group"
+              onClick={toggleMenu}
             >
               <span
-                className={`block absolute w-8 h-1 bg-white transition-all duration-300 ${
-                  !menuOpen ? "group-hover:rotate-12" : ""
-                } ${menuOpen ? "rotate-45 top-3.5" : "top-2"}`}
+                className={`absolute w-8 h-[3px] bg-white transition-all duration-300 rounded-sm ${
+                  menuOpen ? "rotate-45 top-4" : "top-2 group-hover:rotate-12"
+                }`}
               />
               <span
-                className={`block absolute w-8 h-1 bg-white transition-all duration-300 ${
-                  !menuOpen ? "group-hover:-rotate-12" : ""
-                } ${menuOpen ? "-rotate-45 top-3.5" : "top-6"}`}
+                className={`absolute w-8 h-[3px] bg-white transition-all duration-300 rounded-sm ${
+                  menuOpen ? "-rotate-45 top-4" : "top-6 group-hover:-rotate-12"
+                }`}
               />
-            </div>
+            </button>
           </div>
         </nav>
       </div>
-      {showMenuOverlay && (
+
+      {/* FULLSCREEN OVERLAY */}
+      {visible && (
         <div
-          ref={menuRef}
-          className="fixed top-0 left-0 w-full h-screen bg-black flex flex-col items-center justify-center z-40"
+          ref={overlayRef}
+          className="menu-overlay fixed top-0 left-0 w-full h-screen bg-black/60 backdrop-blur-3xl flex items-center justify-center z-[90]"
         >
-          <nav className="flex flex-col gap-8 text-white text-5xl ">
-            <TextUpDown>
+          {/* PARALLAX BACKGROUND LAYERS */}
+          <div className="menu-bg-layer"></div>
+          <div className="menu-bg-layer-2"></div>
+          <div className="menu-vignette"></div>
+
+          <nav className="relative flex flex-col gap-10 text-white text-5xl z-[5]">
+            <TextUpDown className="menu-link">
               <Link href="/">Home</Link>
             </TextUpDown>
-            <TextUpDown>
+            <TextUpDown className="menu-link">
               <Link href="/about">About</Link>
             </TextUpDown>
-            <TextUpDown>
+            <TextUpDown className="menu-link">
               <Link href="/work">Work</Link>
             </TextUpDown>
-            <TextUpDown>
+            <TextUpDown className="menu-link">
               <Link href="/contact">Contact</Link>
             </TextUpDown>
           </nav>
@@ -132,6 +298,4 @@ const Navigation = () => {
       )}
     </>
   );
-};
-
-export default Navigation;
+}
