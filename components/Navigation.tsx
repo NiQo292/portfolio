@@ -75,7 +75,7 @@ export default function Navigation() {
           opacity: 1,
           duration: 1.2,
           ease: "power2.out",
-        }
+        },
       );
     };
 
@@ -101,7 +101,7 @@ export default function Navigation() {
           ease: "sine.inOut",
           repeat: -1,
           yoyo: true,
-        }
+        },
       );
     }, layer);
 
@@ -208,7 +208,7 @@ export default function Navigation() {
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut",
-      }
+      },
     );
 
     // Parallax: layer 2 (dark haze)
@@ -223,7 +223,7 @@ export default function Navigation() {
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut",
-      }
+      },
     );
   }, [visible]);
 
@@ -231,7 +231,7 @@ export default function Navigation() {
     <>
       <div
         ref={navRef}
-        className="fixed top-0 left-0 right-0 z-[100] border border-transparent bg-transparent backdrop-blur-0 transition-all overflow-hidden"
+        className="backdrop-blur-0 fixed top-0 right-0 left-0 z-[100] overflow-hidden border border-transparent bg-transparent transition-all"
       >
         {/* layered FX */}
         <div ref={sheenRef} className="nav-sheen" />
@@ -239,8 +239,8 @@ export default function Navigation() {
         <div ref={reflectionRef} className="nav-reflection" />
         <div className="nav-noise" />
 
-        <nav className="h-20 flex items-center justify-center px-8">
-          <div className="w-full max-w-[1920px] flex items-center">
+        <nav className="flex h-20 items-center justify-center px-8">
+          <div className="flex w-full max-w-[1920px] items-center">
             <Image
               src={Logo}
               alt="Logo"
@@ -251,17 +251,17 @@ export default function Navigation() {
 
             {/* Hamburger */}
             <button
-              className="relative w-9 h-9 flex items-center justify-center cursor-pointer group"
+              className="group relative flex h-9 w-9 cursor-pointer items-center justify-center"
               onClick={toggleMenu}
             >
               <span
-                className={`absolute w-8 h-[3px] bg-white transition-all duration-300 rounded-sm ${
-                  menuOpen ? "rotate-45 top-4" : "top-2 group-hover:rotate-12"
+                className={`absolute h-[3px] w-8 rounded-sm bg-white transition-all duration-300 ${
+                  menuOpen ? "top-4 rotate-45" : "top-2 group-hover:rotate-12"
                 }`}
               />
               <span
-                className={`absolute w-8 h-[3px] bg-white transition-all duration-300 rounded-sm ${
-                  menuOpen ? "-rotate-45 top-4" : "top-6 group-hover:-rotate-12"
+                className={`absolute h-[3px] w-8 rounded-sm bg-white transition-all duration-300 ${
+                  menuOpen ? "top-4 -rotate-45" : "top-6 group-hover:-rotate-12"
                 }`}
               />
             </button>
@@ -273,14 +273,14 @@ export default function Navigation() {
       {visible && (
         <div
           ref={overlayRef}
-          className="menu-overlay fixed top-0 left-0 w-full h-screen bg-black/60 backdrop-blur-3xl flex items-center justify-center z-[90]"
+          className="menu-overlay fixed top-0 left-0 z-[90] flex h-screen w-full items-center justify-center bg-black/60 backdrop-blur-3xl"
         >
           {/* PARALLAX BACKGROUND LAYERS */}
           <div className="menu-bg-layer"></div>
           <div className="menu-bg-layer-2"></div>
           <div className="menu-vignette"></div>
 
-          <nav className="relative flex flex-col gap-10 text-white text-5xl z-[5]">
+          <nav className="relative z-[5] flex flex-col gap-10 text-5xl text-white">
             <TextUpDown className="menu-link">
               <Link href="/">Home</Link>
             </TextUpDown>
