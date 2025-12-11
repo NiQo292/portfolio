@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "@/lib/motion";
 import { useParallaxLayers } from "@/lib/useParallaxLayers";
 import { useSectionBlur } from "@/lib/useSectionBlur";
+import { useRevealTitle } from "@/lib/useRevealTitle";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -39,21 +40,10 @@ export default function Experience() {
 
   useSectionBlur({ ref: sectionRef });
 
+  useRevealTitle({ scopeRef: sectionRef });
+
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from(".exp-title", {
-        y: 60,
-        opacity: 0,
-        filter: "blur(10px)",
-        duration: 1.4,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".exp-title",
-          start: "top 90%",
-          scrub: 1,
-        },
-      });
-
       const blocks = gsap.utils.toArray<HTMLElement>(".exp-block");
 
       blocks.forEach((block, index) => {
@@ -172,7 +162,7 @@ export default function Experience() {
   return (
     <>
       <section ref={sectionRef} className="layout-section stack-xl relative">
-        <h2 className="exp-title type-title parallax-fg">
+        <h2 className="section-title type-title parallax-fg">
           My Working Experience
         </h2>
 
@@ -198,9 +188,10 @@ export default function Experience() {
               {exp.period}
             </p>
 
-            <ul className="type-list stack-sm relative z-10 list-disc pl-4">
+            <ul className="exp-list stack-sm relative z-10">
               {exp.responsibilities.map((item, idx) => (
                 <li key={idx} className="exp-item parallax-fg">
+                  <span className="exp-bullet"></span>
                   {item}
                 </li>
               ))}
