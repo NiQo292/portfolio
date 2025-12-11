@@ -11,9 +11,9 @@ export default function Home() {
   return (
     <main>
       <Hero />
-      {/* <Section> */}
-      <About />
-      {/* </Section> */}
+      <Section>
+        <About />
+      </Section>
       <Section>
         <TechStack />
       </Section>
@@ -26,7 +26,6 @@ export default function Home() {
       <Section>
         <Contact />
       </Section>
-      <Footer />
     </main>
   );
 }
