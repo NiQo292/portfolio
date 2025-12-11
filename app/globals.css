@@ -205,25 +205,333 @@ html.lenis body {
     will-change: transform;
   }
 
-  /* Section Blur animation */
-  .exp-glow {
-    background: radial-gradient(
-      circle at 30% 20%,
-      rgba(0, 255, 255, 0.12),
-      transparent 60%
+  /* Navigation Component */
+  .nav-sheen {
+    position: absolute;
+    inset: -20%;
+    pointer-events: none;
+    background: linear-gradient(
+      120deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.22) 45%,
+      rgba(255, 255, 255, 0.06) 55%,
+      transparent 100%
     );
     opacity: 0;
-    filter: blur(24px);
+    mix-blend-mode: screen;
+    filter: blur(6px);
+  }
+
+  .nav-glow-pulse {
+    position: absolute;
+    inset: 0;
     pointer-events: none;
+    border-radius: inherit;
+    border: 1px solid rgba(0, 255, 255, 0.4);
+    box-shadow: 0 0 18px rgba(0, 255, 255, 0.25),
+      0 0 45px rgba(0, 255, 255, 0.15);
+    opacity: 0;
+    mix-blend-mode: screen;
+  }
+
+  .nav-reflection {
+    position: absolute;
+    inset: -30%;
+    pointer-events: none;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.14) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    mix-blend-mode: screen;
+    opacity: 0.06; /* base, animated via GSAP */
+    filter: blur(10px);
+    transform: translate3d(0, 0, 0);
+  }
+
+  .nav-noise {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      rgba(255, 255, 255, 0.16) 0,
+      rgba(255, 255, 255, 0) 55%
+    );
+    background-size: 3px 3px;
+    mix-blend-mode: soft-light;
+    opacity: 0.03;
+    animation: navNoiseShimmer 8s ease-in-out infinite alternate;
+  }
+
+  @keyframes navNoiseShimmer {
+    from {
+      opacity: 0.02;
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      opacity: 0.05;
+      transform: translate3d(0.5px, -0.5px, 0);
+    }
+  }
+
+  .menu-overlay {
+    overflow: hidden;
+    position: relative;
+  }
+
+  .menu-bg-layer,
+  .menu-bg-layer-2,
+  .menu-vignette {
+    position: absolute;
+    inset: -20%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Cyan ambient glow layer */
+  .menu-bg-layer {
+    background: radial-gradient(
+      circle at 30% 40%,
+      rgba(0, 255, 255, 0.2),
+      rgba(0, 255, 255, 0.08) 40%,
+      transparent 80%
+    );
+    filter: blur(60px);
+    opacity: 0.5;
+    z-index: 1;
+  }
+
+  /* Soft drifting dark haze */
+  .menu-bg-layer-2 {
+    background: radial-gradient(
+      circle at 70% 60%,
+      rgba(0, 0, 0, 0.3),
+      transparent 70%
+    );
+    filter: blur(50px);
+    opacity: 0.3;
+    mix-blend-mode: multiply;
+    z-index: 1;
+  }
+
+  /* Global vignette around edges */
+  .menu-vignette {
+    background: radial-gradient(
+      circle,
+      transparent 45%,
+      rgba(0, 0, 0, 0.45) 100%
+    );
+    z-index: 2;
+  }
+
+  /* Hero Component */
+  /* --------------------------- */
+  /* HERO SECTION                */
+  /* --------------------------- */
+
+  .hero {
+    position: relative;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+
+    background: radial-gradient(
+        circle at 10% 0%,
+        rgba(0, 255, 255, 0.13),
+        transparent 55%
+      ),
+      radial-gradient(
+        circle at 80% 80%,
+        rgba(0, 255, 255, 0.1),
+        transparent 60%
+      ),
+      radial-gradient(circle at 50% 120%, rgba(0, 0, 0, 0.9), #050505 90%);
+    filter: saturate(1.1);
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-role {
+    max-width: 40rem;
+  }
+
+  .hero-location {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .hero-location-dot {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 9999px;
+    background: radial-gradient(
+      circle,
+      rgba(0, 255, 255, 0.9),
+      rgba(0, 255, 255, 0.1)
+    );
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.8), 0 0 18px rgba(0, 255, 255, 0.4);
+  }
+
+  /* --------------------------- */
+  /* PORTRAIT — FIXED SIZE + NO LAYOUT JUMP */
+  /* --------------------------- */
+
+  .hero-photo-frame {
+    position: relative;
+    width: clamp(18rem, 28vw, 28rem);
+    height: clamp(24rem, 38vw, 38rem);
+    border-radius: 9999px;
+    overflow: hidden; /* <-- This makes this element the TRUE mask */
+  }
+
+  /* Glow / border recreated WITHOUT padding */
+  .hero-photo-frame::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+
+    background: radial-gradient(
+      circle at 20% 0%,
+      rgba(0, 255, 255, 0.55),
+      rgba(0, 255, 255, 0.08) 40%,
+      rgba(255, 255, 255, 0.07) 62%,
+      rgba(0, 0, 0, 1) 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 0 32px rgba(0, 255, 255, 0.25),
+      0 20px 45px rgba(0, 0, 0, 0.85);
+
+    z-index: 2;
+  }
+
+  /* Fully isolated parallax */
+  .hero-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: inherit; /* Perfect match */
+  }
+
+  .hero-photo-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* This will now work perfectly */
+  }
+
+  /* Glow behind portrait */
+  .hero-photo-glow {
+    position: absolute;
+    inset: -20%;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(
+        circle at 20% 10%,
+        rgba(0, 255, 255, 0.25),
+        transparent 55%
+      ),
+      radial-gradient(
+        circle at 80% 90%,
+        rgba(0, 255, 255, 0.18),
+        transparent 70%
+      );
+    filter: blur(40px);
+    opacity: 0;
+    z-index: 0;
+  }
+
+  /* About Component */
+  /* ---------------------------------------------- */
+  /* ABOUT SECTION - FULL BLEED BACKGROUND + CLEAN */
+  /* ---------------------------------------------- */
+
+  .about-section {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Full-width radial ambient gradient */
+  .about-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+
+    background: radial-gradient(
+        circle at 20% 20%,
+        rgba(0, 255, 255, 0.18),
+        transparent 55%
+      ),
+      radial-gradient(
+        circle at 80% 80%,
+        rgba(0, 255, 255, 0.12),
+        transparent 65%
+      ),
+      linear-gradient(180deg, #0c0c0c, #080808 70%, #050505);
+    filter: saturate(1.2);
+  }
+
+  /* Accent vertical line */
+  .about-accent-line {
+    width: 6px;
+    height: 140px;
+    border-radius: 9999px;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 255, 255, 0.85),
+      rgba(0, 255, 255, 0.2)
+    );
+    box-shadow: 0 0 18px rgba(0, 255, 255, 0.55);
+  }
+
+  /* Subheading spacing */
+  .about-subheading {
+    margin-top: 1rem;
+    opacity: 0.8;
+    max-width: 46rem;
+  }
+
+  /* Bullet list */
+  .about-highlights li {
+    position: relative;
+    padding-left: 1.75rem;
+    line-height: 1.65;
+    font-size: 1.05rem;
+    opacity: 0.9;
+  }
+
+  .about-bullet {
+    width: 0.55rem;
+    height: 0.55rem;
+    position: absolute;
+    left: 0;
+    top: 0.55rem;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(0, 255, 255, 0.9),
+      rgba(0, 255, 255, 0.15)
+    );
+    box-shadow: 0 0 12px rgba(0, 255, 255, 0.5);
   }
 
   /* Tech-Stack Component */
-  .ts-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.25rem;
-  }
-
   .type-list-item {
     display: flex;
     align-items: center;
@@ -237,7 +545,11 @@ html.lenis body {
   .ts-card {
     position: relative;
     transform-style: preserve-3d;
-    perspective: 800px;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .ts-item {
+    perspective: 1000px;
   }
 
   .ts-inner {
@@ -245,23 +557,38 @@ html.lenis body {
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    transform-style: preserve-3d;
+    z-index: 2;
   }
 
   .ts-glow {
     position: absolute;
     top: 50%;
-    left: 0%; /* start directly behind the icon */
+    left: 50%;
     width: 100px;
     height: 100px;
-    transform: translateY(-50%) translateZ(-20px);
+    transform: translate(-50%, -50%) translateZ(-20px);
     border-radius: 50%;
     background: radial-gradient(
       circle,
-      rgba(0, 255, 255, 0.085),
+      rgba(0, 255, 255, 0.12),
       transparent 70%
     );
     opacity: 0;
     pointer-events: none;
     filter: blur(20px);
+    z-index: 1;
+  }
+
+  /* Experience Component */
+  .exp-glow {
+    background: radial-gradient(
+      circle at 30% 20%,
+      rgba(0, 255, 255, 0.12),
+      transparent 60%
+    );
+    opacity: 0;
+    filter: blur(24px);
+    pointer-events: none;
   }
 }
