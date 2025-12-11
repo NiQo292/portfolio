@@ -121,7 +121,7 @@ export default function TechStack() {
             ease: motion.easeOut,
             stagger: motion.staggerMd,
           },
-          "-=0.4"
+          "-=0.4",
         );
       });
 
@@ -205,23 +205,23 @@ export default function TechStack() {
 
   return (
     <section ref={sectionRef} className="layout-section stack-xl">
-      <h2 className="ts-title type-title ">My Tech-Stack</h2>
+      <h2 className="ts-title type-title">My Tech-Stack</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-y-24 gap-x-12">
+      <div className="grid grid-cols-1 gap-x-12 gap-y-24 md:grid-cols-12">
         {techStack.map((section) => (
           <div
             key={section.category}
-            className="ts-group md:col-span-12 grid grid-cols-1 md:grid-cols-12 gap-y-10 gap-x-10 "
+            className="ts-group grid grid-cols-1 gap-x-10 gap-y-10 md:col-span-12 md:grid-cols-12"
           >
-            <h3 className="ts-heading type-subheading md:col-span-4 ">
+            <h3 className="ts-heading type-subheading md:col-span-4">
               {section.category}
             </h3>
 
-            <ul className="md:col-span-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-8">
+            <ul className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2 md:col-span-8 lg:grid-cols-3">
               {section.items.map((tech) => (
                 <li
                   key={tech.name}
-                  className="ts-item ts-card flex items-center gap-3 type-list-item  relative"
+                  className="ts-item ts-card type-list-item relative flex items-center gap-3"
                 >
                   {/* Glow layer */}
                   <div className="ts-inner">
@@ -232,7 +232,7 @@ export default function TechStack() {
                       alt={tech.name}
                       width={32}
                       height={32}
-                      className="ts-icon w-10 h-10 object-contain"
+                      className="ts-icon h-10 w-10 object-contain"
                     />
 
                     {tech.name}

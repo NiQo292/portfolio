@@ -79,21 +79,17 @@ export default function AboutSection() {
   return (
     <section
       ref={sectionRef}
-      className="about-section relative py-[8rem] w-full"
+      className="about-section relative w-full py-[8rem]"
     >
-      <div className="about-bg"></div>
-      {/* Full-Bleed Background */}
-      <div className="about-bg"></div>
-
       {/* Constrained Content */}
-      <div className="layout-section relative z-[2] grid grid-cols-1 md:grid-cols-12 gap-y-16 gap-x-12">
+      <div className="layout-section relative z-[2] grid grid-cols-1 gap-x-12 gap-y-16 md:grid-cols-12">
         {/* Left Accent Column */}
-        <div className="md:col-span-3 flex md:justify-start justify-center">
+        <div className="flex justify-center md:col-span-3 md:justify-start">
           <div ref={lineRef} className="about-accent-line"></div>
         </div>
 
         {/* Main Content */}
-        <div className="md:col-span-9 flex flex-col gap-12">
+        <div className="flex flex-col gap-12 md:col-span-9">
           {/* Heading */}
           <div>
             <h2 ref={headingRef} className="type-title about-heading">
@@ -109,10 +105,10 @@ export default function AboutSection() {
           {/* Two Columns */}
           <div
             ref={columnsRef}
-            className="grid grid-cols-1 md:grid-cols-2 gap-12"
+            className="grid grid-cols-1 gap-12 md:grid-cols-2"
           >
-            {/* Left Column — Bio */}
-            <div className="flex flex-col gap-6 about-stagger-item">
+            {/* Left Column */}
+            <div className="about-stagger-item flex flex-col gap-6">
               <p className="type-body text-[1.1rem] leading-relaxed opacity-90">
                 I specialize in building animated, interactive web experiences
                 that combine usability, performance, and visual refinement.
@@ -125,28 +121,28 @@ export default function AboutSection() {
               </p>
             </div>
 
-            {/* Right Column — Highlights */}
+            {/* Right Column */}
             <div className="about-stagger-item">
-              <ul className="flex flex-col gap-4 about-highlights">
+              <ul className="about-highlights flex flex-col gap-4">
                 <li>
-                  <span className="about-bullet"></span>
-                  3+ years in Full-Stack Engineering
+                  <span className="about-bullet"></span>2+ years in Full-Stack
+                  Engineering
                 </li>
                 <li>
-                  <span className="about-bullet"></span>
-                  Specialized in React, Next.js, TypeScript, GSAP, Tailwind
+                  <span className="about-bullet"></span>Specialized in React,
+                  Next.js, TypeScript, GSAP, Tailwind
                 </li>
                 <li>
-                  <span className="about-bullet"></span>
-                  Strong background in UI/UX + motion design
+                  <span className="about-bullet"></span>Strong background in
+                  UI/UX + motion design
                 </li>
                 <li>
-                  <span className="about-bullet"></span>
-                  Experience across e-commerce, SaaS, and healthcare products
+                  <span className="about-bullet"></span>Experience across
+                  e-commerce, SaaS, healthcare products
                 </li>
                 <li>
-                  <span className="about-bullet"></span>
-                  Based in Germany · Open to remote opportunities
+                  <span className="about-bullet"></span>Based in Germany · Open
+                  to remote opportunities
                 </li>
               </ul>
             </div>

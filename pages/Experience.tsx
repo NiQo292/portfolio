@@ -77,7 +77,7 @@ export default function Experience() {
                 trigger: block,
                 start: "top 85%",
               },
-            }
+            },
           );
         }
 
@@ -108,7 +108,7 @@ export default function Experience() {
               duration: motion.medium,
               ease: "back.out(1.6)",
             },
-            "-=0.45"
+            "-=0.45",
           );
         }
 
@@ -120,7 +120,7 @@ export default function Experience() {
               duration: motion.medium,
               ease: motion.easeOut,
             },
-            "-=0.35"
+            "-=0.35",
           );
         }
 
@@ -134,7 +134,7 @@ export default function Experience() {
               duration: motion.medium,
               ease: motion.easeOut,
             },
-            "-=0.3"
+            "-=0.3",
           );
         }
 
@@ -149,7 +149,7 @@ export default function Experience() {
               ease: motion.easeOut,
               stagger: motion.staggerMd,
             },
-            "-=0.2"
+            "-=0.2",
           );
         }
 
@@ -179,26 +179,26 @@ export default function Experience() {
         {experienceData.map((exp, index) => (
           <article
             key={index}
-            className="exp-block stack-md relative parallax-mg"
+            className="exp-block stack-md parallax-mg relative"
           >
-            <div className="exp-glow absolute inset-0 parallax-bg"></div>
+            <div className="exp-glow parallax-bg absolute inset-0"></div>
 
-            <h3 className="exp-company type-subheading relative z-10 parallax-fg">
+            <h3 className="exp-company type-subheading parallax-fg relative z-10">
               {exp.company}
             </h3>
 
             <div className="stack-xs relative z-10">
-              <h4 className="exp-role type-heading relative inline-block parallax-fg">
+              <h4 className="exp-role type-heading parallax-fg relative inline-block">
                 {exp.role}
-                <span className="exp-bar absolute left-0 -bottom-1 h-[3px] bg-[var(--cyan)] block rounded-sm w-full"></span>
+                <span className="exp-bar absolute -bottom-1 left-0 block h-[3px] w-full rounded-sm bg-[var(--cyan)]"></span>
               </h4>
             </div>
 
-            <p className="exp-period type-meta relative z-10 parallax-fg">
+            <p className="exp-period type-meta parallax-fg relative z-10">
               {exp.period}
             </p>
 
-            <ul className="type-list stack-sm list-disc pl-4 relative z-10">
+            <ul className="type-list stack-sm relative z-10 list-disc pl-4">
               {exp.responsibilities.map((item, idx) => (
                 <li key={idx} className="exp-item parallax-fg">
                   {item}
