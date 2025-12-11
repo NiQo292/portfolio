@@ -26,6 +26,7 @@ import GitLogo from "@/public/images/techstack/git.svg";
 import DockerLogo from "@/public/images/techstack/docker.svg";
 import FigmaLogo from "@/public/images/techstack/figma.svg";
 import { useSectionBlur } from "@/lib/useSectionBlur";
+import { useRevealTitle } from "@/lib/useRevealTitle";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -73,22 +74,10 @@ const techStack = [
 export default function TechStack() {
   const sectionRef = useRef<HTMLDivElement>(null);
   useSectionBlur({ ref: sectionRef });
+  useRevealTitle({ scopeRef: sectionRef });
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from(".ts-title", {
-        y: 70,
-        opacity: 0,
-        filter: "blur(10px)",
-        ease: "power3.out",
-        duration: 1.4,
-        scrollTrigger: {
-          trigger: ".ts-title",
-          start: "top 95%",
-          scrub: 1,
-        },
-      });
-
       const groups = gsap.utils.toArray<HTMLElement>(".ts-group");
 
       groups.forEach((group) => {
@@ -205,7 +194,7 @@ export default function TechStack() {
 
   return (
     <section ref={sectionRef} className="layout-section stack-xl">
-      <h2 className="ts-title type-title">My Tech-Stack</h2>
+      <h2 className="section-title type-title">My Tech-Stack</h2>
 
       <div className="grid grid-cols-1 gap-x-12 gap-y-24 md:grid-cols-12">
         {techStack.map((section) => (
