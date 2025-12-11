@@ -105,7 +105,7 @@ export default function TextUpDown({
       ref={wordRef}
       onMouseEnter={lift}
       onMouseLeave={drop}
-      className={`cursor-pointer w-fit leading-none ${className}`}
+      className={`w-fit cursor-pointer leading-none ${className}`}
     >
       {children}
     </span>
