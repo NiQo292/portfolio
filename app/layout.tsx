@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { ReactLenis } from "../utils/lenis";
 import Navigation from "@/components/Navigation";
 import { clashDisplay } from "./fonts";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,9 +17,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${clashDisplay.variable} antialiased`}>
-        <Navigation />
-        <SmoothScrollProvider>{children}</SmoothScrollProvider>
+      <body className={`${clashDisplay.variable} relative antialiased`}>
+        {/* GLOBAL BACKGROUND LAYER */}
+        <div className="global-bg" />
+
+        {/* OPTIONAL: GLOBAL VIGNETTE */}
+        <div className="global-vignette" />
+        <SmoothScrollProvider>
+          <Navigation />
+          {children}
+          <Footer />
+        </SmoothScrollProvider>
       </body>
     </html>
   );
