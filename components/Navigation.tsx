@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import Image from "next/image";
 import Link from "next/link";
-import Logo from "@/public/images/logo.png";
+import Logo from "@/public/images/logo.svg";
 import TextUpDown from "./animations/TextUpDown";
 
 export default function Navigation() {
@@ -241,13 +241,15 @@ export default function Navigation() {
 
         <nav className="flex h-20 items-center justify-center px-8">
           <div className="flex w-full max-w-[1920px] items-center">
-            <Image
-              src={Logo}
-              alt="Logo"
-              width={48}
-              height={48}
-              className="mr-auto"
-            />
+            <Link href="/" className="mr-auto">
+              <Image
+                src={Logo}
+                alt="Logo"
+                width={48}
+                height={48}
+                className=""
+              />
+            </Link>
 
             {/* Hamburger */}
             <button
