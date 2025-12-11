@@ -1,58 +1,114 @@
+"use client";
+
+import React, { useEffect, useRef } from "react";
 import Link from "next/link";
-import React from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import TextUpDown from "./animations/TextUpDown";
+import { FaGithub } from "react-icons/fa";
+import { FaLinkedin } from "react-icons/fa";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const navLinks = {
   about: [
-    { name: "Home", href: "" },
-    { name: "Projects", href: "" },
-    { name: "Contact Me", href: "" },
-    { name: "Download CV", href: "" },
+    { name: "Home", href: "#hero" },
+    { name: "Projects", href: "#projects" },
+    { name: "Contact Me", href: "#contact" },
+    { name: "Download CV", href: "/CV.pdf" },
   ],
   socials: [
-    { name: "Github", href: "" },
-    { name: "LinkedIn", href: "" },
+    { name: "Github", icon: <FaGithub />, href: "https://github.com/NiQo292" },
+    { name: "LinkedIn", icon: <FaLinkedin />, href: "https://linkedin.com" },
   ],
 };
 
-const Footer = () => {
+export default function Footer() {
+  const triggerRef = useRef(null);
+  const nameRef = useRef(null);
+
+  useEffect(() => {
+    if (!triggerRef.current || !nameRef.current) return;
+
+    const nameEl = nameRef.current;
+
+    // Split text manually
+    const letters = nameEl.innerText.split("");
+    nameEl.innerHTML = letters
+      .map((l) => `<span class="footer-letter">${l}</span>`)
+      .join("");
+
+    gsap.set(".footer-letter", { opacity: 0, y: 20, blur: 6 });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: triggerRef.current,
+        start: "top 80%",
+        toggleActions: "play none none reset",
+      },
+    });
+
+    tl.to(".footer-letter", {
+      opacity: 0.08, // soft watermark opacity
+      y: 0,
+      blur: 0,
+      duration: 1.1,
+      ease: "power3.out",
+      stagger: 0.04,
+    });
+  }, []);
+
   return (
-    <footer className="z-100 bg-black">
-      <div
-        className="relative h-[600px]"
-        style={{ clipPath: "polygon(0% 0, 100% 0, 100% 100%, 0 100%)" }}
-      >
-        <div className="fixed bottom-0 h-[600px] w-full">
-          <div className="flex h-full w-full flex-col justify-between px-12 py-8 text-white">
-            <div>
-              <div className="flex shrink-0 gap-20">
-                <div className="flex flex-col gap-2">
-                  <h3 className="mb-2 text-[#ffffff80] uppercase">About</h3>
-                  {navLinks.about.map((link) => (
-                    <Link key={link.name} href={link.href}>
-                      <TextUpDown>{link.name}</TextUpDown>
-                    </Link>
-                  ))}
-                </div>
-                <div className="flex flex-col gap-2">
-                  <h3 className="mb-2 text-[#ffffff80] uppercase">Socials</h3>
-                  {navLinks.socials.map((link) => (
-                    <Link key={link.name} href={link.href}>
-                      <TextUpDown>{link.name}</TextUpDown>
-                    </Link>
-                  ))}
-                </div>
-              </div>
+    <>
+      {/* This DIV scrolls normally and triggers animation */}
+      <div ref={triggerRef} className="footer-trigger-zone"></div>
+
+      {/* The actual fixed cinematic footer */}
+      <footer className="footer-fixed">
+        <div className="footer-inner">
+          {/* Watermark Name */}
+          <h1 ref={nameRef} className="footer-name">
+            Nico Haubold
+          </h1>
+
+          {/* Links */}
+          <div className="footer-content">
+            <div className="footer-col">
+              <h3 className="type-heading">ABOUT</h3>
+              {navLinks.about.map((link) => (
+                <Link key={link.name} href={link.href} className="footer-link">
+                  <span className="footer-row">
+                    <span className="footer-text-wrapper">
+                      <TextUpDown className="footer-text">
+                        {link.name}
+                      </TextUpDown>
+                    </span>
+                  </span>
+                </Link>
+              ))}
             </div>
-            <div className="flex items-end justify-between">
-              <h1 className="mt-10 text-[12vw] leading-[0.8]">Nico Haubold</h1>
-              <p className="">&copy; Copyright</p>
+
+            <div className="footer-col">
+              <h3 className="type-heading">SOCIALS</h3>
+              {navLinks.socials.map((link) => (
+                <Link key={link.name} href={link.href} className="footer-link">
+                  <span className="footer-row">
+                    <span className="footer-icon">{link.icon}</span>
+
+                    <span className="footer-text-wrapper">
+                      <TextUpDown className="footer-text">
+                        {link.name}
+                      </TextUpDown>
+                    </span>
+                  </span>
+                </Link>
+              ))}
             </div>
           </div>
-        </div>
-      </div>
-    </footer>
-  );
-};
 
-export default Footer;
+          <p className="footer-copy">&copy; 2025 Nico Haubold</p>
+        </div>
+      </footer>
+    </>
+  );
+}
