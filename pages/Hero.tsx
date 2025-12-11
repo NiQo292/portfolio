@@ -12,7 +12,6 @@ gsap.registerPlugin(ScrollTrigger, SplitText);
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
-  const bgRef = useRef<HTMLDivElement>(null);
 
   const textGroupRef = useRef<HTMLDivElement>(null);
   const nameRef = useRef<HTMLHeadingElement>(null);
@@ -29,20 +28,6 @@ export default function Hero() {
     let splitName: SplitText | null = null;
 
     const ctx = gsap.context(() => {
-      /* ------------------------------------------------------
-       * BACKGROUND FADE-IN
-       * ------------------------------------------------------ */
-      gsap.fromTo(
-        bgRef.current,
-        { opacity: 0, scale: 1.03 },
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 1.6,
-          ease: "power2.out",
-        }
-      );
-
       /* ------------------------------------------------------
        * NAME SPLIT REVEAL
        * ------------------------------------------------------ */
@@ -85,7 +70,7 @@ export default function Hero() {
           duration: motion.slow,
           ease: "power2.out",
           delay: 0.3,
-        }
+        },
       );
 
       /* ------------------------------------------------------
@@ -101,7 +86,7 @@ export default function Hero() {
           delay: 0.45,
           yoyo: true,
           repeat: 1,
-        }
+        },
       );
 
       /* ------------------------------------------------------
@@ -139,16 +124,13 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="hero relative min-h-screen w-full overflow-hidden flex items-center"
+      className="hero relative flex min-h-screen w-full items-center overflow-hidden pt-[var(--nav-height)] lg:pt-0"
     >
-      {/* Full-width BG */}
-      <div ref={bgRef} className="hero-bg"></div>
-
       {/* Constrained content */}
-      <div className="layout-section hero-inner grid grid-cols-1 md:grid-cols-12 gap-y-14 gap-x-10 items-center relative z-[2]">
+      <div className="layout-section hero-inner relative z-[2] grid grid-cols-1 items-center gap-x-10 gap-y-14 md:grid-cols-12">
         {/* TEXT */}
-        <div ref={textGroupRef} className="md:col-span-7 flex flex-col gap-6">
-          <p className="hero-kicker type-meta uppercase tracking-[0.25em]">
+        <div ref={textGroupRef} className="flex flex-col gap-6 md:col-span-7">
+          <p className="hero-kicker type-meta tracking-[0.25em] uppercase">
             Full-Stack Developer · Germany
           </p>
 
@@ -168,7 +150,7 @@ export default function Hero() {
         </div>
 
         {/* PORTRAIT */}
-        <div className="md:col-span-5 flex justify-center md:justify-end">
+        <div className="flex justify-center md:col-span-5 md:justify-end">
           <div ref={photoFrameRef} className="hero-photo-frame">
             <div ref={photoGlowRef} className="hero-photo-glow"></div>
 
