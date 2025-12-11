@@ -282,19 +282,22 @@ export default function Navigation() {
           <div className="menu-bg-layer-2"></div>
           <div className="menu-vignette"></div>
 
-          <nav className="relative z-[5] flex flex-col gap-10 text-5xl text-white">
-            <TextUpDown className="menu-link">
-              <Link href="/">Home</Link>
-            </TextUpDown>
-            <TextUpDown className="menu-link">
-              <Link href="/about">About</Link>
-            </TextUpDown>
-            <TextUpDown className="menu-link">
-              <Link href="/work">Work</Link>
-            </TextUpDown>
-            <TextUpDown className="menu-link">
-              <Link href="/contact">Contact</Link>
-            </TextUpDown>
+          <nav className="relative z-[5] flex flex-col items-center gap-10 text-5xl text-white">
+            <Link href="/" className="menu-link">
+              <TextUpDown>Home</TextUpDown>
+            </Link>
+
+            <Link href="/about" className="menu-link">
+              <TextUpDown>About</TextUpDown>
+            </Link>
+
+            <Link href="/work" className="menu-link">
+              <TextUpDown>Work</TextUpDown>
+            </Link>
+
+            <Link href="/contact" className="menu-link">
+              <TextUpDown>Contact</TextUpDown>
+            </Link>
           </nav>
         </div>
       )}

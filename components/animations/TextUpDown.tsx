@@ -1,113 +1,117 @@
 "use client";
 
-import { useEffect, useRef, ReactNode } from "react";
+import { ReactNode, useRef } from "react";
 import gsap from "gsap";
-import SplitText from "gsap/SplitText";
 
-gsap.registerPlugin(SplitText);
-
-export default function TextUpDown({
-  children,
-  className = "",
-}: {
-  children: ReactNode;
+type Props = {
+  children: ReactNode; // you pass plain text everywhere, so this is safe
   className?: string;
-}) {
-  const wordRef = useRef<HTMLSpanElement | null>(null);
-  const topChars = useRef<HTMLSpanElement[]>([]);
-  const bottomChars = useRef<HTMLSpanElement[]>([]);
+};
 
-  useEffect(() => {
-    const split = new SplitText(wordRef.current!, { type: "chars" });
+export default function TextUpDown({ children, className = "" }: Props) {
+  const topRefs = useRef<HTMLSpanElement[]>([]);
+  const bottomRefs = useRef<HTMLSpanElement[]>([]);
 
-    const wrappers = split.chars.map((charEl) => {
-      const char = charEl.textContent;
+  const text = String(children ?? "");
 
-      if (char === " ") {
-        const space = document.createElement("span");
-        space.innerHTML = "&nbsp;";
-        charEl.parentNode?.replaceChild(space, charEl);
-        return null;
-      }
-      const wrapper = document.createElement("span");
-      wrapper.style.display = "inline-block";
-      wrapper.style.overflow = "hidden";
-      wrapper.style.position = "relative";
+  const setTopRef = (index: number) => (el: HTMLSpanElement | null) => {
+    if (el) topRefs.current[index] = el;
+  };
 
-      const top = document.createElement("span");
-      top.textContent = char;
-      top.style.display = "inline-block";
-      top.style.position = "relative";
-
-      const bottom = document.createElement("span");
-      bottom.textContent = char;
-      bottom.style.display = "inline-block";
-      bottom.style.position = "absolute";
-      bottom.style.left = "0";
-      bottom.style.top = "100%";
-
-      wrapper.appendChild(top);
-      wrapper.appendChild(bottom);
-
-      if (charEl.parentNode) {
-        charEl.parentNode.replaceChild(wrapper, charEl);
-      }
-
-      return { wrapper, top, bottom };
-    });
-
-    const realWrappers = wrappers.filter(Boolean) as {
-      wrapper: HTMLSpanElement;
-      top: HTMLSpanElement;
-      bottom: HTMLSpanElement;
-    }[];
-
-    topChars.current = realWrappers.map((w) => w.top);
-    bottomChars.current = realWrappers.map((w) => w.bottom);
-
-    return () => split.revert();
-  }, []);
+  const setBottomRef = (index: number) => (el: HTMLSpanElement | null) => {
+    if (el) bottomRefs.current[index] = el;
+  };
 
   const lift = () => {
-    gsap.to(topChars.current, {
+    gsap.to(topRefs.current, {
       y: "-100%",
-      stagger: 0.02,
       duration: 0.4,
+      stagger: 0.02,
       ease: "power2.out",
     });
 
-    gsap.to(bottomChars.current, {
+    gsap.to(bottomRefs.current, {
       y: "-100%",
-      stagger: 0.02,
       duration: 0.4,
+      stagger: 0.02,
       ease: "power2.out",
     });
   };
 
   const drop = () => {
-    gsap.to(topChars.current, {
+    gsap.to(topRefs.current, {
       y: "0%",
-      stagger: 0.02,
       duration: 0.4,
+      stagger: 0.02,
       ease: "power2.inOut",
     });
 
-    gsap.to(bottomChars.current, {
+    gsap.to(bottomRefs.current, {
       y: "0%",
-      stagger: 0.02,
       duration: 0.4,
+      stagger: 0.02,
       ease: "power2.inOut",
     });
   };
 
   return (
     <span
-      ref={wordRef}
+      className={`relative inline-block cursor-pointer leading-none ${className}`}
       onMouseEnter={lift}
       onMouseLeave={drop}
-      className={`w-fit cursor-pointer leading-none ${className}`}
     >
-      {children}
+      {text.split("").map((ch, i) => {
+        if (ch === " ") {
+          return (
+            <span
+              key={i}
+              style={{
+                display: "inline-block",
+                width: "0.35em",
+              }}
+            >
+              {"\u00A0"}
+            </span>
+          );
+        }
+
+        return (
+          <span
+            key={i}
+            style={{
+              display: "inline-block",
+              position: "relative",
+              overflow: "hidden",
+            }}
+          >
+            {/* top letter (initial visible) */}
+            <span
+              ref={setTopRef(i)}
+              style={{
+                display: "inline-block",
+                position: "relative",
+                transform: "translateY(0%)",
+              }}
+            >
+              {ch}
+            </span>
+
+            {/* bottom letter (initial hidden below) */}
+            <span
+              ref={setBottomRef(i)}
+              style={{
+                display: "inline-block",
+                position: "absolute",
+                left: 0,
+                top: "100%",
+                transform: "translateY(0%)",
+              }}
+            >
+              {ch}
+            </span>
+          </span>
+        );
+      })}
     </span>
   );
 }
