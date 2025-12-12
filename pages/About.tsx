@@ -82,6 +82,7 @@ export default function AboutSection() {
     <section
       ref={sectionRef}
       className="about-section stacked-xl relative w-full py-[8rem]"
+      id="about"
     >
       {/* Constrained Content */}
       <div className="layout-section relative z-[2] grid grid-cols-1 gap-x-12 gap-y-16 md:grid-cols-12">

@@ -161,7 +161,11 @@ export default function Experience() {
 
   return (
     <>
-      <section ref={sectionRef} className="layout-section stack-xl relative">
+      <section
+        ref={sectionRef}
+        className="layout-section stack-xl relative"
+        id="experience"
+      >
         <h2 className="section-title type-title parallax-fg">
           My Working Experience
         </h2>

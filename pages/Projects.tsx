@@ -195,6 +195,7 @@ export default function ProjectsSection() {
     <section
       ref={sectionRef}
       className="projects-section section-spacing relative w-full"
+      id="projects"
     >
       {/* Content wrapper */}
       <div className="layout-section relative z-[2] flex flex-col gap-20">

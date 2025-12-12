@@ -193,7 +193,11 @@ export default function TechStack() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="layout-section stack-xl">
+    <section
+      ref={sectionRef}
+      className="layout-section stack-xl"
+      id="techstack"
+    >
       <h2 className="section-title type-title">My Tech-Stack</h2>
 
       <div className="grid grid-cols-1 gap-x-12 gap-y-24 md:grid-cols-12">
@@ -224,7 +228,7 @@ export default function TechStack() {
                       className="ts-icon h-10 w-10 object-contain"
                     />
 
-                    {tech.name}
+                    <p className="type-body min-w-fit">{tech.name}</p>
                   </div>
                 </li>
               ))}

@@ -27,7 +27,7 @@ export default function Contact() {
     message: "",
   });
 
-  useSectionBlur({ ref: sectionRef });
+  // useSectionBlur({ ref: sectionRef });
   useRevealTitle({ scopeRef: sectionRef });
 
   const copyEmail = async (email: string) => {
@@ -233,6 +233,7 @@ export default function Contact() {
       <section
         ref={sectionRef}
         className="contact-section layout-section stack-xl relative"
+        id="contact"
       >
         {/* Header */}
         <header className="contact-header">
