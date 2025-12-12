@@ -4,28 +4,18 @@ import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useSmoothScroll } from "@/lib/useSmoothScroll";
+import { navLinks, socialLinks } from "@/lib/navigation";
+
 import TextUpDown from "./animations/TextUpDown";
-import { FaGithub } from "react-icons/fa";
-import { FaLinkedin } from "react-icons/fa";
 
 gsap.registerPlugin(ScrollTrigger);
-
-const navLinks = {
-  about: [
-    { name: "Home", href: "#hero" },
-    { name: "Projects", href: "#projects" },
-    { name: "Contact Me", href: "#contact" },
-    { name: "Download CV", href: "/CV.pdf" },
-  ],
-  socials: [
-    { name: "Github", icon: <FaGithub />, href: "https://github.com/NiQo292" },
-    { name: "LinkedIn", icon: <FaLinkedin />, href: "https://linkedin.com" },
-  ],
-};
 
 export default function Footer() {
   const triggerRef = useRef(null);
   const nameRef = useRef(null);
+
+  const scrollTo = useSmoothScroll();
 
   useEffect(() => {
     if (!triggerRef.current || !nameRef.current) return;
@@ -75,8 +65,12 @@ export default function Footer() {
           <div className="footer-content">
             <div className="footer-col">
               <h3 className="type-heading">ABOUT</h3>
-              {navLinks.about.map((link) => (
-                <Link key={link.name} href={link.href} className="footer-link">
+              {/* {navLinks.about.map((link) => (
+                <button
+                  key={link.name}
+                  className="footer-link text-left"
+                  onClick={() => scrollTo(link.href)}
+                >
                   <span className="footer-row">
                     <span className="footer-text-wrapper">
                       <TextUpDown className="footer-text">
@@ -84,24 +78,61 @@ export default function Footer() {
                       </TextUpDown>
                     </span>
                   </span>
-                </Link>
-              ))}
+                </button>
+              ))} */}
+              {navLinks.map((link) =>
+                link.external ? (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    target="_blank"
+                    className="footer-link"
+                  >
+                    <span className="footer-row">
+                      <span className="footer-text-wrapper">
+                        <TextUpDown className="footer-text">
+                          {link.label}
+                        </TextUpDown>
+                      </span>
+                    </span>
+                  </a>
+                ) : (
+                  <button
+                    key={link.label}
+                    onClick={() => scrollTo(link.href)}
+                    className="footer-link"
+                  >
+                    <span className="footer-row">
+                      <span className="footer-text-wrapper">
+                        <TextUpDown className="footer-text">
+                          {link.label}
+                        </TextUpDown>
+                      </span>
+                    </span>
+                  </button>
+                ),
+              )}
             </div>
 
             <div className="footer-col">
               <h3 className="type-heading">SOCIALS</h3>
-              {navLinks.socials.map((link) => (
-                <Link key={link.name} href={link.href} className="footer-link">
+              {socialLinks.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  className="footer-link"
+                >
                   <span className="footer-row">
-                    <span className="footer-icon">{link.icon}</span>
+                    <span className="footer-icon">{social.icon}</span>
 
                     <span className="footer-text-wrapper">
                       <TextUpDown className="footer-text">
-                        {link.name}
+                        {social.label}
                       </TextUpDown>
                     </span>
                   </span>
-                </Link>
+                </a>
               ))}
             </div>
           </div>

@@ -5,11 +5,13 @@ import Image from "next/image";
 import Link from "next/link";
 import Logo from "@/public/images/logo.svg";
 import TextUpDown from "./animations/TextUpDown";
+import { navLinks, socialLinks } from "@/lib/navigation";
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false); // user intent
-  const [visible, setVisible] = useState(false); // controls overlay mount
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [pendingHref, setPendingHref] = useState<string | null>(null);
 
   const navRef = useRef<HTMLDivElement>(null);
   const sheenRef = useRef<HTMLDivElement>(null);
@@ -125,6 +127,11 @@ export default function Navigation() {
     menuOpen ? closeMenu() : openMenu();
   };
 
+  const handleMenuNavigate = (href: string) => {
+    setPendingHref(href);
+    closeMenu();
+  };
+
   // ─────────────────────────────────────────────
   // MENU OPEN / CLOSE ANIMATION (STAGGER + REVERSE)
   // ─────────────────────────────────────────────
@@ -181,7 +188,19 @@ export default function Navigation() {
             duration: 0.4,
             ease: "power3.in",
             onComplete: () => {
-              setVisible(false); // finally unmount
+              setVisible(false);
+
+              if (pendingHref) {
+                // Handle anchor links (same page)
+                if (pendingHref.startsWith("#")) {
+                  const el = document.querySelector(pendingHref);
+                  el?.scrollIntoView({ behavior: "smooth" });
+                } else {
+                  window.location.href = pendingHref;
+                }
+
+                setPendingHref(null);
+              }
             },
           });
         },
@@ -241,7 +260,7 @@ export default function Navigation() {
 
         <nav className="flex h-20 items-center justify-center px-8">
           <div className="flex w-full max-w-[1920px] items-center">
-            <Link href="/" className="mr-auto">
+            <Link className="mr-auto cursor-pointer" href="#hero">
               <Image
                 src={Logo}
                 alt="Logo"
@@ -282,22 +301,44 @@ export default function Navigation() {
           <div className="menu-bg-layer-2"></div>
           <div className="menu-vignette"></div>
 
-          <nav className="relative z-[5] flex flex-col items-center gap-10 text-5xl text-white">
-            <Link href="/" className="menu-link">
-              <TextUpDown>Home</TextUpDown>
-            </Link>
+          <nav className="relative z-[5] flex flex-col items-center gap-10 text-5xl">
+            {navLinks.map((link) =>
+              link.external ? (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  className="menu-link"
+                >
+                  <TextUpDown>{link.label}</TextUpDown>
+                </a>
+              ) : (
+                <button
+                  key={link.label}
+                  className="menu-link"
+                  onClick={() => {
+                    scrollTo(link.href);
+                    closeMenu(); // important
+                  }}
+                >
+                  <TextUpDown>{link.label}</TextUpDown>
+                </button>
+              ),
+            )}
 
-            <Link href="/about" className="menu-link">
-              <TextUpDown>About</TextUpDown>
-            </Link>
-
-            <Link href="/work" className="menu-link">
-              <TextUpDown>Work</TextUpDown>
-            </Link>
-
-            <Link href="/contact" className="menu-link">
-              <TextUpDown>Contact</TextUpDown>
-            </Link>
+            {/* Socials inside nav menu */}
+            <div className="mt-10 flex gap-6 text-2xl opacity-80">
+              {socialLinks.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  className="transition hover:opacity-100"
+                >
+                  {social.icon}
+                </a>
+              ))}
+            </div>
           </nav>
         </div>
       )}
