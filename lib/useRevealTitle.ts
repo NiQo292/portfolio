@@ -15,10 +15,8 @@ type UseRevealTitleOptions = {
 export function useRevealTitle({
   scopeRef,
   selector = ".section-title",
-  start = "top bottom",
 }: UseRevealTitleOptions) {
   useEffect(() => {
-    if (!scopeRef || typeof scopeRef !== "object") return;
     const scope = scopeRef.current;
     if (!scope) return;
 
@@ -32,16 +30,17 @@ export function useRevealTitle({
           opacity: 0,
           filter: "blur(10px)",
           ease: "power3.out",
-          duration: 1.4,
+          duration: 1.2,
           scrollTrigger: {
             trigger: el,
-            start,
-            scrub: 1,
+            start: "top 100%",
+            end: "top 75%",
+            toggleActions: "play none none none",
           },
         });
       });
     }, scope);
 
     return () => ctx.revert();
-  }, [scopeRef, selector, start]);
+  }, [scopeRef, selector]);
 }
