@@ -3,82 +3,119 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const prefersReducedMotion =
-  typeof window !== "undefined" &&
-  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+export function initAboutCards(
+  section: HTMLElement,
+  {
+    onOpenModal,
+    onCloseModal,
+  }: {
+    onOpenModal: () => void;
+    onCloseModal: () => void;
+  },
+) {
+  const cards = Array.from(
+    section.querySelectorAll<HTMLElement>("[data-card]"),
+  );
 
-export function initAboutAnimations(section: HTMLElement) {
-  const line = section.querySelector("[data-about-line]");
-  const heading = section.querySelector("[data-about-heading]");
-  const sub = section.querySelector("[data-about-sub]");
-  const items = section.querySelectorAll("[data-about-stagger]");
+  if (!cards.length) return;
 
-  if (prefersReducedMotion) {
-    gsap.set([line, heading, sub, items], {
-      opacity: 1,
-      y: 0,
-      filter: "none",
-    });
+  cards.forEach((card, index) => {
+    const inner = card.querySelector<HTMLElement>(".card-inner");
+    if (!inner) return;
 
-    return;
-  }
+    const OFFSET = 120;
+    const DURATION = 300;
 
-  const tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: section,
-      start: "top 85%",
-    },
+    gsap.fromTo(
+      inner,
+      { rotateY: 0 },
+      {
+        rotateY: 180,
+        ease: "power2.inOut",
+        scrollTrigger: {
+          trigger: section,
+          start: () => `top+=${index * OFFSET} 50%`,
+          end: () => `top+=${index * OFFSET + DURATION} 45%`,
+          scrub: true,
+        },
+      },
+    );
   });
 
-  if (line) {
-    tl.from(line, {
-      height: 0,
-      opacity: 0,
-      duration: 0.9,
-      ease: "power3.out",
+  cards.forEach((card) => {
+    card.addEventListener("mouseenter", () => {
+      gsap.to(card, { scale: 1.04, duration: 0.25 });
     });
-  }
 
-  if (heading) {
-    tl.from(
-      heading,
-      {
-        y: 40,
+    card.addEventListener("mouseleave", () => {
+      gsap.to(card, { scale: 1, duration: 0.25 });
+    });
+  });
+
+  cards.forEach((card) => {
+    card.addEventListener("click", () => {
+      const backdrop = section.querySelector<HTMLElement>(
+        "[data-modal-backdrop]",
+      );
+      const modal = section.querySelector<HTMLElement>("[data-modal]");
+      const modalTitle =
+        section.querySelector<HTMLElement>("[data-modal-title]");
+      const modalContent = section.querySelector<HTMLElement>(
+        "[data-modal-content]",
+      );
+
+      if (!backdrop || !modal || !modalTitle || !modalContent) return;
+
+      const rect = card.getBoundingClientRect();
+
+      modalTitle.textContent = card.dataset.title ?? "";
+      modalContent.textContent = card.dataset.description ?? "";
+
+      onOpenModal();
+
+      gsap.set(modal, {
+        x: rect.left + rect.width / 2 - window.innerWidth / 2,
+        y: rect.top + rect.height / 2 - window.innerHeight / 2,
+        scale: 0.55,
         opacity: 0,
-        filter: "blur(8px)",
-        duration: 1,
+      });
+
+      gsap.to(backdrop, { opacity: 1, duration: 0.25 });
+      gsap.to(modal, {
+        x: 0,
+        y: 0,
+        scale: 1,
+        opacity: 1,
+        duration: 0.5,
         ease: "power3.out",
-      },
-      "-=0.4",
-    );
-  }
+      });
+    });
+  });
 
-  if (sub) {
-    tl.from(
-      sub,
-      {
-        y: 30,
-        opacity: 0,
-        filter: "blur(6px)",
-        duration: 0.8,
-        ease: "power2.out",
-      },
-      "-=0.45",
+  const closeModal = () => {
+    const backdrop = section.querySelector<HTMLElement>(
+      "[data-modal-backdrop]",
     );
-  }
+    if (!backdrop) return;
 
-  if (items.length) {
-    tl.from(
-      items,
-      {
-        y: 28,
-        opacity: 0,
-        filter: "blur(6px)",
-        duration: 0.8,
-        ease: "power2.out",
-        stagger: 0.15,
-      },
-      "-=0.35",
-    );
-  }
+    gsap.to(backdrop, {
+      opacity: 0,
+      duration: 0.25,
+      onComplete: () => onCloseModal(),
+    });
+  };
+
+  section.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement;
+    if (
+      target.matches("[data-modal-close]") ||
+      target.matches("[data-modal-backdrop]")
+    ) {
+      closeModal();
+    }
+  });
+
+  return () => {
+    ScrollTrigger.getAll().forEach((t) => t.kill());
+  };
 }
