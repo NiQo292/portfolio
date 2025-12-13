@@ -42,10 +42,14 @@
 
   .contact-liquid {
     position: absolute;
-    inset: -40%;
+    inset: -20%;
     width: 180%;
     height: 180%;
     border-radius: 9999px;
+
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+
     background:
       radial-gradient(
         circle at 30% 20%,
@@ -57,12 +61,12 @@
         rgba(0, 255, 255, 0.35),
         transparent 75%
       );
+
     opacity: 0.55;
     filter: blur(90px);
     mix-blend-mode: screen;
     pointer-events: none;
     z-index: 0;
-    will-change: transform, opacity, scale;
   }
 
   .contact-shell {
@@ -196,6 +200,14 @@
     border: 2px solid rgba(0, 255, 255, 0.2);
     border-top-color: rgba(0, 255, 255, 0.9);
     animation: contact-spinner 0.75s linear infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .contact-spinner {
+      animation: none;
+      border-top-color: rgba(0, 255, 255, 0.9);
+      opacity: 0.85;
+    }
   }
 
   .contact-check {

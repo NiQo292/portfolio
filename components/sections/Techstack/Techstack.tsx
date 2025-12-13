@@ -4,8 +4,10 @@ import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { motion } from "@/lib/motion";
 import "./Techstack.css";
+import { useSectionBlur } from "@/lib/useSectionBlur";
+import { useRevealTitle } from "@/lib/useRevealTitle";
+import { initTechStackHover, initTechStackReveal } from "./Techstack.anim";
 
 // Brand Logos import
 import ReactLogo from "@/public/images/techstack/react.svg";
@@ -26,8 +28,6 @@ import DrizzleLogo from "@/public/images/techstack/drizzle.svg";
 import GitLogo from "@/public/images/techstack/git.svg";
 import DockerLogo from "@/public/images/techstack/docker.svg";
 import FigmaLogo from "@/public/images/techstack/figma.svg";
-import { useSectionBlur } from "@/lib/useSectionBlur";
-import { useRevealTitle } from "@/lib/useRevealTitle";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -78,114 +78,11 @@ export default function TechStack() {
   useRevealTitle({ scopeRef: sectionRef });
 
   useEffect(() => {
+    if (!sectionRef.current) return;
+
     const ctx = gsap.context(() => {
-      const groups = gsap.utils.toArray<HTMLElement>("[data-ts-group]");
-
-      groups.forEach((group) => {
-        const heading = group.querySelector("[data-ts-heading]");
-        const icons = group.querySelectorAll("[data-ts-item]");
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: group,
-            start: "top 85%",
-            toggleActions: "play none none none",
-          },
-        });
-
-        tl.from(heading, {
-          y: 40,
-          opacity: 0,
-          filter: "blur(6px)",
-          duration: motion.medium,
-          ease: motion.easeOut,
-        });
-
-        tl.from(
-          icons,
-          {
-            y: 20,
-            opacity: 0,
-            filter: "blur(4px)",
-            duration: motion.medium,
-            ease: motion.easeOut,
-            stagger: motion.staggerMd,
-          },
-          "-=0.4",
-        );
-      });
-
-      const cards = gsap.utils.toArray<HTMLElement>("[data-ts-card]");
-
-      cards.forEach((card) => {
-        const glow = card.querySelector("[data-ts-glow]") as HTMLElement;
-        const inner = card.querySelector("[data-ts-inner]") as HTMLElement;
-        let hover = false;
-
-        const onMove = (e: MouseEvent) => {
-          if (!hover) return;
-
-          const rect = inner.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-
-          const centerX = rect.width / 2;
-          const centerY = rect.height / 2;
-
-          const rotateY = ((x - centerX) / centerX) * 10;
-          const rotateX = -((y - centerY) / centerY) * 10;
-
-          gsap.to(card, {
-            rotateX,
-            rotateY,
-            scale: 1.02,
-            transformPerspective: 800,
-            ease: "power2.out",
-            duration: 0.3,
-          });
-
-          if (glow) {
-            const glowX = ((x - centerX) / centerX) * 40;
-            const glowY = ((y - centerY) / centerY) * 40;
-
-            gsap.to(glow, {
-              x: glowX,
-              y: glowY,
-              opacity: 1,
-              duration: 0.3,
-              ease: "power2.out",
-            });
-          }
-        };
-
-        card.addEventListener("mouseenter", () => {
-          hover = true;
-          card.addEventListener("mousemove", onMove);
-          gsap.to(card, { scale: 1.04, duration: 0.2 });
-        });
-
-        card.addEventListener("mouseleave", () => {
-          hover = false;
-          card.removeEventListener("mousemove", onMove);
-
-          gsap.to(card, {
-            rotateX: 0,
-            rotateY: 0,
-            scale: 1,
-            duration: 0.6,
-            ease: "elastic.out(1, 0.4)",
-          });
-
-          if (glow) {
-            gsap.to(glow, {
-              x: 0,
-              y: 0,
-              opacity: 0,
-              duration: 0.4,
-              ease: "power2.out",
-            });
-          }
-        });
-      });
+      initTechStackReveal(sectionRef.current!);
+      initTechStackHover(sectionRef.current!);
     }, sectionRef);
 
     return () => ctx.revert();

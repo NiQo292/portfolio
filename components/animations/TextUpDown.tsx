@@ -22,7 +22,6 @@ export default function TextUpDown({
   const text = useMemo(() => String(children ?? ""), [children]);
   const chars = useMemo(() => text.split(""), [text]);
 
-  // Ensure refs arrays don't keep stale entries across rerenders
   topRefs.current = [];
   bottomRefs.current = [];
 
@@ -33,7 +32,6 @@ export default function TextUpDown({
 
     if (prefersReduced) return;
 
-    // Initial state: top in place, bottom below
     gsap.set(topRefs.current, { yPercent: 0 });
     gsap.set(bottomRefs.current, { yPercent: 100 });
   }, [text]);

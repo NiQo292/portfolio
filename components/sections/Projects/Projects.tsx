@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRevealTitle } from "@/lib/useRevealTitle";
@@ -11,175 +11,28 @@ import "./Project.css";
 // Image Import
 import Nico from "@/public/images/nico.png";
 import Portfolio from "@/public/images/projects/portfolio_image.jpeg";
+import { initFeaturedHover, initProjectsAnimations } from "./Project.anim";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Projects() {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const featuredRef = useRef<HTMLDivElement>(null);
+
   useSectionBlur({ ref: sectionRef });
   useRevealTitle({ scopeRef: sectionRef });
 
-  useEffect(() => {
-    if (!sectionRef.current) return;
+  useLayoutEffect(() => {
+    if (!sectionRef.current || !featuredRef.current) return;
 
     const ctx = gsap.context(() => {
-      gsap.from("[data-featured-img-wrap]", {
-        y: 60,
-        opacity: 0,
-        filter: "blur(14px)",
-        duration: 1.3,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: "[data-featured-card]",
-          start: "top 85%",
-        },
-      });
+      initProjectsAnimations(sectionRef.current!);
+      const cleanupHover = initFeaturedHover(featuredRef.current!);
 
-      gsap.from(".project-featured-vignette", {
-        opacity: 0,
-        scale: 0.92,
-        duration: 1.4,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: "[data-featured-card]",
-          start: "top 85%",
-        },
-      });
-
-      gsap.from(
-        [
-          "[data-project-title]",
-          "[data-project-desc]",
-          "[data-project-tech-list] > span",
-          "[data-featured-content] .btn-primary",
-        ],
-        {
-          y: 30,
-          opacity: 0,
-          filter: "blur(10px)",
-          duration: 1.0,
-          ease: "power2.out",
-          stagger: 0.15,
-          scrollTrigger: {
-            trigger: "[data-featured-card]",
-            start: "top 80%",
-          },
-        },
-      );
-
-      const cards = gsap.utils.toArray("[data-project-card-secondary]");
-
-      gsap.from(cards, {
-        y: 40,
-        opacity: 0,
-        filter: "blur(10px)",
-        duration: 1,
-        ease: "power2.out",
-        stagger: 0.2,
-        scrollTrigger: {
-          trigger: "[data-project-card-secondary]",
-          start: "top 85%",
-        },
-      });
-
-      gsap.to("[data-featured-img-wrap]", {
-        y: -25,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
+      return cleanupHover;
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
-
-  useEffect(() => {
-    const card = document.querySelector(
-      "[data-featured-img-wrap]",
-    ) as HTMLElement;
-    const glow = document.querySelector(
-      ".project-featured-glow",
-    ) as HTMLElement;
-
-    if (!card) return;
-
-    let hover = false;
-
-    const onMove = (e: MouseEvent) => {
-      if (!hover) return;
-
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-
-      const rotateY = ((x - centerX) / centerX) * 12;
-      const rotateX = -((y - centerY) / centerY) * 12;
-
-      gsap.to(card, {
-        rotateX,
-        rotateY,
-        scale: 1.04,
-        transformPerspective: 900,
-        ease: "power2.out",
-        duration: 0.25,
-      });
-
-      if (glow) {
-        const maxShift = rect.width * 0.2;
-        gsap.to(glow, {
-          x: ((x - centerX) / centerX) * maxShift,
-          y: ((y - centerY) / centerY) * maxShift,
-          opacity: 0.35,
-          duration: 0.25,
-          ease: "power2.out",
-        });
-      }
-    };
-
-    const onEnter = () => {
-      hover = true;
-      card.addEventListener("mousemove", onMove);
-      gsap.to(card, { scale: 1.04, duration: 0.2 });
-    };
-
-    const onLeave = () => {
-      hover = false;
-      card.removeEventListener("mousemove", onMove);
-
-      gsap.to(card, {
-        rotateX: 0,
-        rotateY: 0,
-        scale: 1,
-        duration: 0.7,
-        ease: "elastic.out(1, 0.4)",
-      });
-
-      if (glow) {
-        gsap.to(glow, {
-          x: 0,
-          y: 0,
-          opacity: 0,
-          duration: 0.4,
-          ease: "power2.out",
-        });
-      }
-    };
-
-    card.addEventListener("mouseenter", onEnter);
-    card.addEventListener("mouseleave", onLeave);
-
-    return () => {
-      card.removeEventListener("mouseenter", onEnter);
-      card.removeEventListener("mouseleave", onLeave);
-      card.removeEventListener("mousemove", onMove);
-    };
   }, []);
 
   return (
@@ -193,6 +46,7 @@ export default function Projects() {
 
         <div data-featured-card className="project-featured-card">
           <div
+            ref={featuredRef}
             data-featured-img-wrap
             className="relative h-72 w-full overflow-hidden rounded-3xl transition-transform duration-200 will-change-transform transform-3d md:h-88 lg:h-104"
           >

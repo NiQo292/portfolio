@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "@/lib/motion";
@@ -8,6 +8,10 @@ import "./Experience.css";
 import { useParallaxLayers } from "@/lib/useParallaxLayers";
 import { useSectionBlur } from "@/lib/useSectionBlur";
 import { useRevealTitle } from "@/lib/useRevealTitle";
+import {
+  initExperienceParallax,
+  initExperienceReveal,
+} from "./Experience.anim";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -43,121 +47,15 @@ export default function Experience() {
 
   useRevealTitle({ scopeRef: sectionRef });
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const blocks = gsap.utils.toArray<HTMLElement>("[data-exp-block]");
+  useLayoutEffect(() => {
+    if (!sectionRef.current) return;
 
-      blocks.forEach((block, index) => {
-        const company = block.querySelector("[data-exp-company]");
-        const role = block.querySelector("[data-exp-role]");
-        const bar = block.querySelector("[data-exp-bar]");
-        const period = block.querySelector("[data-exp-period]");
-        const items = block.querySelectorAll("[data-exp-item]");
-        const glow = block.querySelector("[data-exp-glow]");
-
-        if (glow) {
-          gsap.fromTo(
-            glow,
-            { opacity: 0, scale: 0.93 },
-            {
-              opacity: 1,
-              scale: 1,
-              duration: motion.slow,
-              ease: "power2.out",
-              scrollTrigger: {
-                trigger: block,
-                start: "top 85%",
-              },
-            },
-          );
-        }
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: block,
-            start: "top 85%",
-          },
-        });
-
-        if (company) {
-          tl.from(company, {
-            y: 45,
-            opacity: 0,
-            filter: "blur(6px)",
-            duration: motion.medium,
-            ease: "back.out(1.6)",
-          });
-        }
-
-        if (role) {
-          tl.from(
-            role,
-            {
-              y: 35,
-              opacity: 0,
-              filter: "blur(6px)",
-              duration: motion.medium,
-              ease: "back.out(1.6)",
-            },
-            "-=0.45",
-          );
-        }
-
-        if (bar) {
-          tl.from(
-            bar,
-            {
-              width: 0,
-              duration: motion.medium,
-              ease: motion.easeOut,
-            },
-            "-=0.35",
-          );
-        }
-
-        if (period) {
-          tl.from(
-            period,
-            {
-              y: 20,
-              opacity: 0,
-              filter: "blur(4px)",
-              duration: motion.medium,
-              ease: motion.easeOut,
-            },
-            "-=0.3",
-          );
-        }
-
-        if (items.length) {
-          tl.from(
-            items,
-            {
-              y: 14,
-              opacity: 0,
-              filter: "blur(3px)",
-              duration: motion.medium,
-              ease: motion.easeOut,
-              stagger: motion.staggerMd,
-            },
-            "-=0.2",
-          );
-        }
-
-        gsap.to(block, {
-          yPercent: -6 - index * 1.2,
-          ease: "none",
-          scrollTrigger: {
-            trigger: block,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          },
-        });
-      });
+    const cts = gsap.context(() => {
+      initExperienceReveal(sectionRef.current!);
+      initExperienceParallax(sectionRef.current!);
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => cts.revert();
   }, []);
 
   return (
