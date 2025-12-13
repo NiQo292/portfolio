@@ -1,115 +1,128 @@
 "use client";
 
-import { ReactNode, useRef } from "react";
+import React, { ReactNode, useLayoutEffect, useMemo, useRef } from "react";
 import gsap from "gsap";
 
 type Props = {
   children: ReactNode;
   className?: string;
+  stagger?: number;
+  duration?: number;
 };
 
-export default function TextUpDown({ children, className = "" }: Props) {
+export default function TextUpDown({
+  children,
+  className = "",
+  stagger = 0.02,
+  duration = 0.4,
+}: Props) {
   const topRefs = useRef<HTMLSpanElement[]>([]);
   const bottomRefs = useRef<HTMLSpanElement[]>([]);
 
-  const text = String(children ?? "");
+  const text = useMemo(() => String(children ?? ""), [children]);
+  const chars = useMemo(() => text.split(""), [text]);
 
-  const setTopRef = (index: number) => (el: HTMLSpanElement | null) => {
-    if (el) topRefs.current[index] = el;
-  };
+  // Ensure refs arrays don't keep stale entries across rerenders
+  topRefs.current = [];
+  bottomRefs.current = [];
 
-  const setBottomRef = (index: number) => (el: HTMLSpanElement | null) => {
-    if (el) bottomRefs.current[index] = el;
-  };
+  useLayoutEffect(() => {
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+
+    if (prefersReduced) return;
+
+    // Initial state: top in place, bottom below
+    gsap.set(topRefs.current, { yPercent: 0 });
+    gsap.set(bottomRefs.current, { yPercent: 100 });
+  }, [text]);
 
   const lift = () => {
+    gsap.killTweensOf(topRefs.current);
+    gsap.killTweensOf(bottomRefs.current);
+
     gsap.to(topRefs.current, {
-      y: "-100%",
-      duration: 0.4,
-      stagger: 0.02,
+      yPercent: -100,
+      duration,
+      stagger,
       ease: "power2.out",
+      overwrite: "auto",
     });
 
     gsap.to(bottomRefs.current, {
-      y: "-100%",
-      duration: 0.4,
-      stagger: 0.02,
+      yPercent: 0,
+      duration,
+      stagger,
       ease: "power2.out",
+      overwrite: "auto",
     });
   };
 
   const drop = () => {
+    gsap.killTweensOf(topRefs.current);
+    gsap.killTweensOf(bottomRefs.current);
+
     gsap.to(topRefs.current, {
-      y: "0%",
-      duration: 0.4,
-      stagger: 0.02,
+      yPercent: 0,
+      duration,
+      stagger,
       ease: "power2.inOut",
+      overwrite: "auto",
     });
 
     gsap.to(bottomRefs.current, {
-      y: "0%",
-      duration: 0.4,
-      stagger: 0.02,
+      yPercent: 100,
+      duration,
+      stagger,
       ease: "power2.inOut",
+      overwrite: "auto",
     });
   };
 
   return (
     <span
-      className={`relative inline-block cursor-pointer leading-none ${className}`}
+      className={`relative inline-block cursor-pointer overflow-hidden align-baseline whitespace-nowrap select-none ${className}`}
       onMouseEnter={lift}
       onMouseLeave={drop}
     >
-      {text.split("").map((ch, i) => {
-        if (ch === " ") {
-          return (
-            <span
-              key={i}
-              style={{
-                display: "inline-block",
-                width: "0.35em",
-              }}
-            >
-              {"\u00A0"}
-            </span>
-          );
-        }
-
-        return (
+      {/* TOP LAYER */}
+      <span className="absolute top-0 left-0 inline-block">
+        {chars.map((ch, i) => (
           <span
-            key={i}
-            style={{
-              display: "inline-block",
-              position: "relative",
-              overflow: "hidden",
+            key={`top-${i}`}
+            ref={(el) => {
+              if (el) topRefs.current[i] = el;
             }}
+            className="inline-block"
           >
-            <span
-              ref={setTopRef(i)}
-              style={{
-                display: "inline-block",
-                position: "relative",
-                transform: "translateY(0%)",
-              }}
-            >
-              {ch}
-            </span>
-
-            <span
-              ref={setBottomRef(i)}
-              style={{
-                display: "inline-block",
-                position: "absolute",
-                left: 0,
-                top: "100%",
-                transform: "translateY(0%)",
-              }}
-            >
-              {ch}
-            </span>
+            {ch === " " ? "\u00A0" : ch}
           </span>
-        );
-      })}
+        ))}
+      </span>
+
+      {/* BOTTOM LAYER */}
+      <span className="absolute top-0 left-0 inline-block">
+        {chars.map((ch, i) => (
+          <span
+            key={`bottom-${i}`}
+            ref={(el) => {
+              if (el) bottomRefs.current[i] = el;
+            }}
+            className="inline-block"
+          >
+            {ch === " " ? "\u00A0" : ch}
+          </span>
+        ))}
+      </span>
+
+      <span className="invisible inline-block">
+        {chars.map((ch, i) => (
+          <span key={`ghost-${i}`} className="inline-block">
+            {ch === " " ? "\u00A0" : ch}
+          </span>
+        ))}
+      </span>
     </span>
   );
 }
