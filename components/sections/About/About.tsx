@@ -4,8 +4,17 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useSectionBlur } from "@/lib/useSectionBlur";
+import "./About.css";
 
 gsap.registerPlugin(ScrollTrigger);
+
+const aboutHighlights = [
+  "2+ years in Full-Stack Engineering",
+  "Specialized in React, Next.js, TypeScript, GSAP, Tailwind",
+  "Strong background in UI/UX + motion design",
+  "Experience across e-commerce, SaaS, healthcare products",
+  "Based in Germany · Open to remote opportunities",
+];
 
 export default function AboutSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -19,7 +28,6 @@ export default function AboutSection() {
     if (!sectionRef.current) return;
 
     const ctx = gsap.context(() => {
-      /* Accent Line Grow */
       gsap.from(lineRef.current, {
         height: 0,
         opacity: 0,
@@ -31,7 +39,6 @@ export default function AboutSection() {
         },
       });
 
-      /* Heading Reveal */
       gsap.from(headingRef.current, {
         y: 40,
         opacity: 0,
@@ -44,7 +51,6 @@ export default function AboutSection() {
         },
       });
 
-      /* Subheading */
       gsap.from(subRef.current, {
         y: 30,
         opacity: 0,
@@ -58,8 +64,7 @@ export default function AboutSection() {
         },
       });
 
-      /* Columns Stagger */
-      const items = columnsRef.current?.querySelectorAll(".about-stagger-item");
+      const items = columnsRef.current?.querySelectorAll("[data-stagger-item]");
 
       gsap.from(items, {
         y: 28,
@@ -81,37 +86,31 @@ export default function AboutSection() {
   return (
     <section
       ref={sectionRef}
-      className="about-section stacked-xl relative w-full py-[8rem]"
+      className="stacked-xl relative w-full overflow-hidden py-32"
       id="about"
     >
-      {/* Constrained Content */}
-      <div className="layout-section relative z-[2] grid grid-cols-1 gap-x-12 gap-y-16 md:grid-cols-12">
-        {/* Left Accent Column */}
+      <div className="layout-section relative z-2 grid grid-cols-1 gap-x-12 gap-y-16 md:grid-cols-12">
         <div className="flex justify-center md:col-span-1 md:justify-start">
           <div ref={lineRef} className="about-accent-line"></div>
         </div>
 
-        {/* Main Content */}
         <div className="flex flex-col gap-12 md:col-span-11">
-          {/* Heading */}
           <div>
-            <h2 ref={headingRef} className="type-title about-heading">
+            <h2 ref={headingRef} className="type-title">
               About Me
             </h2>
 
-            <p ref={subRef} className="type-body about-subheading">
+            <p ref={subRef} className="type-body mt-4 max-w-184 opacity-80">
               A developer driven by motion-first design, modern engineering
               practices, and a love for creating interfaces that feel alive.
             </p>
           </div>
 
-          {/* Two Columns */}
           <div
             ref={columnsRef}
             className="grid grid-cols-1 gap-12 md:grid-cols-2"
           >
-            {/* Left Column */}
-            <div className="about-stagger-item flex flex-col gap-6">
+            <div data-stagger-item className="flex flex-col gap-6">
               <p className="type-body text-[1.1rem] leading-relaxed opacity-90">
                 I specialize in building animated, interactive web experiences
                 that combine usability, performance, and visual refinement.
@@ -124,29 +123,17 @@ export default function AboutSection() {
               </p>
             </div>
 
-            {/* Right Column */}
-            <div className="about-stagger-item">
+            <div data-stagger-item>
               <ul className="about-highlights flex flex-col gap-4">
-                <li>
-                  <span className="about-bullet"></span>2+ years in Full-Stack
-                  Engineering
-                </li>
-                <li>
-                  <span className="about-bullet"></span>Specialized in React,
-                  Next.js, TypeScript, GSAP, Tailwind
-                </li>
-                <li>
-                  <span className="about-bullet"></span>Strong background in
-                  UI/UX + motion design
-                </li>
-                <li>
-                  <span className="about-bullet"></span>Experience across
-                  e-commerce, SaaS, healthcare products
-                </li>
-                <li>
-                  <span className="about-bullet"></span>Based in Germany · Open
-                  to remote opportunities
-                </li>
+                {aboutHighlights.map((highlight, index) => (
+                  <li
+                    key={index}
+                    className="relative pl-7 text-[1.05rem] leading-[1.65] opacity-90"
+                  >
+                    <span className="bullet"></span>
+                    {highlight}
+                  </li>
+                ))}
               </ul>
             </div>
           </div>

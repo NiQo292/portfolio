@@ -1,0 +1,12 @@
+@layer components {
+  .exp-glow {
+    background: radial-gradient(
+      circle at 30% 20%,
+      rgba(0, 255, 255, 0.12),
+      transparent 60%
+    );
+    opacity: 0;
+    filter: blur(24px);
+    pointer-events: none;
+  }
+}

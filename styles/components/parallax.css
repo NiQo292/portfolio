@@ -1,0 +1,13 @@
+@layer components {
+  .parallax-fg {
+    will-change: transform;
+  }
+
+  .parallax-mg {
+    will-change: transform;
+  }
+
+  .parallax-bg {
+    will-change: transform;
+  }
+}

@@ -1,0 +1,66 @@
+@layer components {
+  .hero-location-dot {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 9999px;
+    background: radial-gradient(
+      circle,
+      rgba(0, 255, 255, 0.9),
+      rgba(0, 255, 255, 0.1)
+    );
+    box-shadow:
+      0 0 10px rgba(0, 255, 255, 0.8),
+      0 0 18px rgba(0, 255, 255, 0.4);
+  }
+
+  .hero-photo-frame {
+    position: relative;
+    width: clamp(18rem, 28vw, 28rem);
+    height: clamp(24rem, 38vw, 38rem);
+    border-radius: 9999px;
+    overflow: hidden;
+  }
+
+  .hero-photo-frame::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+
+    background: radial-gradient(
+      circle at 20% 0%,
+      rgba(0, 255, 255, 0.55),
+      rgba(0, 255, 255, 0.08) 40%,
+      rgba(255, 255, 255, 0.07) 62%,
+      rgba(0, 0, 0, 1) 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow:
+      0 0 32px rgba(0, 255, 255, 0.25),
+      0 20px 45px rgba(0, 0, 0, 0.85);
+
+    z-index: 2;
+  }
+
+  .hero-photo-glow {
+    position: absolute;
+    inset: -20%;
+    border-radius: inherit;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        circle at 20% 10%,
+        rgba(0, 255, 255, 0.25),
+        transparent 55%
+      ),
+      radial-gradient(
+        circle at 80% 90%,
+        rgba(0, 255, 255, 0.18),
+        transparent 70%
+      );
+    filter: blur(40px);
+    opacity: 0;
+    z-index: 0;
+  }
+}

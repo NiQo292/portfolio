@@ -1,0 +1,115 @@
+@layer components {
+  .nav-sheen {
+    position: absolute;
+    inset: -20%;
+    pointer-events: none;
+    background: linear-gradient(
+      120deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.22) 45%,
+      rgba(255, 255, 255, 0.06) 55%,
+      transparent 100%
+    );
+    opacity: 0;
+    mix-blend-mode: screen;
+    filter: blur(6px);
+  }
+
+  .nav-glow-pulse {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    border: 1px solid rgba(0, 255, 255, 0.4);
+    box-shadow:
+      0 0 18px rgba(0, 255, 255, 0.25),
+      0 0 45px rgba(0, 255, 255, 0.15);
+    opacity: 0;
+    mix-blend-mode: screen;
+  }
+
+  .nav-reflection {
+    position: absolute;
+    inset: -30%;
+    pointer-events: none;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.14) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    mix-blend-mode: screen;
+    opacity: 0.06;
+    filter: blur(10px);
+    transform: translate3d(0, 0, 0);
+  }
+
+  .nav-noise {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      rgba(255, 255, 255, 0.16) 0,
+      rgba(255, 255, 255, 0) 55%
+    );
+    background-size: 3px 3px;
+    mix-blend-mode: soft-light;
+    opacity: 0.03;
+    animation: navNoiseShimmer 8s ease-in-out infinite alternate;
+  }
+
+  @keyframes navNoiseShimmer {
+    from {
+      opacity: 0.02;
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      opacity: 0.05;
+      transform: translate3d(0.5px, -0.5px, 0);
+    }
+  }
+
+  .menu-bg-layer,
+  .menu-bg-layer-2,
+  .menu-vignette {
+    position: absolute;
+    inset: -20%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .menu-bg-layer {
+    background: radial-gradient(
+      circle at 30% 40%,
+      rgba(0, 255, 255, 0.2),
+      rgba(0, 255, 255, 0.08) 40%,
+      transparent 80%
+    );
+    filter: blur(60px);
+    opacity: 0.5;
+    z-index: 1;
+  }
+
+  .menu-bg-layer-2 {
+    background: radial-gradient(
+      circle at 70% 60%,
+      rgba(0, 0, 0, 0.3),
+      transparent 70%
+    );
+    filter: blur(50px);
+    opacity: 0.3;
+    mix-blend-mode: multiply;
+    z-index: 1;
+  }
+
+  .menu-vignette {
+    background: radial-gradient(
+      circle,
+      transparent 45%,
+      rgba(0, 0, 0, 0.45) 100%
+    );
+    z-index: 2;
+  }
+}

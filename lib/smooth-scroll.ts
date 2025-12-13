@@ -37,7 +37,6 @@ export function initSmoothScroll() {
   requestAnimationFrame(raf);
 }
 
-// GSAP proxy — browser safe
 export function initScrollTriggerProxy() {
   const lenisInstance = getLenis();
   if (!lenisInstance || typeof window === "undefined") return;

@@ -1,0 +1,55 @@
+@layer components {
+  /* Spacing Scale */
+  .space-xs {
+    padding: clamp(0.5rem, 0.4rem + 0.3vw, 0.75rem);
+  }
+
+  .space-sm {
+    padding: clamp(1rem, 0.8rem + 0.5vw, 1.5rem);
+  }
+
+  .space-md {
+    padding: clamp(2rem, 1.5rem + 1vw, 3rem);
+  }
+
+  .space-lg {
+    padding: clamp(4rem, 3rem + 2vw, 6rem);
+  }
+
+  .space-xl {
+    padding: clamp(6rem, 4rem + 3vw, 10rem);
+  }
+
+  /* Margin Tokens */
+  .stack-xs > * + * {
+    margin-top: 0.5rem;
+  }
+
+  .stack-sm > * + * {
+    margin-top: 1rem;
+  }
+
+  .stack-md > * + * {
+    margin-top: 2rem;
+  }
+
+  .stack-lg > * + * {
+    margin-top: 4rem;
+  }
+
+  .stack-xl > * + * {
+    margin-top: 6rem;
+  }
+
+  /* Layout container token */
+  .layout-section {
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: clamp(1.5rem, 5vw, 5rem);
+  }
+
+  /* Section spacing for vertical rythm */
+  .section-spacing {
+    margin-top: clamp(6rem, 10vw, 12rem);
+  }
+}

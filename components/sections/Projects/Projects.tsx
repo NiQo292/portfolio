@@ -5,14 +5,16 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRevealTitle } from "@/lib/useRevealTitle";
+import { useSectionBlur } from "@/lib/useSectionBlur";
+import "./Project.css";
+
+// Image Import
+import Nico from "@/public/images/nico.png";
+import Portfolio from "@/public/images/projects/image.png";
 
 gsap.registerPlugin(ScrollTrigger);
 
-import Portfolio from "@/public/images/projects/image.png";
-import Nico from "@/public/images/nico.png";
-import { useSectionBlur } from "@/lib/useSectionBlur";
-
-export default function ProjectsSection() {
+export default function Projects() {
   const sectionRef = useRef<HTMLElement | null>(null);
   useSectionBlur({ ref: sectionRef });
   useRevealTitle({ scopeRef: sectionRef });
@@ -21,40 +23,35 @@ export default function ProjectsSection() {
     if (!sectionRef.current) return;
 
     const ctx = gsap.context(() => {
-      /* ----------------------------------------
-       * Featured project image reveal
-       * ---------------------------------------- */
-      gsap.from(".project-featured-img-wrap", {
+      gsap.from("[data-featured-img-wrap]", {
         y: 60,
         opacity: 0,
         filter: "blur(14px)",
         duration: 1.3,
         ease: "power3.out",
         scrollTrigger: {
-          trigger: ".project-featured-card",
+          trigger: "[data-featured-card]",
           start: "top 85%",
         },
       });
 
-      /* Glow/vignette behind featured image */
       gsap.from(".project-featured-vignette", {
         opacity: 0,
         scale: 0.92,
         duration: 1.4,
         ease: "power2.out",
         scrollTrigger: {
-          trigger: ".project-featured-card",
+          trigger: "[data-featured-card]",
           start: "top 85%",
         },
       });
 
-      /* Content block stagger */
       gsap.from(
         [
-          ".project-title",
-          ".project-desc",
-          ".project-tech-list > span",
-          ".project-featured-content .btn-primary",
+          "[data-project-title]",
+          "[data-project-desc]",
+          "[data-project-tech-list] > span",
+          "[data-featured-content] .btn-primary",
         ],
         {
           y: 30,
@@ -64,16 +61,13 @@ export default function ProjectsSection() {
           ease: "power2.out",
           stagger: 0.15,
           scrollTrigger: {
-            trigger: ".project-featured-card",
+            trigger: "[data-featured-card]",
             start: "top 80%",
           },
         },
       );
 
-      /* ----------------------------------------
-       * Secondary card animations
-       * ---------------------------------------- */
-      const cards = gsap.utils.toArray(".project-card-secondary");
+      const cards = gsap.utils.toArray("[data-project-card-secondary]");
 
       gsap.from(cards, {
         y: 40,
@@ -83,15 +77,12 @@ export default function ProjectsSection() {
         ease: "power2.out",
         stagger: 0.2,
         scrollTrigger: {
-          trigger: ".project-card-secondary",
+          trigger: "[data-project-card-secondary]",
           start: "top 85%",
         },
       });
 
-      /* ----------------------------------------
-       * Parallax floating for featured image
-       * ---------------------------------------- */
-      gsap.to(".project-featured-img-wrap", {
+      gsap.to("[data-featured-img-wrap]", {
         y: -25,
         ease: "none",
         scrollTrigger: {
@@ -108,7 +99,7 @@ export default function ProjectsSection() {
 
   useEffect(() => {
     const card = document.querySelector(
-      ".project-featured-img-wrap",
+      "[data-featured-img-wrap]",
     ) as HTMLElement;
     const glow = document.querySelector(
       ".project-featured-glow",
@@ -128,8 +119,8 @@ export default function ProjectsSection() {
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
 
-      const rotateY = ((x - centerX) / centerX) * 12; // Horizontal tilt
-      const rotateX = -((y - centerY) / centerY) * 12; // Vertical tilt
+      const rotateY = ((x - centerX) / centerX) * 12;
+      const rotateX = -((y - centerY) / centerY) * 12;
 
       gsap.to(card, {
         rotateX,
@@ -194,36 +185,38 @@ export default function ProjectsSection() {
   return (
     <section
       ref={sectionRef}
-      className="projects-section section-spacing relative w-full"
+      className="section-spacing relative w-full"
       id="projects"
     >
-      {/* Content wrapper */}
-      <div className="layout-section relative z-[2] flex flex-col gap-20">
-        {/* Heading */}
+      <div className="layout-section relative z-2 flex flex-col gap-20">
         <h2 className="type-title section-title">My Projects</h2>
 
-        {/* Featured Project */}
-        <div className="project-featured-card">
-          <div className="project-featured-img-wrap">
+        <div data-featured-card className="project-featured-card">
+          <div
+            data-featured-img-wrap
+            className="relative h-72 w-full overflow-hidden rounded-3xl transition-transform duration-200 will-change-transform transform-3d md:h-88 lg:h-104"
+          >
             <div className="project-featured-glow"></div>
             <Image
               src={Portfolio}
               alt="Featured Project Preview"
               fill
-              className="project-featured-img"
+              className="absolute inset-0 z-0 object-cover"
             />
             <div className="project-featured-vignette"></div>
           </div>
 
-          <div className="project-featured-content">
-            <h3 className="project-title">This Portfolio</h3>
-            <p className="project-desc">
+          <div data-featured-content className="flex flex-col gap-6 text-left">
+            <h3 data-project-title className="project-title">
+              This Portfolio
+            </h3>
+            <p data-project-desc className="project-dec">
               A motion-driven developer portfolio built with Next.js,
               TypeScript, GSAP, TailwindCSS and a custom cinematic design system
               focused on interactivity and production-grade engineering.
             </p>
 
-            <div className="project-tech-list">
+            <div data-project-tech-list className="project-tech-list">
               <span>Next.js</span>
               <span>TypeScript</span>
               <span>GSAP</span>
@@ -240,24 +233,28 @@ export default function ProjectsSection() {
           </div>
         </div>
 
-        {/* Secondary grid */}
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
-          <div className="project-card-secondary">
-            <div className="secondary-img-wrap">
+          <div data-project-card-secondary className="project-secondary-card">
+            <div className="relative h-56 w-full overflow-hidden rounded-2xl">
               <Image
                 src={Nico}
                 alt="Bookmarks Project"
                 fill
-                className="secondary-img"
+                className="object-cover"
               />
             </div>
 
-            <h4 className="secondary-title">Bookmark Manager (Old Project)</h4>
-            <p className="secondary-desc">
+            <h4 className="font-[--font-clash] text-xl font-bold">
+              Bookmark Manager (Old Project)
+            </h4>
+            <p className="opacity-85">
               A simple bookmark manager built early in my development journey.
             </p>
 
-            <a href="https://github.com/YOUR_GITHUB" className="secondary-link">
+            <a
+              href="https://github.com/YOUR_GITHUB"
+              className="mt-2 font-semibold text-[rgba(0,255,255,0.75)]"
+            >
               GitHub →
             </a>
           </div>

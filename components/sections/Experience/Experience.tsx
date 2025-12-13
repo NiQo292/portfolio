@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "@/lib/motion";
+import "./Experience.css";
 import { useParallaxLayers } from "@/lib/useParallaxLayers";
 import { useSectionBlur } from "@/lib/useSectionBlur";
 import { useRevealTitle } from "@/lib/useRevealTitle";
@@ -44,15 +45,15 @@ export default function Experience() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const blocks = gsap.utils.toArray<HTMLElement>(".exp-block");
+      const blocks = gsap.utils.toArray<HTMLElement>("[data-exp-block]");
 
       blocks.forEach((block, index) => {
-        const company = block.querySelector(".exp-company");
-        const role = block.querySelector(".exp-role");
-        const bar = block.querySelector(".exp-bar");
-        const period = block.querySelector(".exp-period");
-        const items = block.querySelectorAll(".exp-item");
-        const glow = block.querySelector(".exp-glow");
+        const company = block.querySelector("[data-exp-company]");
+        const role = block.querySelector("[data-exp-role]");
+        const bar = block.querySelector("[data-exp-bar]");
+        const period = block.querySelector("[data-exp-period]");
+        const items = block.querySelectorAll("[data-exp-item]");
+        const glow = block.querySelector("[data-exp-glow]");
 
         if (glow) {
           gsap.fromTo(
@@ -173,29 +174,46 @@ export default function Experience() {
         {experienceData.map((exp, index) => (
           <article
             key={index}
-            className="exp-block stack-md parallax-mg relative"
+            data-exp-block
+            className="stack-md parallax-mg relative"
           >
-            <div className="exp-glow parallax-bg absolute inset-0"></div>
+            <div
+              data-exp-glow
+              className="exp-glow parallax-bg absolute inset-0"
+            ></div>
 
-            <h3 className="exp-company type-subheading parallax-fg relative z-10">
+            <h3
+              data-exp-company
+              className="type-subheading parallax-fg relative z-10"
+            >
               {exp.company}
             </h3>
 
             <div className="stack-xs relative z-10">
-              <h4 className="exp-role type-heading parallax-fg relative inline-block">
+              <h4
+                data-exp-role
+                className="type-heading parallax-fg relative inline-block"
+              >
                 {exp.role}
-                <span className="exp-bar absolute -bottom-1 left-0 block h-[3px] w-full rounded-sm bg-[var(--cyan)]"></span>
+                <span
+                  data-exp-bar
+                  className="absolute -bottom-1 left-0 block h-0.75 w-full rounded-sm bg-(--cyan)"
+                ></span>
               </h4>
             </div>
 
-            <p className="exp-period type-meta parallax-fg relative z-10">
+            <p data-exp-period className="type-meta parallax-fg relative z-10">
               {exp.period}
             </p>
 
-            <ul className="exp-list stack-sm relative z-10">
+            <ul data-exp-list className="stack-sm relative z-10">
               {exp.responsibilities.map((item, idx) => (
-                <li key={idx} className="exp-item parallax-fg">
-                  <span className="exp-bullet"></span>
+                <li
+                  data-exp-item
+                  key={idx}
+                  className="parallax-fg relative pl-7 text-[1.05rem] leading-[1.65] opacity-90"
+                >
+                  <span className="bullet"></span>
                   {item}
                 </li>
               ))}

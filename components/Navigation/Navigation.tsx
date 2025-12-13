@@ -4,7 +4,7 @@ import gsap from "gsap";
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "@/public/images/logo.svg";
-import TextUpDown from "./animations/TextUpDown";
+import TextUpDown from "../animations/TextUpDown";
 import { navLinks, socialLinks } from "@/lib/navigation";
 
 export default function Navigation() {
@@ -19,18 +19,12 @@ export default function Navigation() {
   const reflectionRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
-  // ─────────────────────────────────────────────
-  // SCROLL STATE
-  // ─────────────────────────────────────────────
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // ─────────────────────────────────────────────
-  // NAVBAR MORPH + GLOW + REFLECTION INTENSITY
-  // ─────────────────────────────────────────────
   useEffect(() => {
     if (!navRef.current) return;
 
@@ -52,7 +46,6 @@ export default function Navigation() {
       ease: "power2.out",
     });
 
-    // reflection stronger in pill mode, softer when full width
     gsap.to(reflectionRef.current, {
       opacity: scrolled ? 0.14 : 0.06,
       duration: 0.8,
@@ -60,9 +53,6 @@ export default function Navigation() {
     });
   }, [scrolled]);
 
-  // ─────────────────────────────────────────────
-  // MICRO SHEEN ON HOVER
-  // ─────────────────────────────────────────────
   useEffect(() => {
     const sheen = sheenRef.current;
     const nav = navRef.current;
@@ -85,9 +75,6 @@ export default function Navigation() {
     return () => nav.removeEventListener("mouseenter", onHover);
   }, []);
 
-  // ─────────────────────────────────────────────
-  // DIAGONAL REFLECTION WIPE (LOOP)
-  // ─────────────────────────────────────────────
   useEffect(() => {
     const layer = reflectionRef.current;
     if (!layer) return;
@@ -110,17 +97,13 @@ export default function Navigation() {
     return () => ctx.revert();
   }, []);
 
-  // ─────────────────────────────────────────────
-  // MENU TOGGLE LOGIC
-  // ─────────────────────────────────────────────
   const openMenu = () => {
-    setVisible(true); // mount overlay immediately
+    setVisible(true);
     setMenuOpen(true);
   };
 
   const closeMenu = () => {
     setMenuOpen(false);
-    // unmount happens after GSAP reverse animation
   };
 
   const toggleMenu = () => {
@@ -132,17 +115,13 @@ export default function Navigation() {
     closeMenu();
   };
 
-  // ─────────────────────────────────────────────
-  // MENU OPEN / CLOSE ANIMATION (STAGGER + REVERSE)
-  // ─────────────────────────────────────────────
   useEffect(() => {
     const overlay = overlayRef.current;
     if (!overlay) return;
 
-    const items = overlay.querySelectorAll(".menu-link");
+    const items = overlay.querySelectorAll("[data-menu-link]");
 
     if (menuOpen) {
-      // initial states
       gsap.set(overlay, { opacity: 0, y: "-4%" });
       gsap.set(items, {
         opacity: 0,
@@ -150,7 +129,6 @@ export default function Navigation() {
         filter: "blur(8px)",
       });
 
-      // overlay fade-in
       gsap.to(overlay, {
         opacity: 1,
         y: "0%",
@@ -158,7 +136,6 @@ export default function Navigation() {
         ease: "power3.out",
       });
 
-      // stagger in
       gsap.to(items, {
         opacity: 1,
         y: 0,
@@ -169,7 +146,6 @@ export default function Navigation() {
         delay: 0.15,
       });
     } else {
-      // reverse stagger out
       gsap.to(items, {
         opacity: 0,
         y: -20,
@@ -181,7 +157,6 @@ export default function Navigation() {
           from: "end",
         },
         onComplete: () => {
-          // then overlay fade-out
           gsap.to(overlay, {
             opacity: 0,
             y: "-4%",
@@ -191,7 +166,6 @@ export default function Navigation() {
               setVisible(false);
 
               if (pendingHref) {
-                // Handle anchor links (same page)
                 if (pendingHref.startsWith("#")) {
                   const el = document.querySelector(pendingHref);
                   el?.scrollIntoView({ behavior: "smooth" });
@@ -211,11 +185,10 @@ export default function Navigation() {
   useEffect(() => {
     if (!visible) return;
 
-    const layer1 = overlayRef.current?.querySelector(".menu-bg-layer");
-    const layer2 = overlayRef.current?.querySelector(".menu-bg-layer-2");
+    const layer1 = overlayRef.current?.querySelector("[data-menu-bg-layer]");
+    const layer2 = overlayRef.current?.querySelector("[data-menu-bg-layer-2]");
     if (!layer1 || !layer2) return;
 
-    // Parallax: layer 1 (cyan glow)
     gsap.fromTo(
       layer1,
       { xPercent: -10, yPercent: -8, opacity: 0.4 },
@@ -230,7 +203,6 @@ export default function Navigation() {
       },
     );
 
-    // Parallax: layer 2 (dark haze)
     gsap.fromTo(
       layer2,
       { xPercent: 5, yPercent: -5, opacity: 0.25 },
@@ -250,16 +222,15 @@ export default function Navigation() {
     <>
       <div
         ref={navRef}
-        className="backdrop-blur-0 fixed top-0 right-0 left-0 z-[100] overflow-hidden border border-transparent bg-transparent transition-all"
+        className="backdrop-blur-0 fixed top-0 right-0 left-0 z-100 overflow-hidden border border-transparent bg-transparent transition-all"
       >
-        {/* layered FX */}
         <div ref={sheenRef} className="nav-sheen" />
         <div ref={glowRef} className="nav-glow-pulse" />
         <div ref={reflectionRef} className="nav-reflection" />
         <div className="nav-noise" />
 
         <nav className="flex h-20 items-center justify-center px-8">
-          <div className="flex w-full max-w-[1920px] items-center">
+          <div className="flex w-full max-w-480 items-center">
             <Link className="mr-auto cursor-pointer" href="#hero">
               <Image
                 src={Logo}
@@ -270,18 +241,17 @@ export default function Navigation() {
               />
             </Link>
 
-            {/* Hamburger */}
             <button
               className="group relative flex h-9 w-9 cursor-pointer items-center justify-center"
               onClick={toggleMenu}
             >
               <span
-                className={`absolute h-[3px] w-8 rounded-sm bg-white transition-all duration-300 ${
+                className={`absolute h-0.75 w-8 rounded-sm bg-white transition-all duration-300 ${
                   menuOpen ? "top-4 rotate-45" : "top-2 group-hover:rotate-12"
                 }`}
               />
               <span
-                className={`absolute h-[3px] w-8 rounded-sm bg-white transition-all duration-300 ${
+                className={`absolute h-0.75 w-8 rounded-sm bg-white transition-all duration-300 ${
                   menuOpen ? "top-4 -rotate-45" : "top-6 group-hover:-rotate-12"
                 }`}
               />
@@ -290,35 +260,33 @@ export default function Navigation() {
         </nav>
       </div>
 
-      {/* FULLSCREEN OVERLAY */}
       {visible && (
         <div
           ref={overlayRef}
-          className="menu-overlay fixed top-0 left-0 z-[90] flex h-screen w-full items-center justify-center bg-black/60 backdrop-blur-3xl"
+          className="fixed top-0 left-0 z-90 flex h-screen w-full items-center justify-center overflow-hidden bg-black/60 backdrop-blur-3xl"
         >
-          {/* PARALLAX BACKGROUND LAYERS */}
-          <div className="menu-bg-layer"></div>
-          <div className="menu-bg-layer-2"></div>
+          <div data-menu-bg-layer className="menu-bg-layer"></div>
+          <div data-menu-bg-layer-2 className="menu-bg-layer-2"></div>
           <div className="menu-vignette"></div>
 
-          <nav className="relative z-[5] flex flex-col items-center gap-10 text-5xl">
+          <nav className="relative z-5 flex flex-col items-center gap-10 text-5xl">
             {navLinks.map((link) =>
               link.external ? (
                 <a
                   key={link.label}
                   href={link.href}
                   target="_blank"
-                  className="menu-link"
+                  data-menu-link
                 >
                   <TextUpDown>{link.label}</TextUpDown>
                 </a>
               ) : (
                 <button
                   key={link.label}
-                  className="menu-link"
+                  data-menu-link
                   onClick={() => {
                     scrollTo(link.href);
-                    closeMenu(); // important
+                    closeMenu();
                   }}
                 >
                   <TextUpDown>{link.label}</TextUpDown>
@@ -326,7 +294,6 @@ export default function Navigation() {
               ),
             )}
 
-            {/* Socials inside nav menu */}
             <div className="mt-10 flex gap-6 text-2xl opacity-80">
               {socialLinks.map((social) => (
                 <a

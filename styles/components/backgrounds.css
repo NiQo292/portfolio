@@ -1,0 +1,47 @@
+@layer components {
+  .global-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -10;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        circle at 10% 0%,
+        rgba(0, 255, 255, 0.14),
+        transparent 55%
+      ),
+      radial-gradient(
+        circle at 85% 80%,
+        rgba(0, 255, 255, 0.12),
+        transparent 60%
+      ),
+      radial-gradient(circle at 50% 120%, rgba(0, 0, 0, 0.9), #030303 85%);
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: saturate(1.1) brightness(1.05);
+  }
+
+  .global-vignette {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -9;
+
+    background: radial-gradient(
+      circle,
+      transparent 55%,
+      rgba(0, 0, 0, 0.3) 100%
+    );
+  }
+
+  .section-blur-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 999;
+    pointer-events: none;
+    backdrop-filter: blur(0px);
+    opacity: 0;
+    transform: translateZ(0);
+    will-change: backdrop-filter, opacity;
+  }
+}

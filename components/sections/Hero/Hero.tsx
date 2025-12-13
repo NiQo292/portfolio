@@ -5,6 +5,7 @@ import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "@/lib/motion";
+import "./Hero.css";
 import Portrait from "@/public/images/nico.jpeg";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -21,7 +22,6 @@ export default function Hero() {
 
   const name = "Nico Haubold";
 
-  // Render letters as React spans (no SplitText / no innerHTML mutation).
   const nameChars = useMemo(() => name.split(""), [name]);
 
   useEffect(() => {
@@ -32,11 +32,10 @@ export default function Hero() {
         typeof window !== "undefined" &&
         window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 
-      const chars = gsap.utils.toArray<HTMLElement>(".hero-name-char");
+      const chars = gsap.utils.toArray<HTMLElement>("[data-name-char]");
 
-      // If for any reason spans aren't found, do nothing (but text still renders).
       if (!prefersReduced && chars.length) {
-        gsap.set(chars, { opacity: 1, y: 0, filter: "blur(0px)" }); // baseline
+        gsap.set(chars, { opacity: 1, y: 0, filter: "blur(0px)" });
 
         gsap.from(chars, {
           y: 70,
@@ -46,7 +45,7 @@ export default function Hero() {
           duration: 1.15,
           ease: "power3.out",
           delay: 0.15,
-          clearProps: "filter,transform", // prevent “stuck” styles
+          clearProps: "filter,transform",
         });
       }
 
@@ -118,48 +117,48 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="hero relative flex min-h-screen w-full items-center overflow-hidden pt-[var(--nav-height)] lg:pt-0"
+      className="relative flex min-h-screen w-full items-center overflow-hidden pt-(--nav-height) lg:pt-0"
       id="hero"
     >
-      <div className="layout-section hero-inner relative z-[2] grid grid-cols-1 items-center gap-x-10 gap-y-14 md:grid-cols-12">
-        {/* TEXT */}
+      <div className="layout-section relative z-2 grid grid-cols-1 items-center gap-x-10 gap-y-14 md:grid-cols-12">
         <div ref={textGroupRef} className="flex flex-col gap-6 md:col-span-7">
           <p className="hero-kicker type-meta tracking-[0.25em] uppercase">
             Full-Stack Developer · Germany
           </p>
 
-          {/* H1 now always renders (no DOM replacement), GSAP only animates spans */}
           <h1 className="hero-name type-display">
             {nameChars.map((ch, i) => (
-              <span key={`${ch}-${i}`} className="hero-name-char inline-block">
+              <span key={`${ch}-${i}`} data-name-char className="inline-block">
                 {ch === " " ? "\u00A0" : ch}
               </span>
             ))}
           </h1>
 
-          <p ref={roleRef} className="hero-role type-heading">
+          <p ref={roleRef} className="type-heading max-w-160">
             I build animated, experience-driven web interfaces with
             production-grade full-stack foundations.
           </p>
 
-          <p ref={locationRef} className="hero-location type-meta">
+          <p
+            ref={locationRef}
+            className="type-meta flex items-center gap-[0.65rem]"
+          >
             <span className="hero-location-dot" />
             Based in Germany • Available for Frontend / Full-Stack roles
           </p>
         </div>
 
-        {/* PORTRAIT */}
         <div className="flex justify-center md:col-span-5 md:justify-end">
           <div ref={photoFrameRef} className="hero-photo-frame">
             <div ref={photoGlowRef} className="hero-photo-glow" />
 
-            <div className="hero-photo">
+            <div className="absolute inset-0 h-full w-full overflow-hidden rounded-full">
               <Image
                 src={Portrait}
                 alt="Portrait of Nico Haubold"
                 fill
                 priority
-                className="hero-photo-img"
+                className="absolute inset-0 h-full w-full object-cover"
               />
             </div>
           </div>

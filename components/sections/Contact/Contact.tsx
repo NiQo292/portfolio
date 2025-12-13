@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "@/lib/motion";
 import { useSectionBlur } from "@/lib/useSectionBlur";
 import { useRevealTitle } from "@/lib/useRevealTitle";
+import "./Contact.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -40,14 +41,11 @@ export default function Contact() {
     }
   };
 
-  /* -------------------------------------------
-   * Opening reveal
-   * ------------------------------------------- */
   useEffect(() => {
     if (!sectionRef.current) return;
 
     const ctx = gsap.context(() => {
-      gsap.from(".contact-grid", {
+      gsap.from("[data-contact-grid]", {
         y: 50,
         opacity: 0,
         filter: "blur(12px)",
@@ -63,9 +61,6 @@ export default function Contact() {
     return () => ctx.revert();
   }, []);
 
-  /* -------------------------------------------
-   * Liquid blob movement
-   * ------------------------------------------- */
   useEffect(() => {
     const shell = shellRef.current;
     const liquid = liquidRef.current;
@@ -91,9 +86,6 @@ export default function Contact() {
     };
   }, []);
 
-  /* -------------------------------------------
-   * Cinematic Thank You Modal
-   * ------------------------------------------- */
   const openModal = () => {
     const modal = modalRef.current;
     if (!modal) return;
@@ -107,7 +99,7 @@ export default function Contact() {
         ease: "power2.out",
       })
       .fromTo(
-        ".contact-modal-content",
+        "[data-modal-content]",
         {
           y: 80,
           opacity: 0,
@@ -129,7 +121,7 @@ export default function Contact() {
 
     gsap
       .timeline()
-      .to(".contact-modal-content", {
+      .to("[data-modal-content]", {
         y: 60,
         opacity: 0,
         filter: "blur(14px)",
@@ -146,11 +138,8 @@ export default function Contact() {
       });
   };
 
-  /* -------------------------------------------
-   * Button feedback animation (Morph + Glow)
-   * ------------------------------------------- */
   const animateSuccessButton = () => {
-    const btn = document.querySelector(".contact-submit") as HTMLElement;
+    const btn = document.querySelector("[data-submit]") as HTMLElement;
     if (!btn) return;
 
     gsap
@@ -169,9 +158,6 @@ export default function Contact() {
       });
   };
 
-  /* -------------------------------------------
-   * Form interactions
-   * ------------------------------------------- */
   const triggerRipple = () => {
     gsap.fromTo(
       liquidRef.current,
@@ -222,33 +208,29 @@ export default function Contact() {
       setStatus("error");
       setError("Something went wrong. Please try again later.");
     } finally {
-      // Reset back after a few seconds
       setTimeout(() => setStatus("idle"), 4000);
     }
   };
 
   return (
     <>
-      {/* SECTION */}
       <section
         ref={sectionRef}
-        className="contact-section layout-section stack-xl relative"
+        className="layout-section stack-xl relative"
         id="contact"
       >
-        {/* Header */}
-        <header className="contact-header">
+        <header className="max-w-160">
           <h2 className="type-title section-title">Let&apos;s work together</h2>
-          <p className="type-body contact-sub">
+          <p className="type-body mt-3 opacity-80">
             Tell me about your project, role, or idea. I reply quickly.
           </p>
         </header>
 
-        <div className="contact-grid">
-          {/* Meta */}
-          <div className="contact-meta">
-            <div className="contact-meta-item">
+        <div data-contact-grid className="contact-grid">
+          <div className="flex flex-col gap-7">
+            <div className="flex flex-col gap-[0.4rem]">
               <p className="type-meta">Primary email</p>
-              <div className="contact-email-wrap">
+              <div className="relative inline-block">
                 <a
                   href="mailto:n.haubold29@gmail.com"
                   className="contact-meta-link type-body"
@@ -265,26 +247,25 @@ export default function Contact() {
               </div>
             </div>
 
-            <div className="contact-meta-item">
+            <div className="flex flex-col gap-[0.4rem]">
               <p className="type-meta">Based in</p>
               <p className="type-body">Germany · Open to remote</p>
             </div>
 
-            <div className="contact-meta-item">
+            <div className="flex flex-col gap-[0.4rem]">
               <p className="type-meta">Availability</p>
-              <p className="type-body">
-                Open to frontend / full-stack roles & selected freelance work.
-              </p>
+              <p className="type-body">Open to frontend / full-stack roles</p>
             </div>
           </div>
 
-          {/* FORM */}
-          <div ref={shellRef} className="contact-shell">
+          <div ref={shellRef} className="contact-shell overflow-visible">
             <div ref={liquidRef} className="contact-liquid" />
 
             <form className="contact-form" onSubmit={handleSubmit}>
               <label className="contact-field">
-                <span className="contact-label type-label">Name</span>
+                <span className="type-label text-[0.75rem] tracking-[0.12rem] uppercase opacity-80">
+                  Name
+                </span>
                 <input
                   name="name"
                   type="text"
@@ -298,7 +279,9 @@ export default function Contact() {
               </label>
 
               <label className="contact-field">
-                <span className="contact-label type-label">Email</span>
+                <span className="type-label text-[0.75rem] tracking-[0.12rem] uppercase opacity-80">
+                  Email
+                </span>
                 <input
                   name="email"
                   type="email"
@@ -312,7 +295,9 @@ export default function Contact() {
               </label>
 
               <label className="contact-field contact-field--full">
-                <span className="contact-label type-label">Message</span>
+                <span className="type-label text-[0.75rem] tracking-[0.12rem] uppercase opacity-80">
+                  Message
+                </span>
                 <textarea
                   name="message"
                   rows={5}
@@ -329,6 +314,7 @@ export default function Contact() {
                 <button
                   type="submit"
                   disabled={status === "loading"}
+                  data-submit
                   className={`contact-submit contact-submit--${status}`}
                 >
                   {status === "loading" && (
@@ -348,7 +334,11 @@ export default function Contact() {
                   {status === "idle" && "Send Message"}
                 </button>
 
-                {error && <p className="contact-error type-meta">{error}</p>}
+                {error && (
+                  <p className="color-[rgba(255,140,140,0.9)] type-meta">
+                    {error}
+                  </p>
+                )}
               </div>
             </form>
           </div>
@@ -356,17 +346,19 @@ export default function Contact() {
         <div></div>
       </section>
 
-      {/* CINEMATIC FULLSCREEN MODAL */}
-      <div ref={modalRef} className="contact-modal">
+      <div
+        ref={modalRef}
+        className="pointer-events-none fixed inset-0 z-999 grid place-items-center opacity-0"
+      >
         <div className="contact-modal-backdrop" onClick={closeModal} />
-        <div className="contact-modal-content">
+        <div data-modal-content className="contact-modal-content">
           <h3 className="type-heading">Thank you!</h3>
           <p className="type-body">
             Your message has been sent successfully. I will get back to you
             shortly.
           </p>
           <button
-            className="btn-primary contact-modal-close"
+            className="btn-primary mt-6 px-[1.3rem] py-3"
             onClick={closeModal}
           >
             Close

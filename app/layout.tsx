@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navigation from "@/components/Navigation";
+import Navigation from "@/components/Navigation/Navigation";
 import { clashDisplay, satoshi } from "./fonts";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
-import Footer from "@/components/Footer";
+import Footer from "@/components/Footer/Footer";
 
 export const metadata: Metadata = {
   title: "Nico Haubold - Portfolio",
@@ -21,10 +21,8 @@ export default function RootLayout({
       <body
         className={`${clashDisplay.variable} ${satoshi.variable} relative antialiased`}
       >
-        {/* GLOBAL BACKGROUND LAYER */}
         <div className="global-bg" />
 
-        {/* OPTIONAL: GLOBAL VIGNETTE */}
         <div className="global-vignette" />
         <SmoothScrollProvider>
           <Navigation />

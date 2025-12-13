@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useSmoothScroll } from "@/lib/useSmoothScroll";
 import { navLinks, socialLinks } from "@/lib/navigation";
-
-import TextUpDown from "./animations/TextUpDown";
+import TextUpDown from "../animations/TextUpDown";
+import "./Footer.css";
+import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -22,7 +22,6 @@ export default function Footer() {
 
     const nameEl = nameRef.current;
 
-    // Split text manually
     const letters = nameEl.innerText.split("");
     nameEl.innerHTML = letters
       .map((l) => `<span class="footer-letter">${l}</span>`)
@@ -39,7 +38,7 @@ export default function Footer() {
     });
 
     tl.to(".footer-letter", {
-      opacity: 0.08, // soft watermark opacity
+      opacity: 0.08,
       y: 0,
       blur: 0,
       duration: 1.1,
@@ -50,44 +49,26 @@ export default function Footer() {
 
   return (
     <>
-      {/* This DIV scrolls normally and triggers animation */}
-      <div ref={triggerRef} className="footer-trigger-zone"></div>
+      <div
+        ref={triggerRef}
+        className="pointer-events-none h-[40vh] w-full"
+      ></div>
 
-      {/* The actual fixed cinematic footer */}
-      <footer className="footer-fixed">
-        <div className="footer-inner">
-          {/* Watermark Name */}
-          <h1 ref={nameRef} className="footer-name">
+      <footer className="pointer-events-none fixed bottom-0 left-0 -z-1 flex h-[65vh] w-full items-end">
+        <div className="pointer-events-auto relative flex w-full flex-col justify-end px-16 py-12">
+          <h1
+            ref={nameRef}
+            className="pointer-events-none absolute bottom-[20%] left-16 font-[--font-clash] text-[clamp(6rem,14vw,14rem)] font-bold text-white opacity-100 mix-blend-lighten select-none"
+          >
             Nico Haubold
           </h1>
 
-          {/* Links */}
-          <div className="footer-content">
+          <div className="mb-12 flex flex-col gap-8 md:flex-row md:gap-20">
             <div className="footer-col">
               <h3 className="type-heading">ABOUT</h3>
-              {/* {navLinks.about.map((link) => (
-                <button
-                  key={link.name}
-                  className="footer-link text-left"
-                  onClick={() => scrollTo(link.href)}
-                >
-                  <span className="footer-row">
-                    <span className="footer-text-wrapper">
-                      <TextUpDown className="footer-text">
-                        {link.name}
-                      </TextUpDown>
-                    </span>
-                  </span>
-                </button>
-              ))} */}
               {navLinks.map((link) =>
                 link.external ? (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    target="_blank"
-                    className="footer-link"
-                  >
+                  <a key={link.label} href={link.href} target="_blank">
                     <span className="footer-row">
                       <span className="footer-text-wrapper">
                         <TextUpDown className="footer-text">
@@ -97,11 +78,7 @@ export default function Footer() {
                     </span>
                   </a>
                 ) : (
-                  <button
-                    key={link.label}
-                    onClick={() => scrollTo(link.href)}
-                    className="footer-link"
-                  >
+                  <button key={link.label} onClick={() => scrollTo(link.href)}>
                     <span className="footer-row">
                       <span className="footer-text-wrapper">
                         <TextUpDown className="footer-text">
@@ -117,12 +94,7 @@ export default function Footer() {
             <div className="footer-col">
               <h3 className="type-heading">SOCIALS</h3>
               {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  className="footer-link"
-                >
+                <Link key={social.label} href={social.href} target="_blank">
                   <span className="footer-row">
                     <span className="footer-icon">{social.icon}</span>
 
@@ -132,12 +104,14 @@ export default function Footer() {
                       </TextUpDown>
                     </span>
                   </span>
-                </a>
+                </Link>
               ))}
             </div>
           </div>
 
-          <p className="footer-copy">&copy; 2025 Nico Haubold</p>
+          <p className="mt-4 text-[0.9rem] opacity-80">
+            &copy; 2025 Nico Haubold
+          </p>
         </div>
       </footer>
     </>

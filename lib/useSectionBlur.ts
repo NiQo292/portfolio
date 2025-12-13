@@ -27,9 +27,6 @@ export function useSectionBlur({
     const section = ref.current;
     if (!section) return;
 
-    // -------------------------------------------------------
-    // 1. Create overlay for blur (if not already present)
-    // -------------------------------------------------------
     let overlay = section.querySelector(".section-blur-overlay") as HTMLElement;
 
     if (!overlay) {
@@ -38,7 +35,6 @@ export function useSectionBlur({
       section.appendChild(overlay);
     }
 
-    // Always ensure it's on top visually
     overlay.style.position = "absolute";
     overlay.style.inset = "0";
     overlay.style.pointerEvents = "none";
@@ -47,14 +43,10 @@ export function useSectionBlur({
     overlay.style.backdropFilter = "blur(0px)";
     overlay.style.transition = "none";
 
-    // Ensure parent is a positioning context
     if (getComputedStyle(section).position === "static") {
       section.style.position = "relative";
     }
 
-    // -------------------------------------------------------
-    // 2. Animate overlay instead of the section
-    // -------------------------------------------------------
     const ctx = gsap.context(() => {
       gsap.to(overlay, {
         opacity: 1,
@@ -68,7 +60,6 @@ export function useSectionBlur({
         },
       });
 
-      // Fade the content subtly while keeping it visible
       gsap.to(section, {
         opacity: fadeTo,
         ease: "none",

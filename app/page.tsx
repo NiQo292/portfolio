@@ -1,11 +1,10 @@
-import Footer from "@/components/Footer";
-import Hero from "@/pages/Hero";
+import Hero from "@/components/sections/Hero/Hero";
 import Section from "@/components/Section";
-import About from "@/pages/About";
-import Contact from "@/pages/Contact";
-import Experience from "@/pages/Experience";
-import Projects from "@/pages/Projects";
-import TechStack from "@/pages/TechStack";
+import About from "@/components/sections/About/About";
+import Contact from "@/components/sections/Contact/Contact";
+import Experience from "@/components/sections/Experience/Experience";
+import Projects from "@/components/sections/Projects/Projects";
+import TechStack from "@/components/sections/Techstack/Techstack";
 
 export default function Home() {
   return (

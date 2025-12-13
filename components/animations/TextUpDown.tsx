@@ -4,7 +4,7 @@ import { ReactNode, useRef } from "react";
 import gsap from "gsap";
 
 type Props = {
-  children: ReactNode; // you pass plain text everywhere, so this is safe
+  children: ReactNode;
   className?: string;
 };
 
@@ -84,7 +84,6 @@ export default function TextUpDown({ children, className = "" }: Props) {
               overflow: "hidden",
             }}
           >
-            {/* top letter (initial visible) */}
             <span
               ref={setTopRef(i)}
               style={{
@@ -96,7 +95,6 @@ export default function TextUpDown({ children, className = "" }: Props) {
               {ch}
             </span>
 
-            {/* bottom letter (initial hidden below) */}
             <span
               ref={setBottomRef(i)}
               style={{

@@ -1,0 +1,77 @@
+@layer components {
+  /* H1 */
+  .type-display {
+    font-family: var(--font-clash), sans-serif;
+    font-size: clamp(3rem, 1.8rem + 4vw, 6rem);
+    line-height: 1.05;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+
+  /* H2 */
+  .type-title {
+    font-family: var(--font-clash), sans-serif;
+    font-size: clamp(2.25rem, 1.4rem + 3vw, 4.5rem);
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: 0.015em;
+  }
+
+  /* H3 */
+  .type-heading {
+    font-family: var(--font-clash), sans-serif;
+    font-size: clamp(1.75rem, 1.2rem + 2.2vw, 3rem);
+    line-height: 1.15;
+    font-weight: 700;
+  }
+
+  /* H4 */
+  .type-subheading {
+    font-family: var(--font-clash), sans-serif;
+    font-size: clamp(1.5rem, 1.1rem + 1.5vw, 2.25rem);
+    line-height: 1.2;
+    font-weight: 700;
+  }
+
+  /* --- Body Text --- */
+  .type-body {
+    font-family: var(--font-body), sans-serif;
+    font-size: clamp(1rem, 0.9rem + 0.4vw, 1.25rem);
+    line-height: 1.65;
+    font-weight: 450;
+    letter-spacing: 0.01em;
+    color: rgba(255, 255, 255, 0.88);
+  }
+
+  /* Dates / metadata */
+  .type-meta {
+    font-family: var(--font-body), sans-serif;
+    font-size: clamp(0.9rem, 0.85rem + 0.3vw, 1.1rem);
+    line-height: 1.5;
+    letter-spacing: 0.18em;
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  .type-list {
+    font-family: var(--font-body), sans-serif;
+    font-size: clamp(1rem, 0.95rem + 0.4vw, 1.2rem);
+    line-height: 1.7;
+  }
+
+  .type-label {
+    font-family: var(--font-body), sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .type-input {
+    font-family: var(--font-body), sans-serif;
+    font-size: 1rem;
+  }
+
+  .type-placeholder::placeholder {
+    opacity: 0.5;
+  }
+}

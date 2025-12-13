@@ -5,6 +5,7 @@ import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "@/lib/motion";
+import "./Techstack.css";
 
 // Brand Logos import
 import ReactLogo from "@/public/images/techstack/react.svg";
@@ -78,12 +79,11 @@ export default function TechStack() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const groups = gsap.utils.toArray<HTMLElement>(".ts-group");
+      const groups = gsap.utils.toArray<HTMLElement>("[data-ts-group]");
 
       groups.forEach((group) => {
-        const heading = group.querySelector(".ts-heading");
-        const icons = group.querySelectorAll(".ts-item");
-
+        const heading = group.querySelector("[data-ts-heading]");
+        const icons = group.querySelectorAll("[data-ts-item]");
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: group,
@@ -114,12 +114,11 @@ export default function TechStack() {
         );
       });
 
-      const cards = gsap.utils.toArray<HTMLElement>(".ts-card");
+      const cards = gsap.utils.toArray<HTMLElement>("[data-ts-card]");
 
       cards.forEach((card) => {
-        const glow = card.querySelector(".ts-glow") as HTMLElement;
-        const inner = card.querySelector(".ts-inner") as HTMLElement;
-
+        const glow = card.querySelector("[data-ts-glow]") as HTMLElement;
+        const inner = card.querySelector("[data-ts-inner]") as HTMLElement;
         let hover = false;
 
         const onMove = (e: MouseEvent) => {
@@ -204,9 +203,10 @@ export default function TechStack() {
         {techStack.map((section) => (
           <div
             key={section.category}
-            className="ts-group grid grid-cols-1 gap-x-10 gap-y-10 md:col-span-12 md:grid-cols-12"
+            data-ts-group
+            className="grid grid-cols-1 gap-x-10 gap-y-10 md:col-span-12 md:grid-cols-12"
           >
-            <h3 className="ts-heading type-subheading md:col-span-4">
+            <h3 className="type-subheading md:col-span-4" data-ts-heading>
               {section.category}
             </h3>
 
@@ -214,18 +214,22 @@ export default function TechStack() {
               {section.items.map((tech) => (
                 <li
                   key={tech.name}
-                  className="ts-item ts-card type-list-item relative flex items-center gap-3"
+                  data-ts-item
+                  data-ts-card
+                  className="relative flex items-center gap-3 px-2 py-1 perspective-[1000px] transform-3d"
                 >
-                  {/* Glow layer */}
-                  <div className="ts-inner">
-                    <div className="ts-glow"></div>
+                  <div
+                    className="relative z-2 flex items-center gap-3 transform-3d"
+                    data-ts-inner
+                  >
+                    <div data-ts-glow className="ts-glow" />
 
                     <Image
                       src={tech.logo}
                       alt={tech.name}
                       width={32}
                       height={32}
-                      className="ts-icon h-10 w-10 object-contain"
+                      className="mr-3 h-10 w-10 object-contain"
                     />
 
                     <p className="type-body min-w-fit">{tech.name}</p>
