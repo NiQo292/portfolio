@@ -65,9 +65,14 @@ export default function Experience() {
         className="layout-section stack-xl relative"
         id="experience"
       >
-        <h2 className="section-title type-title parallax-fg">
-          My Working Experience
-        </h2>
+        <header className="w-full text-center">
+          <h2 className="section-title type-title parallax-fg w-full text-center">
+            My Working Experience
+          </h2>
+          <h3 className="type-subheading mt-3 opacity-80">
+            Where I&apos;ve honed my skills
+          </h3>
+        </header>
 
         {experienceData.map((exp, index) => (
           <article

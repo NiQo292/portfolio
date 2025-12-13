@@ -94,7 +94,12 @@ export default function TechStack() {
       className="layout-section stack-xl"
       id="techstack"
     >
-      <h2 className="section-title type-title">My Tech-Stack</h2>
+      <header className="section-title w-full text-center">
+        <h2 className="type-title w-full text-center">My Tech-Stack</h2>
+        <h3 className="type-subheading mt-3 opacity-80">
+          Technologies I Use to create wonders
+        </h3>
+      </header>
 
       <div className="grid grid-cols-1 gap-x-12 gap-y-24 md:grid-cols-12">
         {techStack.map((section) => (

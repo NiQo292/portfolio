@@ -121,11 +121,11 @@ export default function Contact() {
         className="layout-section stack-xl relative mb-40"
         id="contact"
       >
-        <header className="max-w-160">
+        <header className="w-full text-center">
           <h2 className="type-title section-title">Let&apos;s work together</h2>
-          <p className="type-body mt-3 opacity-80">
+          <h3 className="type-subheading mt-3 opacity-80">
             Tell me about your project, role, or idea. I reply quickly.
-          </p>
+          </h3>
         </header>
 
         <div data-contact-grid className="contact-grid">
