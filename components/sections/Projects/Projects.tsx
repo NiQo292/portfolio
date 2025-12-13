@@ -10,7 +10,7 @@ import "./Project.css";
 
 // Image Import
 import Nico from "@/public/images/nico.png";
-import Portfolio from "@/public/images/projects/image.png";
+import Portfolio from "@/public/images/projects/portfolio_image.jpeg";
 
 gsap.registerPlugin(ScrollTrigger);
 
