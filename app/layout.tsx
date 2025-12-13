@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navigation from "@/components/Navigation/Navigation";
 import { clashDisplay, satoshi } from "./fonts";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import Footer from "@/components/Footer/Footer";
+import Navigation from "@/components/Navigation/Navigation";
 
 export const metadata: Metadata = {
   title: "Nico Haubold - Portfolio",
