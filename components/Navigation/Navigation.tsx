@@ -21,6 +21,8 @@ export default function Navigation() {
   const navRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
+  const pendingSectionRef = useRef<string | null>(null);
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", onScroll);
@@ -45,38 +47,34 @@ export default function Navigation() {
   useEffect(() => {
     if (!overlayRef.current) return;
 
-    animateMenu(overlayRef.current, menuOpen, () => {
-      setVisible(false);
+    const isOpening = menuOpen;
+    animateMenu(overlayRef.current, isOpening, () => {
+      if (!isOpening) {
+        setVisible(false);
+      }
+
+      if (pendingSectionRef.current) {
+        const target = document.querySelector(pendingSectionRef.current);
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth" });
+        }
+        pendingSectionRef.current = null;
+      }
     });
   }, [menuOpen]);
 
   useEffect(() => {
-    if (!visible) return;
-
-    const scrollY = window.scrollY;
-
-    document.body.style.position = "fixed";
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.left = "0";
-    document.body.style.right = "0";
-    document.body.style.width = "100%";
-    document.body.style.overflow = "hidden";
-
-    document.body.style.touchAction = "none";
-
-    return () => {
-      const y =
-        Math.abs(parseInt(document.body.style.top || "0", 10)) || scrollY;
-
-      document.body.style.position = "";
-      document.body.style.top = "";
-      document.body.style.left = "";
-      document.body.style.right = "";
-      document.body.style.width = "";
+    if (visible) {
+      document.body.style.overflow = "hidden";
+      document.body.style.touchAction = "none";
+    } else {
       document.body.style.overflow = "";
       document.body.style.touchAction = "";
+    }
 
-      window.scrollTo(0, y);
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
     };
   }, [visible]);
 
@@ -87,6 +85,11 @@ export default function Navigation() {
 
   const closeMenu = () => {
     setMenuOpen(false);
+  };
+
+  const handleNavClick = (href: string) => {
+    pendingSectionRef.current = href;
+    closeMenu();
   };
 
   return (
@@ -158,13 +161,7 @@ export default function Navigation() {
                   <button
                     key={link.label}
                     data-menu-link
-                    onClick={() => {
-                      const target = document.querySelector(link.href);
-                      if (target) {
-                        target.scrollIntoView({ behavior: "smooth" });
-                      }
-                      closeMenu();
-                    }}
+                    onClick={() => handleNavClick(link.href)}
                   >
                     <span className="menu-link-metrics">
                       <TextUpDown>{link.label}</TextUpDown>
