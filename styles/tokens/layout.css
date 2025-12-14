@@ -50,6 +50,6 @@
 
   /* Section spacing for vertical rythm */
   .section-spacing {
-    margin-top: clamp(6rem, 10vw, 12rem);
+    margin-top: clamp(10rem, 12vw, 16rem);
   }
 }

@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useEffect, useLayoutEffect, useRef } from "react";
+import React, { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { motion } from "@/lib/motion";
 import "./Experience.css";
 import { useParallaxLayers } from "@/lib/useParallaxLayers";
 import { useSectionBlur } from "@/lib/useSectionBlur";

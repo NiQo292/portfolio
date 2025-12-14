@@ -159,7 +159,10 @@ export default function Navigation() {
                     key={link.label}
                     data-menu-link
                     onClick={() => {
-                      scrollTo(link.href);
+                      const target = document.querySelector(link.href);
+                      if (target) {
+                        target.scrollIntoView({ behavior: "smooth" });
+                      }
                       closeMenu();
                     }}
                   >
