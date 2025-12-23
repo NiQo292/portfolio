@@ -11,6 +11,7 @@ import "./projects.css";
 // Image Import
 import Nico from "@/public/images/nico.png";
 import Portfolio from "@/public/images/projects/portfolio_image.jpeg";
+import Apple from "@/public/images/projects/apple.png";
 import { initProjectsAnimations } from "./projects.anim";
 import { initFeaturedHover } from "./projects.hover.desktop";
 import { media, withMatchMedia } from "@/lib/animation";
@@ -64,7 +65,7 @@ export default function Projects() {
           <div
             ref={featuredRef}
             data-featured-img-wrap
-            className="relative h-72 w-full overflow-hidden rounded-3xl transition-transform duration-200 will-change-transform transform-3d md:h-88 lg:h-104"
+            className="relative h-72 w-full overflow-hidden rounded-3xl will-change-transform transform-3d md:h-88 lg:h-104"
           >
             <div className="project-featured-glow"></div>
             <Image
@@ -104,28 +105,34 @@ export default function Projects() {
         </div>
 
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
-          <div data-project-card-secondary className="project-secondary-card">
+          <div
+            data-project-card-secondary
+            className="project-secondary-card flex flex-col gap-6"
+          >
             <div className="relative h-56 w-full overflow-hidden rounded-2xl">
               <Image
-                src={Nico}
-                alt="Bookmarks Project"
+                src={Apple}
+                alt="Apple iPhone 15 Website Clone"
                 fill
                 className="object-cover"
               />
             </div>
 
-            <h4 className="font-[--font-clash] text-xl font-bold">
-              Bookmark Manager (Old Project)
+            <h4 className="text-xl font-(--font-clash)">
+              Apple iPhone 15 Website Clone
             </h4>
             <p className="opacity-85">
-              A simple bookmark manager built early in my development journey.
+              A pixel-perfect clone of the Apple iPhone 15 product page,
+              recreated using Next.js and TailwindCSS to demonstrate the
+              integration of 3D models and responsive design principles.
             </p>
 
             <a
-              href="https://github.com/YOUR_GITHUB"
+              href="https://apple-clone-tawny-three.vercel.app/"
+              target="_blank"
               className="mt-2 font-semibold text-[rgba(0,255,255,0.75)]"
             >
-              GitHub →
+              View Site →
             </a>
           </div>
         </div>
