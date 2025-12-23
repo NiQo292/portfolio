@@ -6,7 +6,7 @@ export const media = {
 };
 
 export function withMatchMedia(
-  setup: (mm: gsap.MatchMedia) => void | gsap.ContextFunc,
+  setup: (mm: gsap.MatchMedia) => void | (() => void),
 ) {
   const mm = gsap.matchMedia();
   const cleanup = setup(mm);
