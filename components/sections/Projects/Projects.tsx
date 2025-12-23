@@ -1,17 +1,19 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRevealTitle } from "@/lib/useRevealTitle";
 import { useSectionBlur } from "@/lib/useSectionBlur";
-import "./Project.css";
+import "./projects.css";
 
 // Image Import
 import Nico from "@/public/images/nico.png";
 import Portfolio from "@/public/images/projects/portfolio_image.jpeg";
-import { initFeaturedHover, initProjectsAnimations } from "./Project.anim";
+import { initProjectsAnimations } from "./projects.anim";
+import { initFeaturedHover } from "./projects.hover.desktop";
+import { media, withMatchMedia } from "@/lib/animation";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -25,14 +27,23 @@ export default function Projects() {
   useLayoutEffect(() => {
     if (!sectionRef.current || !featuredRef.current) return;
 
+    let cleanupHover: (() => void) | undefined;
+
+    const cleanupMM = withMatchMedia((mm) => {
+      mm.add(media.desktop, () => {
+        cleanupHover = initFeaturedHover(featuredRef.current!);
+      });
+    });
+
     const ctx = gsap.context(() => {
       initProjectsAnimations(sectionRef.current!);
-      const cleanupHover = initFeaturedHover(featuredRef.current!);
-
-      return cleanupHover;
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      cleanupHover?.();
+      cleanupMM();
+      ctx.revert();
+    };
   }, []);
 
   return (

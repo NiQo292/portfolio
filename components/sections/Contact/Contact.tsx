@@ -1,17 +1,16 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useRevealTitle } from "@/lib/useRevealTitle";
-import "./Contact.css";
-
+import "./contact.css";
+import { gsap } from "gsap";
 import {
-  initContactReveal,
-  initContactLiquid,
   openContactModal,
   closeContactModal,
   animateSubmitSuccess,
   rippleLiquid,
-} from "./Contact.anim";
+} from "./contact.anim.shared";
+import { initContactAnimations } from "./contact.anim";
 
 type Status = "idle" | "loading" | "success" | "error" | "ratelimited";
 
@@ -42,17 +41,23 @@ export default function Contact() {
     } catch {}
   };
 
-  useEffect(() => {
-    if (!sectionRef.current) return;
+  useLayoutEffect(() => {
+    if (!sectionRef.current || !shellRef.current || !liquidRef.current) return;
 
-    initContactReveal(sectionRef.current);
-  }, []);
+    let cleanup: (() => void) | undefined;
 
-  useEffect(() => {
-    if (!shellRef.current || !liquidRef.current) return;
+    const ctx = gsap.context(() => {
+      cleanup = initContactAnimations(
+        sectionRef.current!,
+        shellRef.current!,
+        liquidRef.current!,
+      );
+    }, sectionRef);
 
-    const cleanup = initContactLiquid(shellRef.current, liquidRef.current);
-    return () => cleanup?.();
+    return () => {
+      cleanup?.();
+      ctx.revert();
+    };
   }, []);
 
   const handleFocus = () => {

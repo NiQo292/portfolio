@@ -4,10 +4,10 @@ import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import "./Techstack.css";
+import "./techstack.css";
 import { useSectionBlur } from "@/lib/useSectionBlur";
 import { useRevealTitle } from "@/lib/useRevealTitle";
-import { initTechStackHover, initTechStackReveal } from "./Techstack.anim";
+import { initTechStackAnimations } from "./techstack.anim";
 
 // Brand Logos import
 import ReactLogo from "@/public/images/techstack/react.svg";
@@ -80,12 +80,9 @@ export default function TechStack() {
   useEffect(() => {
     if (!sectionRef.current) return;
 
-    const ctx = gsap.context(() => {
-      initTechStackReveal(sectionRef.current!);
-      initTechStackHover(sectionRef.current!);
-    }, sectionRef);
+    const cleanup = initTechStackAnimations(sectionRef.current);
 
-    return () => ctx.revert();
+    return () => cleanup?.();
   }, []);
 
   return (

@@ -1,68 +1,61 @@
 "use client";
+
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import gsap from "gsap";
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "@/public/images/logo.svg";
 import TextUpDown from "../animations/TextUpDown";
 import { navLinks, socialLinks } from "@/lib/navigation";
-import "./Navigation.css";
-import {
-  animateMenu,
-  animateNavScroll,
-  initNavBarEffects,
-} from "./Navigation.anim";
+import { initNavigation, setMenuOpen } from "./navigation.anim";
+import "./navigation.css";
 
 export default function Navigation() {
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [visible, setVisible] = useState(false);
-
   const navRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
+  const [menuOpen, setMenuOpenState] = useState(false);
+  const [visible, setVisible] = useState(false);
+
   const pendingSectionRef = useRef<string | null>(null);
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
+  /* -----------------------------
+   * Init navigation animations
+   * ----------------------------- */
   useLayoutEffect(() => {
-    if (!navRef.current) return;
-
-    const ctx = gsap.context(() => {
-      initNavBarEffects(navRef.current!);
-    }, navRef);
-
-    return () => ctx.revert();
+    if (!navRef.current || !overlayRef.current) return;
+    return initNavigation(navRef.current, overlayRef.current);
   }, []);
 
+  /* -----------------------------
+   * Menu open / close
+   * ----------------------------- */
   useEffect(() => {
-    if (!navRef.current) return;
-    animateNavScroll(navRef.current, scrolled);
-  }, [scrolled]);
+    if (menuOpen) setVisible(true);
 
-  useEffect(() => {
-    if (!overlayRef.current) return;
+    setMenuOpen(menuOpen, () => {
+      setVisible(false);
 
-    const isOpening = menuOpen;
-    animateMenu(overlayRef.current, isOpening, () => {
-      if (!isOpening) {
-        setVisible(false);
-      }
-
+      // Scroll to pending anchor AFTER menu closes
       if (pendingSectionRef.current) {
-        const target = document.querySelector(pendingSectionRef.current);
-        if (target) {
+        const selector = pendingSectionRef.current;
+        pendingSectionRef.current = null;
+
+        const target = document.querySelector(selector);
+        if (!target) return;
+
+        const lenis = (window as any).__lenis;
+        if (lenis) {
+          lenis.scrollTo(target, { offset: -80 });
+        } else {
           target.scrollIntoView({ behavior: "smooth" });
         }
-        pendingSectionRef.current = null;
       }
     });
   }, [menuOpen]);
 
+  /* -----------------------------
+   * Body lock when menu visible
+   * ----------------------------- */
   useEffect(() => {
     if (visible) {
       document.body.style.overflow = "hidden";
@@ -78,26 +71,27 @@ export default function Navigation() {
     };
   }, [visible]);
 
-  const openMenu = () => {
-    setVisible(true);
-    setMenuOpen(true);
-  };
-
-  const closeMenu = () => {
-    setMenuOpen(false);
-  };
+  /* -----------------------------
+   * Handlers
+   * ----------------------------- */
+  const openMenu = () => setMenuOpenState(true);
+  const closeMenu = () => setMenuOpenState(false);
 
   const handleNavClick = (href: string) => {
     pendingSectionRef.current = href;
     closeMenu();
   };
 
+  /* -----------------------------
+   * Render
+   * ----------------------------- */
   return (
     <>
       <div
         ref={navRef}
         className="backdrop-blur-0 fixed top-0 right-0 left-0 z-100 overflow-hidden border border-transparent bg-transparent transition-all"
       >
+        {/* Visual layers (desktop only animates them) */}
         <div data-nav-sheen className="nav-sheen" />
         <div data-nav-glow className="nav-glow-pulse" />
         <div data-nav-reflection className="nav-reflection" />
@@ -105,17 +99,14 @@ export default function Navigation() {
 
         <nav className="flex h-20 items-center justify-center px-8">
           <div className="flex w-full max-w-480 items-center">
-            <Link className="mr-auto cursor-pointer" href="#hero">
-              <Image
-                src={Logo}
-                alt="Logo"
-                width={48}
-                height={48}
-                className=""
-              />
+            <Link href="#hero" className="mr-auto cursor-pointer">
+              <Image src={Logo} alt="Logo" width={48} height={48} />
             </Link>
 
+            {/* Burger button (unchanged markup) */}
             <button
+              aria-label="Toggle menu"
+              aria-expanded={menuOpen}
               className="group relative flex h-9 w-9 cursor-pointer items-center justify-center"
               onClick={menuOpen ? closeMenu : openMenu}
             >
@@ -134,58 +125,58 @@ export default function Navigation() {
         </nav>
       </div>
 
-      {visible && (
-        <div
-          ref={overlayRef}
-          className="menu-overlay fixed inset-0 z-90 bg-black/60 backdrop-blur-3xl"
-        >
-          <div className="menu-overlay-inner flex h-full w-full items-center justify-center overflow-hidden">
-            <div className="menu-bg-layer" />
-            <div className="menu-bg-layer-2" />
-            <div className="menu-vignette" />
+      {/* Overlay is always mounted; GSAP controls visibility */}
+      <div
+        ref={overlayRef}
+        className="menu-overlay fixed inset-0 z-90 bg-black/60 backdrop-blur-3xl"
+        style={{ pointerEvents: "none" }}
+      >
+        <div className="menu-overlay-inner flex h-full w-full items-center justify-center overflow-hidden">
+          <div className="menu-bg-layer" />
+          <div className="menu-bg-layer-2" />
+          <div className="menu-vignette" />
 
-            <nav className="relative z-10 flex flex-col items-center gap-7 text-4xl sm:gap-10 sm:text-5xl">
-              {navLinks.map((link) =>
-                link.external ? (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    target="_blank"
-                    data-menu-link
-                  >
-                    <span className="menu-link-metrics">
-                      <TextUpDown>{link.label}</TextUpDown>
-                    </span>
-                  </a>
-                ) : (
-                  <button
-                    key={link.label}
-                    data-menu-link
-                    onClick={() => handleNavClick(link.href)}
-                  >
-                    <span className="menu-link-metrics">
-                      <TextUpDown>{link.label}</TextUpDown>
-                    </span>
-                  </button>
-                ),
-              )}
+          <nav className="relative z-10 flex flex-col items-center gap-7 text-4xl sm:gap-10 sm:text-5xl">
+            {navLinks.map((link) =>
+              link.external ? (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  data-menu-link
+                >
+                  <span className="menu-link-metrics">
+                    <TextUpDown>{link.label}</TextUpDown>
+                  </span>
+                </a>
+              ) : (
+                <button
+                  key={link.label}
+                  data-menu-link
+                  onClick={() => handleNavClick(link.href)}
+                >
+                  <span className="menu-link-metrics">
+                    <TextUpDown>{link.label}</TextUpDown>
+                  </span>
+                </button>
+              ),
+            )}
 
-              <div className="mt-10 flex gap-6 text-2xl opacity-80">
-                {socialLinks.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    className="transition hover:opacity-100"
-                  >
-                    {social.icon}
-                  </a>
-                ))}
-              </div>
-            </nav>
-          </div>
+            <div className="mt-10 flex gap-6 text-2xl opacity-80">
+              {socialLinks.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  className="transition hover:opacity-100"
+                >
+                  {social.icon}
+                </a>
+              ))}
+            </div>
+          </nav>
         </div>
-      )}
+      </div>
     </>
   );
 }

@@ -4,8 +4,7 @@ import React, { useLayoutEffect, useMemo, useRef } from "react";
 import Image from "next/image";
 import "./Hero.css";
 import Portrait from "@/public/images/nico.jpeg";
-import gsap from "gsap";
-import { initHeroAnimations } from "./Hero.anim";
+import { initHeroAnimations } from "./hero.anim";
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -15,12 +14,10 @@ export default function Hero() {
   useLayoutEffect(() => {
     if (!sectionRef.current) return;
 
-    const ctx = gsap.context(() => {
-      initHeroAnimations(sectionRef.current!);
-    }, sectionRef);
+    const cleanup = initHeroAnimations(sectionRef.current);
 
-    return () => ctx.revert();
-  }, []);
+    return () => cleanup?.();
+  });
 
   return (
     <section

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { initAboutCards } from "./About.anim";
-import "./About.css";
+import "./about.css";
 import { useRevealTitle } from "@/lib/useRevealTitle";
 
 const CARDS = [

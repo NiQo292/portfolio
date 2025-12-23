@@ -3,14 +3,9 @@
 import React, { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import "./Experience.css";
-import { useParallaxLayers } from "@/lib/useParallaxLayers";
-import { useSectionBlur } from "@/lib/useSectionBlur";
+import "./experience.css";
 import { useRevealTitle } from "@/lib/useRevealTitle";
-import {
-  initExperienceParallax,
-  initExperienceReveal,
-} from "./Experience.anim";
+import { initExperienceAnimations } from "./experience.anim";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -40,21 +35,14 @@ const experienceData = [
 export default function Experience() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  useParallaxLayers();
-
-  useSectionBlur({ ref: sectionRef });
-
   useRevealTitle({ scopeRef: sectionRef });
 
   useLayoutEffect(() => {
     if (!sectionRef.current) return;
 
-    const cts = gsap.context(() => {
-      initExperienceReveal(sectionRef.current!);
-      initExperienceParallax(sectionRef.current!);
-    }, sectionRef);
+    const cleanup = initExperienceAnimations(sectionRef.current!);
 
-    return () => cts.revert();
+    return () => cleanup();
   }, []);
 
   return (

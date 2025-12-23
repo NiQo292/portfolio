@@ -5,8 +5,8 @@ import { useSmoothScroll } from "@/lib/useSmoothScroll";
 import { navLinks, socialLinks } from "@/lib/navigation";
 import TextUpDown from "../animations/TextUpDown";
 import Link from "next/link";
-import "./Footer.css";
-import { initFooterAnimations } from "./Footer.anim";
+import "./footer.css";
+import { initFooterAnimations } from "./footer.anim";
 
 export default function Footer() {
   const footerRef = useRef<HTMLElement>(null);
@@ -18,11 +18,13 @@ export default function Footer() {
   useEffect(() => {
     if (!footerRef.current || !triggerRef.current || !nameRef.current) return;
 
-    initFooterAnimations({
+    const cleanup = initFooterAnimations({
       footer: footerRef.current,
       trigger: triggerRef.current,
       heading: nameRef.current,
     });
+
+    return () => cleanup?.();
   }, []);
 
   return (
