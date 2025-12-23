@@ -15,6 +15,7 @@ export type SocialItem = {
 export const navLinks: NavItem[] = [
   { label: "Home", href: "#hero" },
   { label: "About", href: "#about" },
+  { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
   { label: "Contact", href: "#contact" },
   { label: "Download CV", href: "/CV.pdf", external: true },
