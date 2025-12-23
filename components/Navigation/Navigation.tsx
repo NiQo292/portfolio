@@ -58,16 +58,25 @@ export default function Navigation() {
    * ----------------------------- */
   useEffect(() => {
     if (visible) {
+      const scrollBarWidth =
+        window.innerWidth - document.documentElement.clientWidth;
+
+      if (scrollBarWidth > 0) {
+        document.body.style.paddingRight = `${scrollBarWidth}px`;
+      }
+
       document.body.style.overflow = "hidden";
       document.body.style.touchAction = "none";
     } else {
       document.body.style.overflow = "";
       document.body.style.touchAction = "";
+      document.body.style.paddingRight = "";
     }
 
     return () => {
       document.body.style.overflow = "";
       document.body.style.touchAction = "";
+      document.body.style.paddingRight = "";
     };
   }, [visible]);
 
