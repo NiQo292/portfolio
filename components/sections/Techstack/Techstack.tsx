@@ -74,8 +74,8 @@ const techStack = [
 
 export default function TechStack() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  useSectionBlur({ ref: sectionRef });
   useRevealTitle({ scopeRef: sectionRef });
+  useSectionBlur({ ref: sectionRef });
 
   useEffect(() => {
     if (!sectionRef.current) return;
