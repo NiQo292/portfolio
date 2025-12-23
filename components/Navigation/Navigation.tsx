@@ -124,7 +124,7 @@ export default function Navigation() {
           <div className="menu-bg-layer-2" />
           <div className="menu-vignette" />
 
-          <nav className="relative z-10 flex flex-col items-center gap-7 text-4xl sm:gap-10 sm:text-5xl">
+          <nav className="font-clash relative z-10 flex flex-col items-center gap-7 text-4xl sm:gap-10 sm:text-5xl">
             {navLinks.map((link) =>
               link.external ? (
                 <a
