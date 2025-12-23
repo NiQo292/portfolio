@@ -32,7 +32,7 @@ export function initNavDesktop(nav: HTMLElement, overlay: HTMLElement) {
       {
         x: "150%",
         opacity: 1,
-        duration: motion.duration.fast,
+        duration: motion.duration.slow,
         ease: motion.ease.soft,
       },
     );
