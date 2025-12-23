@@ -85,7 +85,7 @@
     opacity: 0.9;
   }
 
-  .project-card-secondary {
+  .project-secondary-card {
     background: rgba(255, 255, 255, 0.02);
     border-radius: 1rem;
     padding: 1.5rem;
@@ -94,7 +94,7 @@
   }
 
   @media (max-width: 899px) {
-    .project-card-secondary {
+    .project-secondary-card {
       padding: 1.25rem;
     }
 
