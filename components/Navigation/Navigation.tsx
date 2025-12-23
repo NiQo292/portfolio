@@ -24,49 +24,51 @@ export default function Navigation() {
   }, []);
 
   useEffect(() => {
-    if (menuOpen) setVisible(true);
-
     setMenuOpen(menuOpen, () => {
-      setVisible(false);
-
-      if (pendingSectionRef.current) {
-        const selector = pendingSectionRef.current;
-        pendingSectionRef.current = null;
-
-        const target = document.querySelector(selector);
-        if (!target) return;
-
-        const lenis = (window as any).__lenis;
-        if (lenis) {
-          lenis.scrollTo(target, { offset: -80 });
-        } else {
-          target.scrollIntoView({ behavior: "smooth" });
-        }
+      if (!menuOpen) {
+        setVisible(false);
       }
     });
   }, [menuOpen]);
 
   useEffect(() => {
-    if (visible) {
-      const scrollBarWidth =
-        window.innerWidth - document.documentElement.clientWidth;
+    if (visible) return;
 
-      document.body.style.overflow = "hidden";
-      document.body.style.touchAction = "none";
+    if (!pendingSectionRef.current) return;
+
+    const selector = pendingSectionRef.current;
+    pendingSectionRef.current = null;
+
+    const target = document.querySelector(selector);
+    if (!target) return;
+
+    requestAnimationFrame(() => {
+      const lenis = (window as any).__lenis;
+
+      if (lenis) {
+        lenis.scrollTo(target);
+      } else {
+        target.scrollIntoView({ behavior: "smooth" });
+      }
+    });
+  }, [visible]);
+
+  useEffect(() => {
+    if (visible) {
+      lockInertScroll();
     } else {
-      document.body.style.overflow = "";
-      document.body.style.touchAction = "";
-      document.body.style.paddingRight = "";
+      unlockInertScroll();
     }
 
     return () => {
-      document.body.style.overflow = "";
-      document.body.style.touchAction = "";
-      document.body.style.paddingRight = "";
+      unlockInertScroll();
     };
   }, [visible]);
 
-  const openMenu = () => setMenuOpenState(true);
+  const openMenu = () => {
+    setVisible(true);
+    setMenuOpenState(true);
+  };
   const closeMenu = () => setMenuOpenState(false);
 
   const handleNavClick = (href: string) => {
@@ -165,4 +167,38 @@ export default function Navigation() {
       </div>
     </>
   );
+}
+
+let lockedScrollY = 0;
+let isScrollLocked = false;
+
+function lockInertScroll() {
+  if (isScrollLocked) return;
+
+  lockedScrollY = window.scrollY;
+  isScrollLocked = true;
+
+  document.body.style.position = "fixed";
+  document.body.style.top = `-${lockedScrollY}px`;
+  document.body.style.left = "0";
+  document.body.style.right = "0";
+  document.body.style.width = "100%";
+  document.body.style.touchAction = "none";
+}
+
+function unlockInertScroll() {
+  if (!isScrollLocked) return;
+
+  document.body.style.position = "";
+  document.body.style.top = "";
+  document.body.style.left = "";
+  document.body.style.right = "";
+  document.body.style.width = "";
+  document.body.style.touchAction = "";
+
+  requestAnimationFrame(() => {
+    window.scrollTo(0, lockedScrollY);
+  });
+
+  isScrollLocked = false;
 }
