@@ -54,8 +54,8 @@ export default function Experience() {
         className="layout-section stack-xl relative"
         id="experience"
       >
-        <header className="w-full text-center">
-          <h2 className="section-title type-title parallax-fg w-full text-center">
+        <header className="section-title w-full text-center">
+          <h2 className="type-title w-full text-center">
             My Working Experience
           </h2>
           <h3 className="type-subheading mt-3 opacity-80">

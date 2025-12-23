@@ -126,8 +126,10 @@ export default function Contact() {
         className="layout-section stack-xl relative mb-40"
         id="contact"
       >
-        <header className="w-full text-center">
-          <h2 className="type-title section-title">Let&apos;s work together</h2>
+        <header className="section-title w-full text-center">
+          <h2 className="type-title w-full text-center">
+            Let&apos;s work together
+          </h2>
           <h3 className="type-subheading mt-3 opacity-80">
             Tell me about your project, role, or idea. I reply quickly.
           </h3>

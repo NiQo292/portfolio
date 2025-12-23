@@ -70,8 +70,8 @@ export default function About() {
       id="about"
       className="layout-section stack-xl about-section"
     >
-      <header className="w-full text-center">
-        <h2 className="type-title section-title">ABOUT</h2>
+      <header className="section-title w-full text-center">
+        <h2 className="type-title">ABOUT</h2>
         <h3 className="type-heading opacity mt-3 opacity-80">
           Three pillars, one purpose
         </h3>

@@ -53,10 +53,8 @@ export default function Projects() {
       id="projects"
     >
       <div className="layout-section relative z-2 flex flex-col gap-20">
-        <header className="w-full text-center">
-          <h2 className="type-title section-title w-full text-center">
-            My Projects
-          </h2>
+        <header className="section-title w-full text-center">
+          <h2 className="type-title w-full text-center">My Projects</h2>
           <h3 className="type-subheading mt-3 opacity-80">
             A showcase of my development journey
           </h3>
