@@ -51,10 +51,6 @@ export default function Navigation() {
       const scrollBarWidth =
         window.innerWidth - document.documentElement.clientWidth;
 
-      if (scrollBarWidth > 0) {
-        document.body.style.paddingRight = `${scrollBarWidth}px`;
-      }
-
       document.body.style.overflow = "hidden";
       document.body.style.touchAction = "none";
     } else {
