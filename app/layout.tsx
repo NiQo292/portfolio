@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import { clashDisplay, satoshi } from "./fonts";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
@@ -34,6 +35,7 @@ export default function RootLayout({
             <Footer />
           </div>
         </SmoothScrollProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
