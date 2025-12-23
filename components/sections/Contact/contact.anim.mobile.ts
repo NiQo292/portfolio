@@ -1,3 +1,4 @@
+import { motion } from "@/lib/motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -8,10 +9,10 @@ export function initContactMobile(section: HTMLElement) {
   if (!grid) return;
 
   gsap.from(grid, {
-    y: 30,
+    y: motion.distance.md,
     opacity: 0,
-    duration: 0.9,
-    ease: "power2.out",
+    duration: motion.duration.base,
+    ease: motion.ease.soft,
     scrollTrigger: {
       trigger: section,
       start: "top 85%",

@@ -1,3 +1,4 @@
+import { motion } from "@/lib/motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -21,22 +22,22 @@ export function initTechStackDesktop(scope: HTMLElement) {
         },
       })
       .from(heading, {
-        y: 40,
+        y: motion.distance.md,
         opacity: 0,
         filter: "blur(6px)",
-        duration: 0.6,
-        ease: "power3.out",
+        duration: motion.duration.base,
+        ease: motion.ease.out,
         clearProps: "filter",
       })
       .from(
         items,
         {
-          y: 20,
+          y: motion.distance.sm,
           opacity: 0,
           filter: "blur(4px)",
-          duration: 0.5,
-          ease: "power3.out",
-          stagger: 0.06,
+          duration: motion.duration.fast,
+          ease: motion.ease.soft,
+          stagger: motion.stagger.sm,
           clearProps: "filter",
         },
         "-=0.35",
@@ -65,9 +66,9 @@ export function initTechStackDesktop(scope: HTMLElement) {
       gsap.to(card, {
         rotateX: rx,
         rotateY: ry,
-        scale: 1.04,
-        duration: 0.25,
-        ease: "power2.out",
+        scale: motion.scale.hover,
+        duration: motion.duration.fast,
+        ease: motion.ease.soft,
       });
 
       if (glow) {
@@ -75,8 +76,8 @@ export function initTechStackDesktop(scope: HTMLElement) {
           x: (x - rect.width / 2) * 0.4,
           y: (y - rect.height / 2) * 0.4,
           opacity: 1,
-          duration: 0.25,
-          ease: "power2.out",
+          duration: motion.duration.fast,
+          ease: motion.ease.soft,
         });
       }
     };
@@ -94,8 +95,8 @@ export function initTechStackDesktop(scope: HTMLElement) {
         rotateX: 0,
         rotateY: 0,
         scale: 1,
-        duration: 0.5,
-        ease: "power3.out",
+        duration: motion.duration.base,
+        ease: motion.ease.out,
       });
 
       if (glow) {
@@ -103,8 +104,8 @@ export function initTechStackDesktop(scope: HTMLElement) {
           x: 0,
           y: 0,
           opacity: 0,
-          duration: 0.4,
-          ease: "power2.out",
+          duration: motion.duration.base,
+          ease: motion.ease.soft,
         });
       }
     });

@@ -1,3 +1,4 @@
+import { motion } from "@/lib/motion";
 import { gsap } from "gsap";
 
 export function initExperienceMobile(scope: HTMLElement) {
@@ -9,16 +10,17 @@ export function initExperienceMobile(scope: HTMLElement) {
     );
 
     gsap.from(items, {
-      y: 24,
+      y: motion.distance.sm,
       opacity: 0,
-      duration: 0.5,
-      ease: "power2.out",
-      stagger: 0.08,
+      duration: motion.duration.fast,
+      ease: motion.ease.out,
+      stagger: motion.stagger.xs,
       scrollTrigger: {
         trigger: block,
         start: "top 90%",
         toggleActions: "play none none none",
       },
+      clearProps: "transform",
     });
   });
 }

@@ -1,3 +1,4 @@
+import { motion } from "@/lib/motion";
 import gsap from "gsap";
 
 const prefersReducedMotion = () =>
@@ -15,18 +16,18 @@ export function openContactModal(modal: HTMLElement) {
     .set(modal, { pointerEvents: "auto" })
     .to(modal, {
       opacity: 1,
-      duration: 0.35,
-      ease: "power2.out",
+      duration: motion.duration.fast,
+      ease: motion.ease.soft,
     })
     .fromTo(
       modal.querySelector("[data-modal-content]"),
-      { y: 80, opacity: 0, filter: "blur(14px)" },
+      { y: motion.distance.lg, opacity: 0, filter: "blur(14px)" },
       {
         y: 0,
         opacity: 1,
         filter: "blur(0px)",
-        duration: 0.7,
-        ease: "power3.out",
+        duration: motion.duration.base,
+        ease: motion.ease.out,
       },
     );
 }
@@ -40,16 +41,16 @@ export function closeContactModal(modal: HTMLElement) {
   gsap
     .timeline()
     .to(modal.querySelector("[data-modal-content]"), {
-      y: 60,
+      y: motion.distance.md,
       opacity: 0,
       filter: "blur(14px)",
-      duration: 0.45,
-      ease: "power2.inOut",
+      duration: motion.duration.fast,
+      ease: motion.ease.inOut,
     })
     .to(modal, {
       opacity: 0,
-      duration: 0.35,
-      ease: "power2.out",
+      duration: motion.duration.fast,
+      ease: motion.ease.soft,
       onComplete: () => {
         gsap.set(modal, { pointerEvents: "none" });
       },
@@ -64,13 +65,13 @@ export function animateSubmitSuccess(btn: HTMLElement) {
     .to(btn, {
       scale: 1.08,
       boxShadow: "0 0 38px rgba(0,255,255,0.55)",
-      duration: 0.25,
-      ease: "power2.out",
+      duration: motion.duration.fast,
+      ease: motion.ease.soft,
     })
     .to(btn, {
       scale: 1,
       boxShadow: "0 0 0 rgba(0,255,255,0)",
-      duration: 0.6,
+      duration: motion.duration.base,
       ease: "elastic.out(1.1,0.4)",
     });
 }
@@ -84,8 +85,8 @@ export function rippleLiquid(liquid: HTMLElement) {
     {
       scale: 1.25,
       opacity: 0.25,
-      duration: 0.65,
-      ease: "power2.out",
+      duration: motion.duration.base,
+      ease: motion.ease.soft,
     },
   );
 }

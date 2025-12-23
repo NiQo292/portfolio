@@ -1,3 +1,4 @@
+import { motion } from "@/lib/motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -12,11 +13,11 @@ export function initContactDesktop(
 
   if (grid) {
     gsap.from(grid, {
-      y: 50,
+      y: motion.distance.lg,
       opacity: 0,
       filter: "blur(12px)",
-      duration: 1.2,
-      ease: "power3.out",
+      duration: motion.duration.slow,
+      ease: motion.ease.out,
       scrollTrigger: {
         trigger: section,
         start: "top 80%",
@@ -32,8 +33,8 @@ export function initContactDesktop(
     gsap.to(liquid, {
       x: (x - rect.width / 2) * 0.12,
       y: (y - rect.height / 2) * 0.12,
-      duration: 0.55,
-      ease: "sine.out",
+      duration: motion.duration.interact,
+      ease: motion.ease.soft,
     });
   };
 

@@ -1,3 +1,4 @@
+import { motion } from "@/lib/motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -16,30 +17,30 @@ export function initHeroDesktop(section: HTMLElement) {
   );
 
   const intro = gsap.timeline({
-    defaults: { ease: "power3.out" },
+    defaults: { ease: motion.ease.out },
   });
 
   intro
     .from(nameChars, {
-      y: 70,
+      y: motion.distance.sm,
       opacity: 0,
       filter: "blur(10px)",
-      stagger: 0.045,
-      duration: 1.15,
-      delay: 0.15,
+      stagger: motion.stagger.sm,
+      duration: motion.duration.slow,
+      delay: motion.delay.sm,
       clearProps: "filter,transform",
     })
     .from(
       [role, location],
       {
-        y: 40,
+        y: motion.distance.md,
         opacity: 0,
         filter: "blur(8px)",
-        duration: 0.7,
-        stagger: 0.18,
+        duration: motion.duration.base,
+        stagger: motion.stagger.sm,
         clearProps: "filter,transform",
       },
-      "-=0.6",
+      "-=0.55",
     )
     .fromTo(
       photoGlow,
@@ -47,27 +48,27 @@ export function initHeroDesktop(section: HTMLElement) {
       {
         opacity: 1,
         scale: 1,
-        duration: 1.1,
-        ease: "power2.out",
+        duration: motion.duration.slow,
+        ease: motion.ease.soft,
         clearProps: "transform",
       },
-      "-=0.7",
+      "-=0.65",
     )
     .fromTo(
       photoFrame,
       { boxShadow: "0 0 0 rgba(0,255,255,0)" },
       {
         boxShadow: "0 0 40px rgba(0,255,255,0.55)",
-        duration: 0.75,
-        ease: "power2.out",
+        duration: motion.duration.base,
+        ease: motion.ease.soft,
         yoyo: true,
         repeat: 1,
       },
-      "-=0.9",
+      "-=0.85",
     );
 
   gsap.to(textGroup, {
-    y: -25,
+    y: -motion.parallax.base,
     ease: "none",
     scrollTrigger: {
       trigger: section,
@@ -78,7 +79,7 @@ export function initHeroDesktop(section: HTMLElement) {
   });
 
   gsap.to(photoFrame, {
-    y: -35,
+    y: -motion.parallax.base * 1.4,
     ease: "none",
     scrollTrigger: {
       trigger: section,

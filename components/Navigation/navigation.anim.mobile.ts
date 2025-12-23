@@ -1,3 +1,4 @@
+import { motion } from "@/lib/motion";
 import gsap from "gsap";
 
 export function initNavMobile(_nav: HTMLElement, overlay: HTMLElement) {
@@ -7,8 +8,8 @@ export function initNavMobile(_nav: HTMLElement, overlay: HTMLElement) {
   tl.to(overlay, {
     opacity: 1,
     pointerEvents: "auto",
-    duration: 0.2,
-    ease: "power2.out",
+    duration: motion.duration.fast,
+    ease: motion.ease.soft,
   });
 
   return {

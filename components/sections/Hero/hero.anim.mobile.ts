@@ -1,3 +1,4 @@
+import { motion } from "@/lib/motion";
 import { gsap } from "gsap";
 
 export function initHeroMobile(section: HTMLElement) {
@@ -6,11 +7,11 @@ export function initHeroMobile(section: HTMLElement) {
   );
 
   gsap.from(elements, {
-    y: 24,
+    y: motion.distance.sm,
     opacity: 0,
-    duration: 0.6,
-    ease: "power2.out",
-    stagger: 0.03,
+    duration: motion.duration.base,
+    ease: motion.ease.out,
+    stagger: motion.stagger.xs,
     clearProps: "transform",
   });
 }

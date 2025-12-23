@@ -44,8 +44,8 @@ export function initExperienceDesktop(scope: HTMLElement) {
         {
           opacity: 1,
           scale: 1,
-          duration: 1.1,
-          ease: "power2.out",
+          duration: motion.duration.slow,
+          ease: motion.ease.soft,
           scrollTrigger: {
             trigger: block,
             start: "top 85%",
@@ -64,11 +64,11 @@ export function initExperienceDesktop(scope: HTMLElement) {
 
     if (company) {
       tl.from(company, {
-        y: 45,
+        y: motion.distance.lg,
         opacity: 0,
         filter: "blur(6px)",
-        duration: motion.medium,
-        ease: "back.out(1.6)",
+        duration: motion.duration.base,
+        ease: motion.ease.out,
         clearProps: "filter",
       });
     }
@@ -77,11 +77,11 @@ export function initExperienceDesktop(scope: HTMLElement) {
       tl.from(
         role,
         {
-          y: 35,
+          y: motion.distance.md,
           opacity: 0,
           filter: "blur(6px)",
-          duration: motion.medium,
-          ease: "back.out(1.6)",
+          duration: motion.duration.base,
+          ease: motion.ease.out,
           clearProps: "filter",
         },
         "-=0.45",
@@ -93,8 +93,8 @@ export function initExperienceDesktop(scope: HTMLElement) {
         bar,
         {
           width: 0,
-          duration: motion.medium,
-          ease: motion.easeOut,
+          duration: motion.duration.base,
+          ease: motion.ease.out,
         },
         "-=0.35",
       );
@@ -104,11 +104,11 @@ export function initExperienceDesktop(scope: HTMLElement) {
       tl.from(
         period,
         {
-          y: 20,
+          y: motion.distance.sm,
           opacity: 0,
           filter: "blur(4px)",
-          duration: motion.medium,
-          ease: motion.easeOut,
+          duration: motion.duration.base,
+          ease: motion.ease.out,
           clearProps: "filter",
         },
         "-=0.3",
@@ -119,12 +119,12 @@ export function initExperienceDesktop(scope: HTMLElement) {
       tl.from(
         items,
         {
-          y: 14,
+          y: motion.distance.xs,
           opacity: 0,
           filter: "blur(3px)",
-          duration: motion.medium,
-          ease: motion.easeOut,
-          stagger: motion.staggerMd,
+          duration: motion.duration.base,
+          ease: motion.ease.out,
+          stagger: motion.stagger.sm,
           clearProps: "filter",
         },
         "-=0.2",
@@ -132,7 +132,7 @@ export function initExperienceDesktop(scope: HTMLElement) {
     }
 
     gsap.to(block, {
-      yPercent: -6 - index * 1.2,
+      yPercent: motion.parallax.base - index * motion.parallax.step,
       ease: "none",
       scrollTrigger: {
         trigger: block,

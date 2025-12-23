@@ -4,6 +4,7 @@ import { useEffect, RefObject } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { withMatchMedia, media } from "@/lib/animation/media";
+import { motion } from "./motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -32,13 +33,13 @@ export function useRevealTitle({
 
             gsap.fromTo(
               el,
-              { y: 60, opacity: 0, filter: "blur(10px)" },
+              { y: motion.distance.xl, opacity: 0, filter: "blur(10px)" },
               {
                 y: 0,
                 opacity: 1,
                 filter: "blur(0px)",
-                duration: 1,
-                ease: "power3.out",
+                duration: motion.duration.slow,
+                ease: motion.ease.out,
                 scrollTrigger: {
                   trigger: el,
                   start: "top 90%",

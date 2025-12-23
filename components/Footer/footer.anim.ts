@@ -1,3 +1,4 @@
+import { motion } from "@/lib/motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -37,7 +38,7 @@ export function initFooterAnimations({
 
     gsap.set(letters, {
       opacity: prefersReducedMotion ? 0.08 : 0,
-      y: prefersReducedMotion ? 0 : 20,
+      y: prefersReducedMotion ? 0 : motion.distance.sm,
       filter: prefersReducedMotion ? "none" : "blur(6px)",
     });
 
@@ -55,9 +56,9 @@ export function initFooterAnimations({
         opacity: 0.08,
         y: 0,
         filter: "blur(0px)",
-        duration: 1.1,
-        ease: "power3.out",
-        stagger: 0.04,
+        duration: motion.duration.slow,
+        ease: motion.ease.out,
+        stagger: motion.stagger.xs,
       });
   }, footer);
 

@@ -17,8 +17,8 @@ export function initFeaturedHover(card: HTMLElement) {
     const cy = rect.height / 2;
 
     gsap.to(card, {
-      rotateX: -((y - cy) / cy) * 12,
-      rotateY: ((x - cx) / cx) * 12,
+      rotateX: -((y - cy) / cy) * 6,
+      rotateY: ((x - cx) / cx) * 6,
       scale: 1.04,
       duration: 0.25,
       ease: "power2.out",

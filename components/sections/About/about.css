@@ -1,5 +1,4 @@
 @layer components {
-  /* Layout */
   .about-grid {
     display: grid;
     grid-template-areas: "editorial divider meta";
@@ -24,7 +23,6 @@
     }
   }
 
-  /* Left column — editorial text */
   .about-editorial {
     display: flex;
     flex-direction: column;
@@ -41,7 +39,6 @@
     line-height: 1.7;
   }
 
-  /* Right column — credibility blocks */
   .about-meta {
     position: relative;
     padding-left: 2.25rem;
@@ -67,7 +64,6 @@
     opacity: 0.55;
   }
 
-  /* Optional subtle emphasis for key phrases */
   .about-editorial strong {
     font-weight: 600;
     color: rgba(255, 255, 255, 0.95);

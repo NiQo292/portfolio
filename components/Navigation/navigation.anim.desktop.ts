@@ -1,3 +1,4 @@
+import { motion } from "@/lib/motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -31,8 +32,8 @@ export function initNavDesktop(nav: HTMLElement, overlay: HTMLElement) {
       {
         x: "150%",
         opacity: 1,
-        duration: 1.2,
-        ease: "power2.out",
+        duration: motion.duration.fast,
+        ease: motion.ease.soft,
       },
     );
   };
@@ -47,24 +48,24 @@ export function initNavDesktop(nav: HTMLElement, overlay: HTMLElement) {
       backgroundColor: scrolled ? "rgba(255,255,255,0.05)" : "transparent",
       backdropFilter: scrolled ? "blur(20px)" : "blur(0px)",
       borderColor: scrolled ? "rgba(255,255,255,0.1)" : "transparent",
-      duration: 0.6,
-      ease: "power3.inOut",
+      duration: motion.duration.base,
+      ease: motion.ease.out,
       overwrite: "auto",
     });
 
     if (glow) {
       gsap.to(glow, {
         opacity: scrolled ? 1 : 0,
-        duration: 0.6,
-        ease: "power2.out",
+        duration: motion.duration.base,
+        ease: motion.ease.soft,
       });
     }
 
     if (reflection) {
       gsap.to(reflection, {
         opacity: scrolled ? 0.14 : 0.06,
-        duration: 0.6,
-        ease: "power2.out",
+        duration: motion.duration.base,
+        ease: motion.ease.soft,
       });
     }
   };
@@ -83,23 +84,24 @@ export function initNavDesktop(nav: HTMLElement, overlay: HTMLElement) {
   );
 
   gsap.set(overlay, { opacity: 0, pointerEvents: "none" });
-  if (inner) gsap.set(inner, { opacity: 0, y: 40 });
-  if (items.length) gsap.set(items, { opacity: 0, y: 20, filter: "blur(8px)" });
+  if (inner) gsap.set(inner, { opacity: 0, y: motion.distance.md });
+  if (items.length)
+    gsap.set(items, { opacity: 0, y: motion.distance.sm, filter: "blur(8px)" });
 
   const menuTl = gsap.timeline({ paused: true });
 
   menuTl.to(overlay, {
     opacity: 1,
     pointerEvents: "auto",
-    duration: 0.25,
+    duration: motion.duration.fast,
   });
 
   if (inner) {
     menuTl.to(inner, {
       opacity: 1,
       y: 0,
-      duration: 0.45,
-      ease: "power3.out",
+      duration: motion.duration.base,
+      ease: motion.ease.out,
     });
   }
 
@@ -110,9 +112,10 @@ export function initNavDesktop(nav: HTMLElement, overlay: HTMLElement) {
         opacity: 1,
         y: 0,
         filter: "none",
-        duration: 0.6,
-        stagger: 0.12,
+        duration: motion.duration.base,
+        stagger: motion.stagger.sm,
         clearProps: "filter,transform",
+        ease: motion.ease.out,
       },
       0.12,
     );

@@ -1,3 +1,4 @@
+import { motion } from "@/lib/motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -10,10 +11,10 @@ export function initProjectsMobile(scope: HTMLElement) {
 
   blocks.forEach((block) => {
     gsap.from(block, {
-      y: 30,
+      y: motion.distance.md,
       opacity: 0,
-      duration: 0.6,
-      ease: "power2.out",
+      duration: motion.duration.base,
+      ease: motion.ease.soft,
       scrollTrigger: {
         trigger: block,
         start: "top 90%",

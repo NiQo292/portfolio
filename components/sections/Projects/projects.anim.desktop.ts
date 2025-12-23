@@ -1,3 +1,4 @@
+import { motion } from "@/lib/motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -23,11 +24,11 @@ export function initProjectsDesktop(scope: HTMLElement) {
   if (!featuredCard || !featuredImg) return;
 
   gsap.from(featuredImg, {
-    y: 60,
+    y: motion.distance.lg,
     opacity: 0,
     filter: "blur(14px)",
-    duration: 1.2,
-    ease: "power3.out",
+    duration: motion.duration.slow,
+    ease: motion.ease.out,
     scrollTrigger: {
       trigger: featuredCard,
       start: "top 85%",
@@ -39,8 +40,8 @@ export function initProjectsDesktop(scope: HTMLElement) {
     gsap.from(vignette, {
       opacity: 0,
       scale: 0.92,
-      duration: 1.2,
-      ease: "power2.out",
+      duration: motion.duration.slow,
+      ease: motion.ease.out,
       scrollTrigger: {
         trigger: featuredCard,
         start: "top 85%",
@@ -49,12 +50,12 @@ export function initProjectsDesktop(scope: HTMLElement) {
   }
 
   gsap.from(content, {
-    y: 30,
+    y: motion.distance.md,
     opacity: 0,
     filter: "blur(10px)",
-    duration: 0.9,
-    ease: "power2.out",
-    stagger: 0.12,
+    duration: motion.duration.base,
+    ease: motion.ease.soft,
+    stagger: motion.stagger.sm,
     scrollTrigger: {
       trigger: featuredCard,
       start: "top 80%",
@@ -64,12 +65,12 @@ export function initProjectsDesktop(scope: HTMLElement) {
 
   if (secondaryCards.length) {
     gsap.from(secondaryCards, {
-      y: 40,
+      y: motion.distance.lg,
       opacity: 0,
       filter: "blur(10px)",
-      duration: 0.9,
-      ease: "power2.out",
-      stagger: 0.18,
+      duration: motion.duration.base,
+      ease: motion.ease.soft,
+      stagger: motion.stagger.md,
       scrollTrigger: {
         trigger: secondaryCards[0],
         start: "top 85%",
@@ -79,7 +80,7 @@ export function initProjectsDesktop(scope: HTMLElement) {
   }
 
   gsap.to(featuredImg, {
-    y: -25,
+    y: -motion.parallax.base,
     ease: "none",
     scrollTrigger: {
       trigger: scope,

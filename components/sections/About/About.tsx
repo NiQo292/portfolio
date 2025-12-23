@@ -4,7 +4,6 @@ import { useLayoutEffect, useRef } from "react";
 import { useRevealTitle } from "@/lib/useRevealTitle";
 import "./about.css";
 import { initAboutAnimations } from "./about.anim";
-import { gsap } from "gsap";
 
 export default function About() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -14,11 +13,8 @@ export default function About() {
   useLayoutEffect(() => {
     if (!sectionRef.current) return;
 
-    const ctx = gsap.context(() => {
-      initAboutAnimations(sectionRef.current!);
-    }, sectionRef);
-
-    return () => ctx.revert();
+    const cleanup = initAboutAnimations(sectionRef.current);
+    return () => cleanup?.();
   }, []);
 
   return (
@@ -27,7 +23,6 @@ export default function About() {
       id="about"
       className="layout-section stack-xl relative"
     >
-      {/* Header */}
       <header className="section-title w-full text-center">
         <h2 className="type-title">ABOUT</h2>
         <h3 className="type-subheading mt-3 opacity-80">
@@ -35,9 +30,7 @@ export default function About() {
         </h3>
       </header>
 
-      {/* Content */}
       <div className="about-grid">
-        {/* Left — Editorial philosophy */}
         <div data-about-editorial className="about-editorial stack-md">
           <h3 className="type-heading">
             I build interfaces where motion carries meaning.
@@ -64,9 +57,8 @@ export default function About() {
 
         <div className="about-divider" data-about-divider aria-hidden="true" />
 
-        {/* Right — Credibility blocks */}
-        <div className="about-meta stack-lg">
-          <div className="about-meta-block">
+        <div data-about-meta className="about-meta stack-lg">
+          <div data-about-meta-block className="about-meta-block">
             <p className="type-meta">Experience</p>
             <p className="type-body opacity-85">
               2+ years building real-world applications across SaaS, e-commerce,
@@ -74,7 +66,7 @@ export default function About() {
             </p>
           </div>
 
-          <div className="about-meta-block">
+          <div data-about-meta-block className="about-meta-block">
             <p className="type-meta">Engineering focus</p>
             <p className="type-body opacity-85">
               Performance, accessibility, scalability, and long-term
@@ -83,7 +75,7 @@ export default function About() {
             </p>
           </div>
 
-          <div className="about-meta-block">
+          <div data-about-meta-block className="about-meta-block">
             <p className="type-meta">Tooling</p>
             <p className="type-body opacity-85">
               React, Next.js, TypeScript, Tailwind CSS, GSAP — with backend
