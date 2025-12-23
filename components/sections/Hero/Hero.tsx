@@ -2,7 +2,7 @@
 
 import React, { useLayoutEffect, useMemo, useRef } from "react";
 import Image from "next/image";
-import "./Hero.css";
+import "./hero.css";
 import Portrait from "@/public/images/nico.jpeg";
 import { initHeroAnimations } from "./hero.anim";
 
