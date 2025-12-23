@@ -118,7 +118,7 @@ export default function Projects() {
               />
             </div>
 
-            <h4 className="text-xl font-(--font-clash)">
+            <h4 className="font-clash text-xl font-bold">
               Apple iPhone 15 Website Clone
             </h4>
             <p className="opacity-85">
