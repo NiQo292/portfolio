@@ -118,8 +118,8 @@ export default function Navigation() {
 
       <div
         ref={overlayRef}
-        className="menu-overlay fixed inset-0 z-90 bg-black/60 backdrop-blur-3xl"
-        style={{ pointerEvents: "none" }}
+        className="menu-overlay fixed inset-0 z-90 bg-black/60 backdrop-blur-3xl opacity-0"
+        style={{ pointerEvents: "none", opacity: 0 }}
       >
         <div className="menu-overlay-inner flex h-full w-full items-center justify-center overflow-hidden">
           <div className="menu-bg-layer" />
