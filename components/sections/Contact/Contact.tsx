@@ -161,7 +161,7 @@ export default function Contact() {
 
             <div className="flex flex-col gap-[0.4rem]">
               <p className="type-meta">Availability</p>
-              <p className="type-body">Open to frontend / full-stack roles</p>
+              <p className="type-body">Open to Frontend / Full-Stack roles</p>
             </div>
           </div>
 
