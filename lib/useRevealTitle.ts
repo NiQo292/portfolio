@@ -2,14 +2,14 @@
 
 import { useEffect, RefObject } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import { withMatchMedia, media } from "@/lib/animation/media";
 
 gsap.registerPlugin(ScrollTrigger);
 
 type UseRevealTitleOptions = {
   scopeRef: RefObject<HTMLElement | null>;
   selector?: string;
-  start?: string;
 };
 
 export function useRevealTitle({
@@ -20,27 +20,44 @@ export function useRevealTitle({
     const scope = scopeRef.current;
     if (!scope) return;
 
-    const ctx = gsap.context(() => {
-      const titles = gsap.utils.toArray<HTMLElement>(selector);
-      if (!titles.length) return;
+    const titles = Array.from(scope.querySelectorAll<HTMLElement>(selector));
 
-      titles.forEach((el) => {
-        gsap.from(el, {
-          y: 60,
-          opacity: 0,
-          filter: "blur(10px)",
-          ease: "power3.out",
-          duration: 1.2,
-          scrollTrigger: {
-            trigger: el,
-            start: "top 100%",
-            end: "top 75%",
-            toggleActions: "play none none none",
-          },
-        });
+    if (!titles.length) return;
+
+    return withMatchMedia((mm) => {
+      // Desktop: cinematic reveal
+      mm.add(media.desktop, () => {
+        const ctx = gsap.context(() => {
+          titles.forEach((el) => {
+            // SAFE INITIAL STATE
+            gsap.set(el, { opacity: 1, y: 0, filter: "none" });
+
+            gsap.fromTo(
+              el,
+              { y: 60, opacity: 0, filter: "blur(10px)" },
+              {
+                y: 0,
+                opacity: 1,
+                filter: "blur(0px)",
+                duration: 1,
+                ease: "power3.out",
+                scrollTrigger: {
+                  trigger: el,
+                  start: "top 90%",
+                  once: true,
+                },
+              },
+            );
+          });
+        }, scope);
+
+        return () => ctx.revert();
       });
-    }, scope);
 
-    return () => ctx.revert();
+      // Mobile: no animation, no ScrollTrigger
+      mm.add(media.mobile, () => {
+        gsap.set(titles, { opacity: 1, y: 0, filter: "none" });
+      });
+    });
   }, [scopeRef, selector]);
 }
