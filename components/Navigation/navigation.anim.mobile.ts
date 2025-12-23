@@ -1,4 +1,3 @@
-// Navigation/navigation.anim.mobile.ts
 import gsap from "gsap";
 
 export function initNavMobile(_nav: HTMLElement, overlay: HTMLElement) {

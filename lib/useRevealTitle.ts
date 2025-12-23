@@ -25,11 +25,9 @@ export function useRevealTitle({
     if (!titles.length) return;
 
     return withMatchMedia((mm) => {
-      // Desktop: cinematic reveal
       mm.add(media.desktop, () => {
         const ctx = gsap.context(() => {
           titles.forEach((el) => {
-            // SAFE INITIAL STATE
             gsap.set(el, { opacity: 1, y: 0, filter: "none" });
 
             gsap.fromTo(
@@ -54,7 +52,6 @@ export function useRevealTitle({
         return () => ctx.revert();
       });
 
-      // Mobile: no animation, no ScrollTrigger
       mm.add(media.mobile, () => {
         gsap.set(titles, { opacity: 1, y: 0, filter: "none" });
       });

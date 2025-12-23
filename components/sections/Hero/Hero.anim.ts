@@ -1,4 +1,3 @@
-// Hero.anim.ts
 import { gsap } from "gsap";
 import { initHeroDesktop } from "./hero.anim.desktop";
 import { initHeroMobile } from "./hero.anim.mobile";

@@ -1,4 +1,3 @@
-// lib/animation/media.ts
 import gsap from "gsap";
 
 export const media = {
@@ -13,9 +12,8 @@ export function withMatchMedia(
   const cleanup = setup(mm);
 
   return () => {
-    // cleanup from callbacks (optional)
     if (typeof cleanup === "function") cleanup();
-    // revert GSAP matchMedia registrations
+
     mm.revert();
   };
 }

@@ -1,4 +1,3 @@
-// Navigation/navigation.anim.desktop.ts
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -9,9 +8,6 @@ export function initNavDesktop(nav: HTMLElement, overlay: HTMLElement) {
   const glow = nav.querySelector<HTMLElement>("[data-nav-glow]");
   const reflection = nav.querySelector<HTMLElement>("[data-nav-reflection]");
 
-  /* -----------------------------
-   * Reflection loop
-   * ----------------------------- */
   if (reflection) {
     gsap.fromTo(
       reflection,
@@ -27,9 +23,6 @@ export function initNavDesktop(nav: HTMLElement, overlay: HTMLElement) {
     );
   }
 
-  /* -----------------------------
-   * Hover sheen
-   * ----------------------------- */
   const onEnter = () => {
     if (!sheen) return;
     gsap.fromTo(
@@ -45,9 +38,6 @@ export function initNavDesktop(nav: HTMLElement, overlay: HTMLElement) {
   };
   nav.addEventListener("mouseenter", onEnter);
 
-  /* -----------------------------
-   * Scroll morph
-   * ----------------------------- */
   const apply = (scrolled: boolean) => {
     gsap.to(nav, {
       borderRadius: scrolled ? "9999px" : "0px",
@@ -87,9 +77,6 @@ export function initNavDesktop(nav: HTMLElement, overlay: HTMLElement) {
     onLeaveBack: () => apply(false),
   });
 
-  /* -----------------------------
-   * Menu timeline (desktop)
-   * ----------------------------- */
   const inner = overlay.querySelector<HTMLElement>(".menu-overlay-inner");
   const items = Array.from(
     overlay.querySelectorAll<HTMLElement>("[data-menu-link]"),

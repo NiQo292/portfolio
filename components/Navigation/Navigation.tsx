@@ -18,24 +18,17 @@ export default function Navigation() {
 
   const pendingSectionRef = useRef<string | null>(null);
 
-  /* -----------------------------
-   * Init navigation animations
-   * ----------------------------- */
   useLayoutEffect(() => {
     if (!navRef.current || !overlayRef.current) return;
     return initNavigation(navRef.current, overlayRef.current);
   }, []);
 
-  /* -----------------------------
-   * Menu open / close
-   * ----------------------------- */
   useEffect(() => {
     if (menuOpen) setVisible(true);
 
     setMenuOpen(menuOpen, () => {
       setVisible(false);
 
-      // Scroll to pending anchor AFTER menu closes
       if (pendingSectionRef.current) {
         const selector = pendingSectionRef.current;
         pendingSectionRef.current = null;
@@ -53,9 +46,6 @@ export default function Navigation() {
     });
   }, [menuOpen]);
 
-  /* -----------------------------
-   * Body lock when menu visible
-   * ----------------------------- */
   useEffect(() => {
     if (visible) {
       const scrollBarWidth =
@@ -80,9 +70,6 @@ export default function Navigation() {
     };
   }, [visible]);
 
-  /* -----------------------------
-   * Handlers
-   * ----------------------------- */
   const openMenu = () => setMenuOpenState(true);
   const closeMenu = () => setMenuOpenState(false);
 
@@ -91,16 +78,12 @@ export default function Navigation() {
     closeMenu();
   };
 
-  /* -----------------------------
-   * Render
-   * ----------------------------- */
   return (
     <>
       <div
         ref={navRef}
         className="backdrop-blur-0 fixed top-0 right-0 left-0 z-100 overflow-hidden border border-transparent bg-transparent transition-all"
       >
-        {/* Visual layers (desktop only animates them) */}
         <div data-nav-sheen className="nav-sheen" />
         <div data-nav-glow className="nav-glow-pulse" />
         <div data-nav-reflection className="nav-reflection" />
@@ -112,7 +95,6 @@ export default function Navigation() {
               <Image src={Logo} alt="Logo" width={48} height={48} />
             </Link>
 
-            {/* Burger button (unchanged markup) */}
             <button
               aria-label="Toggle menu"
               aria-expanded={menuOpen}
@@ -134,7 +116,6 @@ export default function Navigation() {
         </nav>
       </div>
 
-      {/* Overlay is always mounted; GSAP controls visibility */}
       <div
         ref={overlayRef}
         className="menu-overlay fixed inset-0 z-90 bg-black/60 backdrop-blur-3xl"

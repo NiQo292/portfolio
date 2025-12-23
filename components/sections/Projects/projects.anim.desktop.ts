@@ -22,7 +22,6 @@ export function initProjectsDesktop(scope: HTMLElement) {
 
   if (!featuredCard || !featuredImg) return;
 
-  // --- Featured image reveal ---
   gsap.from(featuredImg, {
     y: 60,
     opacity: 0,
@@ -36,7 +35,6 @@ export function initProjectsDesktop(scope: HTMLElement) {
     clearProps: "filter",
   });
 
-  // --- Vignette ---
   if (vignette) {
     gsap.from(vignette, {
       opacity: 0,
@@ -50,7 +48,6 @@ export function initProjectsDesktop(scope: HTMLElement) {
     });
   }
 
-  // --- Content ---
   gsap.from(content, {
     y: 30,
     opacity: 0,
@@ -65,7 +62,6 @@ export function initProjectsDesktop(scope: HTMLElement) {
     clearProps: "filter",
   });
 
-  // --- Secondary cards ---
   if (secondaryCards.length) {
     gsap.from(secondaryCards, {
       y: 40,
@@ -82,7 +78,6 @@ export function initProjectsDesktop(scope: HTMLElement) {
     });
   }
 
-  // --- Parallax (desktop only) ---
   gsap.to(featuredImg, {
     y: -25,
     ease: "none",

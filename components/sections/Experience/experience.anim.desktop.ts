@@ -8,12 +8,6 @@ const prefersReducedMotion = () =>
   typeof window !== "undefined" &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/**
- * Desktop-only Experience animations
- * - Scroll-triggered reveal per block
- * - Glow entrance
- * - Subtle per-block parallax
- */
 export function initExperienceDesktop(scope: HTMLElement) {
   if (prefersReducedMotion()) {
     gsap.set(
@@ -43,7 +37,6 @@ export function initExperienceDesktop(scope: HTMLElement) {
     const items = block.querySelectorAll<HTMLElement>("[data-exp-item]");
     const glow = block.querySelector<HTMLElement>("[data-exp-glow]");
 
-    // --- Glow reveal ---
     if (glow) {
       gsap.fromTo(
         glow,
@@ -61,7 +54,6 @@ export function initExperienceDesktop(scope: HTMLElement) {
       );
     }
 
-    // --- Content reveal timeline ---
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: block,
@@ -139,7 +131,6 @@ export function initExperienceDesktop(scope: HTMLElement) {
       );
     }
 
-    // --- Per-block parallax (desktop only) ---
     gsap.to(block, {
       yPercent: -6 - index * 1.2,
       ease: "none",

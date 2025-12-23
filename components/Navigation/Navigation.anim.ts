@@ -1,4 +1,3 @@
-// Navigation/navigation.anim.ts
 import gsap from "gsap";
 import { media } from "@/lib/animation";
 import { initNavDesktop } from "./navigation.anim.desktop";

@@ -4,8 +4,6 @@ const prefersReducedMotion = () =>
   typeof window !== "undefined" &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/* ---------- MODAL ---------- */
-
 export function openContactModal(modal: HTMLElement) {
   if (prefersReducedMotion()) {
     gsap.set(modal, { opacity: 1, pointerEvents: "auto" });
@@ -58,8 +56,6 @@ export function closeContactModal(modal: HTMLElement) {
     });
 }
 
-/* ---------- SUBMIT ---------- */
-
 export function animateSubmitSuccess(btn: HTMLElement) {
   if (prefersReducedMotion()) return;
 
@@ -78,8 +74,6 @@ export function animateSubmitSuccess(btn: HTMLElement) {
       ease: "elastic.out(1.1,0.4)",
     });
 }
-
-/* ---------- RIPPLE ---------- */
 
 export function rippleLiquid(liquid: HTMLElement) {
   if (prefersReducedMotion()) return;

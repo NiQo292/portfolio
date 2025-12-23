@@ -43,7 +43,6 @@ export function initTechStackDesktop(scope: HTMLElement) {
       );
   });
 
-  // Hover interaction
   const cards = gsap.utils.toArray<HTMLElement>("[data-ts-card]");
 
   cards.forEach((card) => {

@@ -1,4 +1,3 @@
-// Hero.anim.mobile.ts
 import { gsap } from "gsap";
 
 export function initHeroMobile(section: HTMLElement) {

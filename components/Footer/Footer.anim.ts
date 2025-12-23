@@ -21,7 +21,6 @@ export function initFooterAnimations({
   const originalText = heading.innerText;
 
   const ctx = gsap.context(() => {
-    // Guard: avoid double-splitting
     if (!heading.querySelector(".footer-letter")) {
       heading.innerHTML = originalText
         .split("")
@@ -64,6 +63,6 @@ export function initFooterAnimations({
 
   return () => {
     ctx.revert();
-    heading.innerText = originalText; // restore DOM
+    heading.innerText = originalText;
   };
 }
