@@ -102,4 +102,33 @@
       height: 12rem;
     }
   }
+
+  .project-media-frame {
+    position: relative;
+    width: 100%;
+    height: 14rem; /* matches h-56 */
+    border-radius: 1rem;
+    overflow: hidden;
+
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  @media (min-width: 768px) {
+    .project-media-frame {
+      height: 15rem;
+    }
+  }
+
+  .project-media {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Video-specific safety */
+  .project-media-frame video {
+    background: #000;
+  }
 }

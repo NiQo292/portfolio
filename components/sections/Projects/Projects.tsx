@@ -105,11 +105,11 @@ export default function Projects() {
         </div>
 
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
-          <div
+          {/* <div
             data-project-card-secondary
             className="project-secondary-card flex flex-col gap-6"
           >
-            <div className="relative h-56 w-full overflow-hidden rounded-2xl">
+            <div data-project-media className="project-media-frame">
               <Image
                 src={Apple}
                 alt="Apple iPhone 15 Website Clone"
@@ -121,6 +121,42 @@ export default function Projects() {
             <h4 className="text-xl font-(--font-clash)">
               Apple iPhone 15 Website Clone
             </h4>
+            <p className="opacity-85">
+              A pixel-perfect clone of the Apple iPhone 15 product page,
+              recreated using Next.js and TailwindCSS to demonstrate the
+              integration of 3D models and responsive design principles.
+            </p>
+
+            <a
+              href="https://apple-clone-tawny-three.vercel.app/"
+              target="_blank"
+              className="mt-2 font-semibold text-[rgba(0,255,255,0.75)]"
+            >
+              View Site →
+            </a>
+          </div> */}
+
+          <div
+            data-project-card-secondary
+            className="project-secondary-card flex flex-col gap-6"
+          >
+            <div data-project-media className="project-media-frame">
+              <video
+                src="/images/projects/apple.webm"
+                autoPlay
+                muted
+                loop
+                playsInline
+                controls={false}
+                preload="metadata"
+                className="project-media"
+              />
+            </div>
+
+            <h4 className="text-xl font-(--font-clash)">
+              Apple iPhone 15 Website Clone
+            </h4>
+
             <p className="opacity-85">
               A pixel-perfect clone of the Apple iPhone 15 product page,
               recreated using Next.js and TailwindCSS to demonstrate the
