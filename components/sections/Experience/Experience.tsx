@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./experience.css";
 import { useRevealTitle } from "@/lib/useRevealTitle";
 import { initExperienceAnimations } from "./experience.anim";
+import { useSectionBlur } from "@/lib/useSectionBlur";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -36,6 +37,7 @@ export default function Experience() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useRevealTitle({ scopeRef: sectionRef });
+  useSectionBlur({ ref: sectionRef });
 
   useLayoutEffect(() => {
     if (!sectionRef.current) return;
