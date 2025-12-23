@@ -50,10 +50,10 @@ export default function Projects() {
   return (
     <section
       ref={sectionRef}
-      className="section-spacing relative w-full"
+      className="section-spacing layout-section relative w-full"
       id="projects"
     >
-      <div className="layout-section relative z-2 flex flex-col gap-20">
+      <div className="relative z-2 flex flex-col gap-20">
         <header className="section-title w-full text-center">
           <h2 className="type-title w-full text-center">My Projects</h2>
           <h3 className="type-subheading mt-3 opacity-80">
