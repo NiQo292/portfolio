@@ -116,7 +116,7 @@ export default function Navigation() {
 
       <div
         ref={overlayRef}
-        className="menu-overlay fixed inset-0 z-90 bg-black/60 opacity-0 backdrop-blur-3xl"
+        className="menu-overlay z-90 bg-black/60 opacity-0 backdrop-blur-3xl"
         style={{ pointerEvents: "none", opacity: 0 }}
       >
         <div className="menu-overlay-inner flex h-full w-full items-center justify-center overflow-hidden">
@@ -124,7 +124,7 @@ export default function Navigation() {
           <div className="menu-bg-layer-2" />
           <div className="menu-vignette" />
 
-          <nav className="font-clash relative z-10 flex flex-col items-center gap-7 text-4xl sm:gap-10 sm:text-5xl">
+          <nav className="font-clash menu-nav">
             {navLinks.map((link) =>
               link.external ? (
                 <a
