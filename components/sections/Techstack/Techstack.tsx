@@ -1,13 +1,8 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import Image from "next/image";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./techstack.css";
-import { useSectionBlur } from "@/lib/useSectionBlur";
-import { useRevealTitle } from "@/lib/useRevealTitle";
-import { initTechStackAnimations } from "./techstack.anim";
 
 // Brand Logos import
 import ReactLogo from "@/public/images/techstack/react.svg";
@@ -29,68 +24,33 @@ import GitLogo from "@/public/images/techstack/git.svg";
 import DockerLogo from "@/public/images/techstack/docker.svg";
 import FigmaLogo from "@/public/images/techstack/figma.svg";
 
-gsap.registerPlugin(ScrollTrigger);
+const frontendBackend = [
+  { name: "React", logo: ReactLogo },
+  { name: "Next.js", logo: NextJSLogo },
+  { name: "TypeScript", logo: TypeScriptLogo },
+  { name: "Tailwind CSS", logo: TailwindLogo },
+  { name: "GSAP", logo: GSAPLogo },
+  { name: "Motion", logo: MotionLogo },
+  { name: "Sass", logo: SassLogo },
+  { name: "PHP", logo: PHPLogo },
+  { name: "Node.js", logo: NodeJSLogo },
+  { name: "Express.js", logo: ExpressLogo },
+  { name: "Java", logo: JavaLogo },
+  { name: "Spring Boot", logo: SpringLogo },
+];
 
-const techStack = [
-  {
-    category: "Frontend",
-    items: [
-      { name: "React", logo: ReactLogo },
-      { name: "Next.js", logo: NextJSLogo },
-      { name: "TypeScript", logo: TypeScriptLogo },
-      { name: "Tailwind CSS", logo: TailwindLogo },
-      { name: "GSAP", logo: GSAPLogo },
-      { name: "Motion", logo: MotionLogo },
-      { name: "Sass", logo: SassLogo },
-    ],
-  },
-  {
-    category: "Backend",
-    items: [
-      { name: "PHP", logo: PHPLogo },
-      { name: "Node.js", logo: NodeJSLogo },
-      { name: "Express.js", logo: ExpressLogo },
-      { name: "Java", logo: JavaLogo },
-      { name: "Spring Boot", logo: SpringLogo },
-    ],
-  },
-  {
-    category: "Database",
-    items: [
-      { name: "MySQL", logo: MySQLLogo },
-      { name: "PostgreSQL", logo: PostgresLogo },
-      { name: "Drizzle ORM", logo: DrizzleLogo },
-    ],
-  },
-  {
-    category: "Tools",
-    items: [
-      { name: "Git", logo: GitLogo },
-      { name: "Docker", logo: DockerLogo },
-      { name: "Figma", logo: FigmaLogo },
-    ],
-  },
+const databaseTools = [
+  { name: "MySQL", logo: MySQLLogo },
+  { name: "PostgreSQL", logo: PostgresLogo },
+  { name: "Drizzle ORM", logo: DrizzleLogo },
+  { name: "Git", logo: GitLogo },
+  { name: "Docker", logo: DockerLogo },
+  { name: "Figma", logo: FigmaLogo },
 ];
 
 export default function TechStack() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  useRevealTitle({ scopeRef: sectionRef });
-  useSectionBlur({ ref: sectionRef });
-
-  useEffect(() => {
-    if (!sectionRef.current) return;
-
-    const cleanup = initTechStackAnimations(sectionRef.current);
-
-    return () => cleanup?.();
-  }, []);
-
   return (
-    <section
-      ref={sectionRef}
-      className="layout-section stack-xl"
-      id="techstack"
-    >
+    <section className="layout-section stack-xl" id="techstack">
       <header className="section-title w-full text-center">
         <h2 className="type-title w-full text-center">My Tech-Stack</h2>
         <h3 className="type-subheading mt-3 opacity-80">
@@ -98,46 +58,70 @@ export default function TechStack() {
         </h3>
       </header>
 
-      <div className="grid grid-cols-1 gap-x-12 gap-y-24 md:grid-cols-12">
-        {techStack.map((section) => (
-          <div
-            key={section.category}
-            data-ts-group
-            className="grid grid-cols-1 gap-x-10 gap-y-10 md:col-span-12 md:grid-cols-12"
-          >
-            <h3 className="type-subheading md:col-span-4" data-ts-heading>
-              {section.category}
-            </h3>
+      {/* Marquee 1: Frontend & Backend (left to right) */}
+      <div className="overflow-hidden py-6">
+        <div className="marquee marquee-ltr flex items-center gap-10">
+          {frontendBackend.map((tech) => (
+            <div key={tech.name} className="flex items-center gap-3 px-4 py-2">
+              <Image
+                src={tech.logo}
+                alt={tech.name}
+                width={32}
+                height={32}
+                className="h-10 w-10 object-contain"
+              />
+              <span className="type-body min-w-fit">{tech.name}</span>
+            </div>
+          ))}
+          {frontendBackend.map((tech) => (
+            <div
+              key={tech.name + "-dup"}
+              className="flex items-center gap-3 px-4 py-2"
+            >
+              <Image
+                src={tech.logo}
+                alt={tech.name}
+                width={32}
+                height={32}
+                className="h-10 w-10 object-contain"
+              />
+              <span className="type-body min-w-fit">{tech.name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
 
-            <ul className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2 md:col-span-8 lg:grid-cols-3">
-              {section.items.map((tech) => (
-                <li
-                  key={tech.name}
-                  data-ts-item
-                  data-ts-card
-                  className="relative flex items-center gap-3 px-2 py-1 perspective-[1000px] transform-3d"
-                >
-                  <div
-                    className="relative z-2 flex items-center gap-3 transform-3d"
-                    data-ts-inner
-                  >
-                    <div data-ts-glow className="ts-glow" />
-
-                    <Image
-                      src={tech.logo}
-                      alt={tech.name}
-                      width={32}
-                      height={32}
-                      className="mr-3 h-10 w-10 object-contain"
-                    />
-
-                    <p className="type-body min-w-fit">{tech.name}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+      {/* Marquee 2: Database & Tools (right to left) */}
+      <div className="overflow-hidden py-6">
+        <div className="marquee marquee-rtl flex items-center gap-10">
+          {databaseTools.map((tech) => (
+            <div key={tech.name} className="flex items-center gap-3 px-4 py-2">
+              <Image
+                src={tech.logo}
+                alt={tech.name}
+                width={32}
+                height={32}
+                className="h-10 w-10 object-contain"
+              />
+              <span className="type-body min-w-fit">{tech.name}</span>
+            </div>
+          ))}
+          {databaseTools.map((tech) => (
+            <div
+              key={tech.name + "-dup"}
+              className="flex items-center gap-3 px-4 py-2"
+            >
+              <Image
+                src={tech.logo}
+                alt={tech.name}
+                width={32}
+                height={32}
+                className="h-10 w-10 object-contain"
+              />
+              <span className="type-body min-w-fit">{tech.name}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

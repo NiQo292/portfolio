@@ -17,4 +17,34 @@
     filter: blur(20px);
     z-index: 1;
   }
+
+  .marquee {
+    display: flex;
+    width: max-content;
+    animation-duration: 40s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+  .marquee-ltr {
+    animation-name: marquee-ltr;
+  }
+  .marquee-rtl {
+    animation-name: marquee-rtl;
+  }
+  @keyframes marquee-ltr {
+    0% {
+      transform: translateX(-50%);
+    }
+    100% {
+      transform: translateX(0%);
+    }
+  }
+  @keyframes marquee-rtl {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
 }
