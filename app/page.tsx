@@ -14,13 +14,14 @@ export default function Home() {
         <About />
       </Section>
       <Section>
-        <TechStack />
+        <Projects />
       </Section>
       <Section>
         <Experience />
       </Section>
+
       <Section>
-        <Projects />
+        <TechStack />
       </Section>
       <Section>
         <Contact />
