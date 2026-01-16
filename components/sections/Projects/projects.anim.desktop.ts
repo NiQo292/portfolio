@@ -79,14 +79,14 @@ export function initProjectsDesktop(scope: HTMLElement) {
     });
   }
 
-  gsap.to(featuredImg, {
-    y: -motion.parallax.base,
-    ease: "none",
-    scrollTrigger: {
-      trigger: scope,
-      start: "top bottom",
-      end: "bottom top",
-      scrub: true,
-    },
-  });
+  // gsap.to(featuredImg, {
+  //   y: -motion.parallax.base,
+  //   ease: "none",
+  //   scrollTrigger: {
+  //     trigger: scope,
+  //     start: "top bottom",
+  //     end: "bottom top",
+  //     scrub: true,
+  //   },
+  // });
 }
