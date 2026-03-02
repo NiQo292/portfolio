@@ -12,6 +12,7 @@ import "./projects.css";
 import Nico from "@/public/images/nico.png";
 import Portfolio from "@/public/images/projects/portfolio_image.jpeg";
 import Apple from "@/public/images/projects/apple.png";
+import MaisonNoir from "@/public/images/projects/maison_noir.png";
 import { initProjectsAnimations } from "./projects.anim";
 import { initFeaturedHover } from "./projects.hover.desktop";
 import { media, withMatchMedia } from "@/lib/animation";
@@ -105,36 +106,35 @@ export default function Projects() {
         </div>
 
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
-          {/* <div
+          <div
             data-project-card-secondary
             className="project-secondary-card flex flex-col gap-6"
           >
             <div data-project-media className="project-media-frame">
               <Image
-                src={Apple}
-                alt="Apple iPhone 15 Website Clone"
+                src={MaisonNoir}
+                alt="Maison Noir Restaurant Project"
                 fill
                 className="object-cover"
               />
             </div>
 
             <h4 className="font-clash text-xl font-bold">
-              Apple iPhone 15 Website Clone
+              Maison Noir Restaurant Website
             </h4>
             <p className="opacity-85">
-              A pixel-perfect clone of the Apple iPhone 15 product page,
-              recreated using Next.js and TailwindCSS to demonstrate the
-              integration of 3D models and responsive design principles.
+              A modern and elegant website for Maison Noir Restaurant,
+              showcasing their menu, ambiance, and unique dining experience.
             </p>
 
             <a
-              href="https://apple-clone-tawny-three.vercel.app/"
+              href="https://maison-noir-eta.vercel.app"
               target="_blank"
               className="mt-2 font-semibold text-[rgba(0,255,255,0.75)]"
             >
               View Site →
             </a>
-          </div> */}
+          </div>
 
           <div
             data-project-card-secondary
